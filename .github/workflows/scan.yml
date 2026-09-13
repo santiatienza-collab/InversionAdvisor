@@ -61,6 +61,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # NUEVO — pedido expresamente tras el fallo real "cannot pull with rebase: You have
+          # unstaged changes": el paso "chmod +x gradlew" de más arriba cambia el permiso de
+          # ejecución de un archivo que Git también vigila (el "modo" del archivo, 644 vs 755) —
+          # Git lo veía como un cambio sin guardar y bloqueaba el pull --rebase de abajo. Esto le
+          # dice a Git que ignore los cambios de permisos al comparar, sin afectar para nada al
+          # contenido real de ningún archivo.
+          git config core.fileMode false
           git add data/scan-${{ matrix.mercado }}.json
           git diff --staged --quiet || git commit -m "Escaneo automático: ${{ matrix.mercado }} ($(date -u +%Y-%m-%dT%H:%MZ))"
           # --rebase, no merge: varios mercados en paralelo pueden terminar y querer subir a la
