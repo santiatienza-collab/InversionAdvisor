@@ -47,10 +47,19 @@ object ExhaustionDetector {
         if (declinePercent > -minDeclinePercent) return null // no ha caído lo suficiente todavía
 
         val reasons = mutableListOf<String>()
-        var score = 0
+        // CORREGIDO — fallo real detectado (casos MERLIN, ACS en IBEX 35): antes esta caída
+        // por sí sola ya sumaba 25 de los 40 necesarios para "detected", así que bastaba con
+        // UN SOLO indicio débil de recuperación (a veces pura casualidad en un tramo corto,
+        // sin ninguna figura de giro real) para cruzar el umbral, aunque el stock siguiera
+        // claramente bajista de fondo. Ahora la caída se sigue mostrando (es informativa, forma
+        // parte de confidenceScore), pero YA NO cuenta para decidir "detected" — hace falta que
+        // los indicios de recuperación por sí solos (mínimos ascendentes + RSI + volumen +
+        // progreso hacia resistencia) sumen al menos 40, es decir, que varios coincidan de
+        // verdad, no solo uno.
+        val declineScore = 25
+        var recoveryScore = 0
 
         reasons += "Caída de ${"%.1f".format(abs(declinePercent))}%% desde el máximo reciente (${recentHighCandle.datetime})"
-        score += 25
 
         // Mínimos ascendentes tras el suelo => pérdida de momentum bajista
         val lowIndex = candles.indexOf(recentLowCandle)
@@ -60,7 +69,7 @@ object ExhaustionDetector {
             val higherLowSteps = (1 until lows.size).count { lows[it] >= lows[it - 1] }
             if (higherLowSteps >= (lows.size - 1) * 0.6) {
                 reasons += "Mínimos ascendentes tras el suelo del ${recentLowCandle.datetime} (la presión vendedora se agota)"
-                score += 20
+                recoveryScore += 20
             }
         }
 
@@ -73,7 +82,7 @@ object ExhaustionDetector {
         val lowRsi = rsis.getOrNull(lowIndex)
         if (lowRsi != null && lowRsi < 40) {
             reasons += "En el mínimo del ${recentLowCandle.datetime.take(10)} el RSI llegó a sobreventa (%.0f) — no es el RSI de ahora, que puede ser distinto".format(lowRsi)
-            score += 15
+            recoveryScore += 15
         }
 
         // Volumen: más volumen en la recuperación que en la caída previa (posible acumulación)
@@ -82,7 +91,7 @@ object ExhaustionDetector {
         val avgVolAfterLow = afterLow.mapNotNull { it.volume }.takeIf { it.isNotEmpty() }?.average()
         if (avgVolBeforeLow != null && avgVolAfterLow != null && avgVolAfterLow > avgVolBeforeLow) {
             reasons += "Volumen en aumento durante la recuperación (posible acumulación)"
-            score += 15
+            recoveryScore += 15
         }
 
         // Progreso de recuperación hacia la próxima resistencia
@@ -103,12 +112,12 @@ object ExhaustionDetector {
             reasons += "Ya recuperado un %.0f%% del camino hacia la próxima resistencia (%.2f)".format(
                 recoveryProgress, nextResistance
             )
-            score += 25
+            recoveryScore += 25
         }
 
         return ExhaustionSignal(
-            detected = score >= 40,
-            confidenceScore = score.coerceIn(0, 100),
+            detected = recoveryScore >= 40,
+            confidenceScore = (declineScore + recoveryScore).coerceIn(0, 100),
             reasons = reasons,
             recentHigh = recentHighCandle.high,
             recentLow = recentLowCandle.low,
