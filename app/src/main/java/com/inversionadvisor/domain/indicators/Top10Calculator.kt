@@ -433,16 +433,23 @@ object Top10Calculator {
             totalPenalty += 15.0
             penaltyWarnings += "Tendencia bajista consolidada ($consolidatedBearishMonthsCount de los últimos 6 meses en negativo) -15"
         }
-        if (doubleTopBottomResult.pattern == DoubleTopBottomPattern.DOUBLE_TOP) {
-            totalPenalty += 15.0
-            val fecha1 = doubleTopBottomResult.firstDate?.let { UptrendDetector.formatCandleDateForDisplay(it) }
-            val fecha2 = doubleTopBottomResult.secondDate?.let { UptrendDetector.formatCandleDateForDisplay(it) }
-            penaltyWarnings += "Patrón de Doble Techo Detectado ($fecha1 y $fecha2) -15"
-        } else if (doubleTopBottomResult.pattern == DoubleTopBottomPattern.DOUBLE_BOTTOM) {
-            totalBonus += 10.0
-            val fecha1 = doubleTopBottomResult.firstDate?.let { UptrendDetector.formatCandleDateForDisplay(it) }
-            val fecha2 = doubleTopBottomResult.secondDate?.let { UptrendDetector.formatCandleDateForDisplay(it) }
-            bonusWarnings += "Patrón de Doble Suelo Detectado ($fecha1 y $fecha2) +10"
+        // CORREGIDO a petición expresa: el triple techo/suelo "absorbe" al doble cuando
+        // coinciden — antes los dos se sumaban/restaban a la vez (un triple techo casi siempre
+        // implica que también hay un doble techo dentro de esos mismos 3 picos, así que se
+        // estaba contando la misma señal dos veces). Ahora el doble SOLO puntúa si NO hay
+        // ningún triple detectado a la vez.
+        if (tripleTopBottomResult.pattern == UptrendDetector.TripleTopBottomPattern.NONE) {
+            if (doubleTopBottomResult.pattern == DoubleTopBottomPattern.DOUBLE_TOP) {
+                totalPenalty += 15.0
+                val fecha1 = doubleTopBottomResult.firstDate?.let { UptrendDetector.formatCandleDateForDisplay(it) }
+                val fecha2 = doubleTopBottomResult.secondDate?.let { UptrendDetector.formatCandleDateForDisplay(it) }
+                penaltyWarnings += "Patrón de Doble Techo Detectado ($fecha1 y $fecha2) -15"
+            } else if (doubleTopBottomResult.pattern == DoubleTopBottomPattern.DOUBLE_BOTTOM) {
+                totalBonus += 10.0
+                val fecha1 = doubleTopBottomResult.firstDate?.let { UptrendDetector.formatCandleDateForDisplay(it) }
+                val fecha2 = doubleTopBottomResult.secondDate?.let { UptrendDetector.formatCandleDateForDisplay(it) }
+                bonusWarnings += "Patrón de Doble Suelo Detectado ($fecha1 y $fecha2) +10"
+            }
         }
         if (tripleTopBottomResult.pattern == UptrendDetector.TripleTopBottomPattern.TRIPLE_TOP) {
             totalPenalty += 20.0

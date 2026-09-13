@@ -274,7 +274,8 @@ fun StockDetailScreen(
                         regularSessionBounds = state.regularSessionBounds,
                         isShowingYesterdayFallback = state.isShowingYesterdayFallback,
                         showVolume = showVolume,
-                        doubleTopBottomResult = state.buyOpportunityAnalysis?.doubleTopBottomResult
+                        doubleTopBottomResult = state.buyOpportunityAnalysis?.doubleTopBottomResult,
+                        tripleTopBottomResult = state.buyOpportunityAnalysis?.tripleTopBottomResult
                     )
                     Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp)) {
                         if (showSellTiming) {
@@ -317,7 +318,7 @@ private fun LegendDot(color: Color, dimmed: Boolean = false) {
 }
 
 @Composable
-internal fun PriceAndVolumeChart(candles: List<Candle>, sma20: List<Double?>, range: ChartRange, modifier: Modifier = Modifier, showVolume: Boolean = true, priceChartHeightDp: Int = 260, sma50: List<Double?> = emptyList(), relativeStrengthVsSpyPercent: Double? = null, sma50InitiallyVisible: Boolean = true, yesterdayClose: Double? = null, todayLivePrice: Double? = null, isShowingYesterdayFallback: Boolean = false, doubleTopBottomResult: com.inversionadvisor.domain.indicators.DoubleTopBottomResult? = null, regularSessionBounds: Pair<Long, Long>? = null) {
+internal fun PriceAndVolumeChart(candles: List<Candle>, sma20: List<Double?>, range: ChartRange, modifier: Modifier = Modifier, showVolume: Boolean = true, priceChartHeightDp: Int = 260, sma50: List<Double?> = emptyList(), relativeStrengthVsSpyPercent: Double? = null, sma50InitiallyVisible: Boolean = true, yesterdayClose: Double? = null, todayLivePrice: Double? = null, isShowingYesterdayFallback: Boolean = false, doubleTopBottomResult: com.inversionadvisor.domain.indicators.DoubleTopBottomResult? = null, tripleTopBottomResult: com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult? = null, regularSessionBounds: Pair<Long, Long>? = null) {
     val labels = remember(candles, range) { candles.map { it.chartLabel(range) } }
 
     val priceColor = MaterialTheme.colorScheme.primary.toArgb()
@@ -699,8 +700,97 @@ internal fun PriceAndVolumeChart(candles: List<Candle>, sma20: List<Double?>, ra
             val doubleTopBottomWickSet1 = wickDataSet(doubleTopBottomWickEntries1)
             val doubleTopBottomWickSet2 = wickDataSet(doubleTopBottomWickEntries2)
 
+            // NUEVO — pedido expresamente: el triple techo/suelo NUNCA se dibujaba (fallo real
+            // detectado: "solo pintan dos círculos, tienen que pintar tres" — esos dos eran los
+            // del doble techo/suelo, que puede coincidir a la vez). Misma lógica que el doble de
+            // arriba, con un tercer punto y su propia mecha.
+            val tripleTopBottomEntries = mutableListOf<Entry>()
+            val tripleTopBottomWickEntries1 = mutableListOf<Entry>()
+            val tripleTopBottomWickEntries2 = mutableListOf<Entry>()
+            val tripleTopBottomWickEntries3 = mutableListOf<Entry>()
+            var tripleTopBottomIsTop = true
+            if (tripleTopBottomResult != null && candles.isNotEmpty()) {
+                val esTopTriple = tripleTopBottomResult.pattern == com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomPattern.TRIPLE_TOP
+                fun closestIndexToTriple(isoDate: String, targetPrice: Double?): Int? {
+                    val target = try { java.time.Instant.parse(isoDate) } catch (e: Exception) { return null }
+                    var bestIndex = -1
+                    var bestDiffMillis = Long.MAX_VALUE
+                    candles.forEachIndexed { i, c ->
+                        val candleInstant = try { java.time.Instant.parse(c.datetime) } catch (e: Exception) { return@forEachIndexed }
+                        val diff = kotlin.math.abs(java.time.Duration.between(target, candleInstant).toMillis())
+                        if (diff < bestDiffMillis) {
+                            bestDiffMillis = diff
+                            bestIndex = i
+                        }
+                    }
+                    if (bestIndex < 0 || bestDiffMillis > 5L * 24 * 60 * 60 * 1000) return null
+                    if (targetPrice == null || targetPrice <= 0.0) return bestIndex
+                    val ventanaInicio = (bestIndex - 4).coerceAtLeast(0)
+                    val ventanaFin = (bestIndex + 4).coerceAtMost(candles.size - 1)
+                    var mejorIndice = bestIndex
+                    var mejorDiferenciaPrecio = Double.MAX_VALUE
+                    for (i in ventanaInicio..ventanaFin) {
+                        val valorVela = if (esTopTriple) candles[i].high else candles[i].low
+                        val diferencia = kotlin.math.abs(valorVela - targetPrice)
+                        if (diferencia < mejorDiferenciaPrecio) {
+                            mejorDiferenciaPrecio = diferencia
+                            mejorIndice = i
+                        }
+                    }
+                    return mejorIndice
+                }
+                val idxT1 = tripleTopBottomResult.firstDate?.let { closestIndexToTriple(it, tripleTopBottomResult.firstPrice) }
+                val idxT2 = tripleTopBottomResult.secondDate?.let { closestIndexToTriple(it, tripleTopBottomResult.secondPrice) }
+                val idxT3 = tripleTopBottomResult.thirdDate?.let { closestIndexToTriple(it, tripleTopBottomResult.thirdPrice) }
+                val priceT1 = tripleTopBottomResult.firstPrice
+                val priceT2 = tripleTopBottomResult.secondPrice
+                val priceT3 = tripleTopBottomResult.thirdPrice
+                if (idxT1 != null && idxT2 != null && idxT3 != null && priceT1 != null && priceT2 != null && priceT3 != null) {
+                    tripleTopBottomEntries += Entry(idxT1.toFloat(), priceT1.toFloat())
+                    tripleTopBottomEntries += Entry(idxT2.toFloat(), priceT2.toFloat())
+                    tripleTopBottomEntries += Entry(idxT3.toFloat(), priceT3.toFloat())
+                    tripleTopBottomIsTop = esTopTriple
+                    tripleTopBottomWickEntries1 += Entry(idxT1.toFloat(), candles[idxT1].close.toFloat())
+                    tripleTopBottomWickEntries1 += Entry(idxT1.toFloat(), priceT1.toFloat())
+                    tripleTopBottomWickEntries2 += Entry(idxT2.toFloat(), candles[idxT2].close.toFloat())
+                    tripleTopBottomWickEntries2 += Entry(idxT2.toFloat(), priceT2.toFloat())
+                    tripleTopBottomWickEntries3 += Entry(idxT3.toFloat(), candles[idxT3].close.toFloat())
+                    tripleTopBottomWickEntries3 += Entry(idxT3.toFloat(), priceT3.toFloat())
+                }
+            }
+            val tripleTopBottomSet = LineDataSet(tripleTopBottomEntries, "Patrón triple").apply {
+                // Mismos colores que el doble, pero un tono distinto (violeta) para diferenciarlo
+                // a simple vista si los dos patrones coinciden a la vez en el mismo gráfico.
+                val markerColor = if (tripleTopBottomIsTop) AndroidColor.parseColor("#8E24AA") else AndroidColor.parseColor("#00838F")
+                color = AndroidColor.TRANSPARENT
+                lineWidth = 0f
+                setDrawCircles(true)
+                setCircleColor(markerColor)
+                circleRadius = 7f
+                setDrawCircleHole(true)
+                circleHoleColor = AndroidColor.WHITE
+                circleHoleRadius = 3f
+                setDrawValues(false)
+            }
+            fun wickDataSetTriple(entries: List<Entry>): LineDataSet = LineDataSet(entries, "").apply {
+                val markerColor = if (tripleTopBottomIsTop) AndroidColor.parseColor("#8E24AA") else AndroidColor.parseColor("#00838F")
+                color = markerColor
+                lineWidth = 1.5f
+                setDrawCircles(false)
+                setDrawValues(false)
+                setDrawFilled(false)
+                mode = LineDataSet.Mode.LINEAR
+            }
+            val tripleTopBottomWickSet1 = wickDataSetTriple(tripleTopBottomWickEntries1)
+            val tripleTopBottomWickSet2 = wickDataSetTriple(tripleTopBottomWickEntries2)
+            val tripleTopBottomWickSet3 = wickDataSetTriple(tripleTopBottomWickEntries3)
+
             priceChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-            priceChart.data = LineData(priceSet, smaSet, sma50Set, doubleTopBottomWickSet1, doubleTopBottomWickSet2, doubleTopBottomSet)
+            priceChart.data = LineData(
+                priceSet, smaSet, sma50Set,
+                doubleTopBottomWickSet1, doubleTopBottomWickSet2, doubleTopBottomSet,
+                tripleTopBottomWickSet1, tripleTopBottomWickSet2, tripleTopBottomWickSet3, tripleTopBottomSet
+            )
             priceChart.invalidate()
 
             val volumeEntries = candles.mapIndexed { i, c -> BarEntry(i.toFloat(), (c.volume ?: 0L).toFloat()) }
