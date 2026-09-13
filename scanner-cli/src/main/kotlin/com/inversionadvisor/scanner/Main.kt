@@ -1,5 +1,6 @@
 package com.inversionadvisor.scanner
 
+import com.inversionadvisor.domain.indicators.DoubleTopBottomResult
 import com.inversionadvisor.domain.indicators.ExhaustionDetector
 import com.inversionadvisor.domain.indicators.FinvizPeParser
 import com.inversionadvisor.domain.indicators.SectorRotationCalculator
@@ -285,7 +286,7 @@ fun main(args: Array<String>) = runBlocking {
         val uptrend: UptrendDetector.UptrendSignal?,
         val exhaustion: com.inversionadvisor.domain.indicators.ExhaustionSignal?,
         val hchResult: UptrendDetector.HeadAndShouldersResult,
-        val doubleTopBottomResult: UptrendDetector.DoubleTopBottomResult,
+        val doubleTopBottomResult: DoubleTopBottomResult,
         val tripleTopBottomResult: UptrendDetector.TripleTopBottomResult,
         // NUEVO — pedido expresamente: estos 4 y los 3 de después en realidad NO necesitan velas
         // DIARIAS nuevas — BuyOpportunityAnalyzer.kt (la app) los calcula sobre las MISMAS velas
