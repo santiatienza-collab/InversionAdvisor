@@ -29,11 +29,16 @@ object ExhaustionDetector {
      *                o diarias de varios meses).
      * @param minDeclinePercent caída mínima desde el máximo reciente para considerarlo candidato.
      * @param lookbackForHigh cuántas velas hacia atrás buscar el "máximo reciente" de referencia.
+     *   CAMBIADO de 52 a 26 semanas (6 meses) a petición expresa: un máximo de hace casi un año
+     *   ya no es una referencia relevante para "ahora mismo" — con 26 semanas, el "giro" que se
+     *   detecta responde a movimientos más recientes, no a un máximo desactualizado de meses
+     *   atrás. Sigue siendo bastante más amplio que la ventana corta (12 semanas), para no
+     *   solaparse del todo con ella.
      */
     fun detect(
         candles: List<Candle>,
         minDeclinePercent: Double = 10.0,
-        lookbackForHigh: Int = 52
+        lookbackForHigh: Int = 26
     ): ExhaustionSignal? {
         if (candles.size < 30) return null
 

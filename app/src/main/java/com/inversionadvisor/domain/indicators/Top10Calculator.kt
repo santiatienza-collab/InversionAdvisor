@@ -70,7 +70,10 @@ data class Top10Factor(val label: String, val grade: FactorGrade, val valueText:
 object Top10Calculator {
 
     const val MIN_DECLINE_PERCENT = 15.0
-    const val MIN_SHORT_TERM_DECLINE_PERCENT = 5.0
+    // SUBIDO de 5.0 a 7.5 a petición expresa: un 5% en 12 semanas es una caída demasiado
+    // pequeña, muy fácil de cruzar por simple vaivén normal del mercado sin que signifique
+    // nada real — con 7.5% se filtra ese ruido, dejando pasar solo caídas algo más genuinas.
+    const val MIN_SHORT_TERM_DECLINE_PERCENT = 7.5
     const val SHORT_TERM_LOOKBACK_WEEKS = 12
 
     private const val WEIGHT_MACROTENDENCIA = 0.15
