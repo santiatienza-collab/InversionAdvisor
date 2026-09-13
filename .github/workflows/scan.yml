@@ -35,6 +35,13 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Dar permiso de ejecución a gradlew
+        # NUEVO — pedido expresamente tras el fallo real "Permission denied": al subir el
+        # proyecto desde Windows (vía GitHub Desktop), gradlew pierde el bit de ejecución que
+        # Linux necesita para lanzarlo con ./gradlew directamente (Windows no gestiona permisos
+        # Unix). Este paso se lo da de nuevo en el propio runner, antes de usarlo.
+        run: chmod +x gradlew
+
       - name: Compilar el escáner
         run: ./gradlew :scanner-cli:installDist --no-daemon
 
