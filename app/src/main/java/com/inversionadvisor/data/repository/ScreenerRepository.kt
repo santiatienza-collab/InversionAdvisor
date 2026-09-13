@@ -50,18 +50,6 @@ class ScreenerRepository(
     private val scanResultApi: com.inversionadvisor.data.remote.ScanResultApi = com.inversionadvisor.data.remote.NetworkModule.scanResultApi
 ) {
 
-    companion object {
-        /**
-         * PENDIENTE DE CONFIGURAR — pedido expresamente: sustituir por tu usuario/repositorio
-         * real de GitHub (el mismo donde está el workflow .github/workflows/scan.yml) antes de
-         * compilar, con el formato "usuario/repositorio/rama" (p. ej.
-         * "santi123/InversionAdvisor/main"). Sin esto configurado bien, importFromRemoteJson()
-         * fallará siempre (404) y la app caerá automáticamente al escaneo en directo de siempre
-         * — no rompe nada, simplemente no aprovecha la ventaja de velocidad hasta que se rellene.
-         */
-        private const val GITHUB_REPO_PATH = "TU_USUARIO/TU_REPO/main"
-    }
-
     fun observeUptrendCandidates(indexName: String): Flow<List<UptrendCandidate>> =
         screenerDao.observeUptrendCandidates(indexName).map { list -> list.map { it.toDomain() } }
 
@@ -391,6 +379,16 @@ class ScreenerRepository(
          * del cliente HTTP "bulk" (200/min) es el límite real de fondo.
          */
         private const val SCAN_CONCURRENCY = 20
+
+        /**
+         * PENDIENTE DE CONFIGURAR — pedido expresamente: sustituir por tu usuario/repositorio
+         * real de GitHub (el mismo donde está el workflow .github/workflows/scan.yml) antes de
+         * compilar, con el formato "usuario/repositorio/rama" (p. ej.
+         * "santi123/InversionAdvisor/main"). Sin esto configurado bien, importFromRemoteJson()
+         * fallará siempre (404) y la app caerá automáticamente al escaneo en directo de siempre
+         * — no rompe nada, simplemente no aprovecha la ventaja de velocidad hasta que se rellene.
+         */
+        private const val GITHUB_REPO_PATH = "santiatienza-collab/InversionAdvisor/main"
 
         /** Umbral de puntuación PROVISIONAL (0-100) para entrar en el cajón genérico de Top10
          *  — pedido expresamente "filtrar a los que tengan más puntuación": 55 es un punto
