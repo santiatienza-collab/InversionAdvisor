@@ -1,0 +1,10 @@
+# NUEVO — pedido expresamente tras el fallo real "Permission denied" (exit code 126) en
+# GitHub Actions, persistente incluso después de añadir "chmod +x gradlew" al workflow: el
+# script gradlew es de Linux (usa saltos de línea LF) — si en algún momento se guarda o se hace
+# commit desde Windows con saltos de línea CRLF, Linux no puede ejecutarlo aunque tenga permiso
+# de ejecución, con un fallo muy parecido (a veces idéntico) al de falta de permisos. Esto obliga
+# a Git a guardar y entregar SIEMPRE gradlew (y gradlew.bat, aunque ese es al revés) con el
+# formato correcto, sin importar la configuración de línea de comandos de quien haga el commit.
+gradlew text eol=lf
+gradlew.bat text eol=crlf
+*.sh text eol=lf

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- NUEVO — pedido expresamente: sustituye el app_name de res/values/strings.xml SOLO para
+         compilaciones "debug" (las de "Run" en Android Studio), gracias a cómo Android combina
+         los recursos por carpeta de build type — no hace falta tocar el strings.xml principal.
+         Así, en el móvil, esta versión se distingue de un vistazo de la instalada anteriormente. -->
+    <string name="app_name">Smart Trading DEV</string>
+</resources>

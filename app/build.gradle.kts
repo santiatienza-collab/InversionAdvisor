@@ -74,6 +74,21 @@ android {
         release {
             isMinifyEnabled = false
         }
+        // NUEVO — pedido expresamente: para poder tener instaladas a la vez la versión anterior
+        // y esta nueva, sin que una sustituya a la otra. Android considera que dos apps son "la
+        // misma" si comparten el mismo ID de paquete (applicationId) — con este sufijo, las
+        // compilaciones "debug" (las que se instalan al pulsar "Run" en Android Studio) pasan a
+        // tener su PROPIO ID (com.inversionadvisor.dev en vez de com.inversionadvisor), así que
+        // se instalan como una app aparte, no encima de la que ya tengas. El nombre visible
+        // distinto (para distinguirlas de un vistazo) se pone en
+        // app/src/debug/res/values/strings.xml, NO aquí con resValue — con resValue chocaría con
+        // el app_name ya declarado en res/values/strings.xml ("recurso duplicado"). Si en algún
+        // momento quieres volver a que "Run" sustituya la app de siempre, basta con borrar este
+        // bloque "debug { ... }" entero (y opcionalmente esa carpeta src/debug/res).
+        debug {
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
     }
 
     compileOptions {
