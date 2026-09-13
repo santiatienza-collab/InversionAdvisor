@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- allowBackup=false: sin esto, Android hace copia de seguridad automática de la base de
+         datos (Room) a Google Drive y la RESTAURA SOLA en cada reinstalación — incluso después
+         de "Borrar datos" a mano, en la siguiente instalación (cada "Run" desde Android Studio
+         es una reinstalación) volvía la última copia guardada, con resultados de un análisis
+         antiguo aunque nunca se hubiera pulsado "Analizar" en esa sesión. -->
+    <application
+        android:name=".InversionAdvisorApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+        android:supportsRtl="true">
+
+        <!-- configChanges: sin esto, Android DESTRUYE Y RECREA la actividad entera al girar la
+             pantalla — pedido expresamente así de arreglar: al pasar a horizontal, la app volvía
+             siempre a la pestaña de Panel Mercado, perdiendo en qué pantalla estaba el usuario
+             (Búsqueda, Top10, la ficha de un stock...). Con esto, Android solo recalcula el
+             layout para la nueva orientación, sin recrear nada — todo el estado de Compose
+             (incluida la pestaña seleccionada) se conserva tal cual. -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Worker que refresca los datos de mercado periódicamente -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge"
+            xmlns:tools="http://schemas.android.com/tools" />
+
+    </application>
+
+</manifest>

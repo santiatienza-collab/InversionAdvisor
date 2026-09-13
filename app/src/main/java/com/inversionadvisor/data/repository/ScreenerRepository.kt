@@ -1,0 +1,455 @@
+package com.inversionadvisor.data.repository
+
+import com.inversionadvisor.data.local.dao.ScreenerDao
+import com.inversionadvisor.data.local.entities.BuyOpportunityEntity
+import com.inversionadvisor.data.local.entities.ScreenerRunMetaEntity
+import com.inversionadvisor.data.local.entities.UptrendCandidateEntity
+import com.inversionadvisor.domain.indicators.AllTimeHighInfo
+import com.inversionadvisor.domain.indicators.ExhaustionDetector
+import com.inversionadvisor.domain.indicators.ExhaustionSignal
+import com.inversionadvisor.domain.indicators.SectorRotationCalculator
+import com.inversionadvisor.domain.indicators.TechnicalAnalysis
+import com.inversionadvisor.domain.indicators.UptrendDetector
+import com.inversionadvisor.domain.model.BuyOpportunity
+import com.inversionadvisor.domain.model.ChartRange
+import com.inversionadvisor.domain.model.RiskLevel
+import com.inversionadvisor.domain.model.ScreenerRunMeta
+import com.inversionadvisor.domain.model.StockIndexMeta
+import com.inversionadvisor.domain.model.StockUniverseEntry
+import com.inversionadvisor.domain.model.Symbols
+import com.inversionadvisor.domain.model.UptrendCandidate
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
+import java.util.concurrent.atomic.AtomicInteger
+
+/**
+ * Screener sobre el universo de cada mercado (S&P 500 / Nasdaq-100 / IBEX 35,
+ * ver StockUniverseRepository, que los mantiene auto-actualizados desde
+ * Wikipedia), con dos criterios por pestaña:
+ *  - "Tendencia alcista clara": trayectoria de fondo alcista en el último año (UptrendDetector).
+ *  - "Futuras compras": caída del 10-15%+ con señal de agotamiento (ExhaustionDetector),
+ *    marcando además si el sector del stock está en rotación favorable.
+ *
+ * runFullScreen(indexName) escanea SOLO el mercado indicado (la pestaña
+ * activa), no los tres universos a la vez — el usuario dispara el análisis
+ * con un botón por pestaña. Reutiliza MarketRepository para las velas
+ * (misma caché de Room que ya usa el resto de la app), pero a través de
+ * refreshYahooCandlesBulkIfStale, que usa un cliente Yahoo dedicado con más
+ * concurrencia y un rate limit más alto que el del dashboard.
+ */
+class ScreenerRepository(
+    private val marketRepository: MarketRepository,
+    private val screenerDao: ScreenerDao,
+    private val stockUniverseRepository: StockUniverseRepository,
+    private val scanResultApi: com.inversionadvisor.data.remote.ScanResultApi = com.inversionadvisor.data.remote.NetworkModule.scanResultApi
+) {
+
+    companion object {
+        /**
+         * PENDIENTE DE CONFIGURAR — pedido expresamente: sustituir por tu usuario/repositorio
+         * real de GitHub (el mismo donde está el workflow .github/workflows/scan.yml) antes de
+         * compilar, con el formato "usuario/repositorio/rama" (p. ej.
+         * "santi123/InversionAdvisor/main"). Sin esto configurado bien, importFromRemoteJson()
+         * fallará siempre (404) y la app caerá automáticamente al escaneo en directo de siempre
+         * — no rompe nada, simplemente no aprovecha la ventaja de velocidad hasta que se rellene.
+         */
+        private const val GITHUB_REPO_PATH = "TU_USUARIO/TU_REPO/main"
+    }
+
+    fun observeUptrendCandidates(indexName: String): Flow<List<UptrendCandidate>> =
+        screenerDao.observeUptrendCandidates(indexName).map { list -> list.map { it.toDomain() } }
+
+    fun observeBuyOpportunities(indexName: String): Flow<List<BuyOpportunity>> =
+        screenerDao.observeBuyOpportunities(indexName).map { list -> list.map { it.toDomain() } }
+
+    fun observeRunMeta(indexName: String): Flow<ScreenerRunMeta?> =
+        screenerDao.observeRunMeta(indexName).map { it?.toDomain() }
+
+    fun observeIndexMeta(): Flow<List<StockIndexMeta>> = stockUniverseRepository.observeIndexMeta()
+
+    /**
+     * Escanea EN PARALELO (ver SCAN_CONCURRENCY) el universo de un único
+     * mercado (indexName: "SP500" | "NASDAQ100" | "IBEX35"). Cada símbolo
+     * se procesa de forma aislada (try/catch propio) para que un fallo
+     * puntual no tumbe el resto del escaneo.
+     *
+     * RESULTADOS PROGRESIVOS: cada símbolo se guarda en Room en cuanto
+     * termina su propio escaneo, no se espera a que terminen los ~500 para
+     * guardar de golpe al final — como la pantalla observa Room con un
+     * Flow (observeUptrendCandidates/observeBuyOpportunities), los
+     * resultados van apareciendo en la lista según se van encontrando, en
+     * vez de una pantalla vacía hasta que el escaneo entero termina.
+     *
+     * Envuelto en NetworkActivityTracker.trackHeavyNetworkActivity — ver esa clase: este
+     * escaneo pide cientos de peticiones de red a la vez, lo bastante como para que Android
+     * detecte caídas de conexión puntuales que no son reales.
+     */
+    /**
+     * NUEVO — pedido expresamente: descarga el JSON que scanner-cli ya calculó y publicó (ver
+     * ese módulo y .github/workflows/scan.yml), y rellena las MISMAS tablas de Room que rellena
+     * runFullScreen() al escanear en directo — así toda la pantalla (Tendencia alcista, Futuras
+     * compras, Top10) funciona exactamente igual después de esto, sin ningún cambio en la UI,
+     * solo que "Analizar" pasa de tardar minutos a tardar lo que tarda bajar un archivo pequeño.
+     *
+     * Devuelve true si consiguió importar algo, false si falló (sin conexión, el workflow
+     * todavía no ha corrido nunca, GITHUB_REPO_PATH sin configurar...) — en ese caso, quien
+     * llame a esto debe caer al escaneo en directo de siempre (ver ScreenerViewModel.runScreener),
+     * no simplemente dejar la pantalla vacía.
+     */
+    suspend fun importFromRemoteJson(indexName: String): Boolean {
+        val url = "https://raw.githubusercontent.com/$GITHUB_REPO_PATH/data/scan-$indexName.json"
+        return try {
+            val resultado = scanResultApi.getScanResult(url)
+            val ahora = System.currentTimeMillis()
+
+            screenerDao.clearUptrendCandidates(indexName)
+            screenerDao.clearBuyOpportunities(indexName)
+            screenerDao.clearTop10GenericCandidates(indexName)
+
+            val uptrends = resultado.candidates.filter { it.isUptrend }.map { c ->
+                UptrendCandidateEntity(
+                    indexName = indexName,
+                    symbol = c.symbol,
+                    name = c.name,
+                    sectorEtf = c.sectorEtf,
+                    sectorName = c.sectorName ?: c.sectorEtf,
+                    yearChangePercent = c.yearChangePercent ?: 0.0,
+                    trendQuality = c.trendQuality ?: 0.0,
+                    rsi14 = c.rsi14,
+                    volumeRatio = c.volumeRatio,
+                    isSectorInFavor = c.isSectorInFavor,
+                    updatedAtEpochMillis = ahora
+                )
+            }
+            if (uptrends.isNotEmpty()) screenerDao.insertUptrendCandidates(uptrends)
+
+            val opportunities = resultado.candidates.filter { it.isBuyOpportunity }.map { c ->
+                BuyOpportunityEntity(
+                    indexName = indexName,
+                    symbol = c.symbol,
+                    name = c.name,
+                    sectorEtf = c.sectorEtf,
+                    sectorName = c.sectorName,
+                    isSectorInFavor = c.isSectorInFavor,
+                    confidenceScore = c.exhaustionConfidence ?: 0,
+                    reasonsCsv = (c.exhaustionReasons ?: emptyList()).joinToString("||"),
+                    recentHigh = c.recentHigh ?: 0.0,
+                    recentLow = c.recentLow ?: 0.0,
+                    recentLowDate = c.recentLowDate ?: "",
+                    declinePercentFromRecentHigh = c.declinePercentFromRecentHigh ?: 0.0,
+                    nextResistanceTarget = c.nextResistanceTarget,
+                    recoveryProgressToResistancePercent = c.recoveryProgressToResistancePercent,
+                    // NUEVO — el escáner todavía no calcula el máximo histórico (necesitaría
+                    // pedir el rango "max" de Yahoo, aparte de 1y/1d/1mo) — se deja sin dato,
+                    // igual que hace la app cuando falta.
+                    allTimeHigh = null,
+                    allTimeHighDate = null,
+                    percentFromAth = null,
+                    rsi14 = c.rsi14,
+                    volumeRatio = c.volumeRatio,
+                    updatedAtEpochMillis = ahora
+                )
+            }
+            if (opportunities.isNotEmpty()) screenerDao.insertBuyOpportunities(opportunities)
+
+            // Tercer cajón (ver Top10GenericCandidateEntity) — mismo umbral (55) que usa
+            // ScreenerRepository.scanSymbol en el escaneo en directo, para que Top10 se
+            // comporte igual venga de donde venga el dato.
+            val genericos = resultado.candidates.filter { (it.combinedScore ?: 0.0) >= 55.0 }.map { c ->
+                com.inversionadvisor.data.local.entities.Top10GenericCandidateEntity(
+                    indexName = indexName,
+                    symbol = c.symbol,
+                    name = c.name,
+                    sectorEtf = c.sectorEtf,
+                    sectorName = c.sectorName,
+                    isSectorInFavor = c.isSectorInFavor,
+                    rsi14 = c.rsi14,
+                    volumeRatio = c.volumeRatio,
+                    provisionalScore = c.combinedScore ?: 0.0,
+                    hasClearUptrend = c.isUptrend,
+                    updatedAtEpochMillis = ahora
+                )
+            }
+            if (genericos.isNotEmpty()) screenerDao.insertTop10GenericCandidates(genericos)
+
+            screenerDao.upsertRunMeta(
+                ScreenerRunMetaEntity(
+                    indexName = indexName,
+                    lastRunEpochMillis = resultado.generatedAtEpochMillis,
+                    symbolsScanned = resultado.symbolsWithData,
+                    totalSymbols = resultado.totalSymbols
+                )
+            )
+            true
+        } catch (e: Exception) {
+            android.util.Log.w("RemoteScanImport", "$indexName: fallo al importar JSON remoto (${e.message ?: e::class.simpleName})")
+            false
+        }
+    }
+
+    suspend fun runFullScreen(indexName: String, onProgress: suspend (done: Int, total: Int) -> Unit) =
+        com.inversionadvisor.data.connectivity.NetworkActivityTracker.trackHeavyNetworkActivity {
+            runFullScreenInternal(indexName, onProgress)
+        }
+
+    private suspend fun runFullScreenInternal(indexName: String, onProgress: suspend (done: Int, total: Int) -> Unit) = coroutineScope {
+        val sectorInFavor = computeSectorFavorability()
+        // .distinctBy(symbol): red de seguridad además del arreglo en el parser — si por lo
+        // que sea quedara algún símbolo duplicado en el universo (p. ej. caché antigua de
+        // antes de este arreglo), aquí se corta antes de escanearlo dos veces.
+        val universe = stockUniverseRepository.getUniverseForScreening(indexName).distinctBy { it.symbol }
+        val now = System.currentTimeMillis()
+        val total = universe.size
+        val doneCount = AtomicInteger(0)
+        val semaphore = Semaphore(SCAN_CONCURRENCY)
+
+        // Se limpia UNA vez al principio (no al final) — los resultados de la ejecución
+        // anterior desaparecen en cuanto se pulsa "Analizar", y la lista se va rellenando
+        // desde cero según van llegando los nuevos, en vez de sustituir todo de golpe al terminar.
+        screenerDao.clearUptrendCandidates(indexName)
+        screenerDao.clearBuyOpportunities(indexName)
+        screenerDao.clearTop10GenericCandidates(indexName)
+
+        universe.map { entry ->
+            async {
+                val result = semaphore.withPermit {
+                    try {
+                        scanSymbol(entry, sectorInFavor, now)
+                    } catch (e: Exception) {
+                        // Un fallo puntual en un símbolo (delisted, sin datos, timeout...)
+                        // no debe cortar el escaneo completo de los demás.
+                        null
+                    }
+                }
+                // Se inserta AQUÍ, símbolo a símbolo, en cuanto se tiene el resultado —
+                // no se acumula en una lista para insertar toda junta al final.
+                result?.uptrend?.let { screenerDao.insertUptrendCandidates(listOf(it)) }
+                result?.opportunity?.let { screenerDao.insertBuyOpportunities(listOf(it)) }
+                result?.genericCandidate?.let { screenerDao.insertTop10GenericCandidates(listOf(it)) }
+                onProgress(doneCount.incrementAndGet(), total)
+            }
+        }.awaitAll()
+
+        screenerDao.upsertRunMeta(
+            ScreenerRunMetaEntity(indexName = indexName, lastRunEpochMillis = now, symbolsScanned = universe.size, totalSymbols = universe.size)
+        )
+    }
+
+    private data class ScanResult(
+        val opportunity: BuyOpportunityEntity?,
+        val uptrend: UptrendCandidateEntity?,
+        val genericCandidate: com.inversionadvisor.data.local.entities.Top10GenericCandidateEntity?
+    )
+
+    private suspend fun scanSymbol(
+        entry: StockUniverseEntry,
+        sectorInFavor: Map<String, Boolean>,
+        now: Long
+    ): ScanResult? {
+        marketRepository.refreshYahooCandlesBulkIfStale(entry.symbol, ChartRange.ONE_YEAR)
+        val candles = marketRepository.observeCandles(entry.symbol, ChartRange.ONE_YEAR).first()
+        val sectorName = Symbols.SECTOR_ETFS[entry.sectorEtf] ?: entry.sectorEtf
+        // Gratis: misma vela ya descargada arriba, sin petición extra — se usa en "Consejos de
+        // inversión" (riesgo de sobrecompra / actividad inusual), no se enseña en la lista normal del screener.
+        val rsi14 = TechnicalAnalysis.calculateRsi(candles).lastOrNull()
+        val volumeRatio = TechnicalAnalysis.volumeRatio(candles)
+        // Diagnóstico temporal: para comparar contra el mismo cálculo hecho desde la ficha de
+        // detalle de un stock (ver StockDetailViewModel) cuando dan RSI distinto para el mismo
+        // símbolo — con esto se ve si es la MISMA vela final (misma fecha/cierre) en los dos
+        // sitios, o si de verdad son datos distintos.
+        android.util.Log.i(
+            "RsiDiagnostic",
+            "[ESCANER] ${entry.symbol}: ${candles.size} velas, última=${candles.lastOrNull()?.let { "${it.datetime} cierre=${it.close}" }}, RSI14=$rsi14"
+        )
+
+        val uptrendSignal = UptrendDetector.evaluate(candles)
+        val uptrend = uptrendSignal?.let { signal ->
+            UptrendCandidateEntity(
+                indexName = entry.indexName,
+                symbol = entry.symbol,
+                name = entry.name,
+                sectorEtf = entry.sectorEtf,
+                sectorName = sectorName,
+                yearChangePercent = signal.yearChangePercent,
+                trendQuality = signal.trendQuality,
+                rsi14 = rsi14,
+                volumeRatio = volumeRatio,
+                isSectorInFavor = sectorInFavor[entry.sectorEtf] ?: false,
+                updatedAtEpochMillis = now
+            )
+        }
+
+        val exhaustion = ExhaustionDetector.detect(candles)
+        val opportunity = if (exhaustion != null && exhaustion.detected) {
+            val athInfo = TechnicalAnalysis.analyzeAllTimeHigh(candles)
+            BuyOpportunityEntity(
+                indexName = entry.indexName,
+                symbol = entry.symbol,
+                name = entry.name,
+                sectorEtf = entry.sectorEtf,
+                sectorName = sectorName,
+                isSectorInFavor = sectorInFavor[entry.sectorEtf] ?: false,
+                confidenceScore = exhaustion.confidenceScore,
+                reasonsCsv = exhaustion.reasons.joinToString("||"),
+                recentHigh = exhaustion.recentHigh,
+                recentLow = exhaustion.recentLow,
+                recentLowDate = exhaustion.recentLowDate,
+                declinePercentFromRecentHigh = exhaustion.declinePercentFromRecentHigh,
+                nextResistanceTarget = exhaustion.nextResistanceTarget,
+                recoveryProgressToResistancePercent = exhaustion.recoveryProgressToResistancePercent,
+                allTimeHigh = athInfo?.allTimeHigh,
+                allTimeHighDate = athInfo?.allTimeHighDate,
+                percentFromAth = athInfo?.percentFromAth,
+                rsi14 = rsi14,
+                volumeRatio = volumeRatio,
+                updatedAtEpochMillis = now
+            )
+        } else null
+
+        // ---- TERCER CAJÓN, NUEVO: candidato genérico para Top10 por PUNTUACIÓN ----
+        // Pedido expresamente tras detectar que un stock con muy buena puntuación en la fórmula
+        // completa (caso real: SanDisk, 85 puntos) podía quedarse fuera de Top10 por completo,
+        // simplemente por no tener ni tendencia alcista clara ni caída con agotamiento. Se
+        // calcula aquí una puntuación PROVISIONAL (con los datos ya baratos de este escaneo —
+        // sin PER, sin volatilidad propia, sin velas diarias/mensuales, esas las añade después
+        // Top10Repository en su fase profunda) y, si supera el umbral, se guarda como candidato
+        // — independientemente de si tiene tendencia clara o caída con agotamiento. La tendencia
+        // alcista clara (hasClearUptrend) YA NO decide si el stock entra o no: se guarda aquí
+        // para aplicarse DESPUÉS como bono en Top10Calculator (parámetro hasLongTermUptrend).
+        val provisionalTop10Score = com.inversionadvisor.domain.indicators.Top10Calculator.score(
+            trendQuality = uptrendSignal?.trendQuality,
+            yearChangePercent = uptrendSignal?.yearChangePercent,
+            aboveTrendSma = uptrendSignal?.aboveTrendSma,
+            isSectorInFavor = sectorInFavor[entry.sectorEtf],
+            longTermDecline = exhaustion,
+            shortTermPullback = null,
+            rsi14 = rsi14,
+            volumeRatio = volumeRatio,
+            stockVolatilityRatio = null,
+            stockPe = null,
+            sectorAveragePe = null,
+            sectorTypicalPeRange = null,
+            percentFromYearHigh = null,
+            nearestSupportPercent = null,
+            nearestResistancePercent = null,
+            candlestickPattern = null,
+            marketTrap = null,
+            macd = null,
+            hasLongTermUptrend = uptrendSignal != null,
+            requireSignal = false
+        )?.combinedScore
+
+        val genericCandidate = if (provisionalTop10Score != null && provisionalTop10Score >= UMBRAL_ENTRADA_TOP10_GENERICO) {
+            com.inversionadvisor.data.local.entities.Top10GenericCandidateEntity(
+                indexName = entry.indexName,
+                symbol = entry.symbol,
+                name = entry.name,
+                sectorEtf = entry.sectorEtf,
+                sectorName = sectorName,
+                isSectorInFavor = sectorInFavor[entry.sectorEtf] ?: false,
+                rsi14 = rsi14,
+                volumeRatio = volumeRatio,
+                provisionalScore = provisionalTop10Score,
+                hasClearUptrend = uptrendSignal != null,
+                updatedAtEpochMillis = now
+            )
+        } else null
+
+        return if (opportunity == null && uptrend == null && genericCandidate == null) null
+        else ScanResult(opportunity, uptrend, genericCandidate)
+    }
+
+    /**
+     * Rotación sectorial (mismos 13 ETFs y benchmark S&P 500 que usa el
+     * dashboard, con la MISMA caché de velas semanales de 1 año — así que
+     * si el dashboard ya las pidió, el escaneo no vuelve a gastarlas) para
+     * saber qué sectores están en auge, también en paralelo. Ahora vive en
+     * MarketRepository (compartido con la ficha de un stock suelto, ver
+     * StockDetailViewModel) — antes era una copia privada solo de aquí.
+     */
+    private suspend fun computeSectorFavorability(): Map<String, Boolean> = marketRepository.computeSectorFavorability()
+
+    companion object {
+        /**
+         * Nº de símbolos escaneados a la vez. Acotado con Semaphore para no
+         * disparar cientos de corrutinas a la vez; el propio rate limiter
+         * del cliente HTTP "bulk" (200/min) es el límite real de fondo.
+         */
+        private const val SCAN_CONCURRENCY = 20
+
+        /** Umbral de puntuación PROVISIONAL (0-100) para entrar en el cajón genérico de Top10
+         *  — pedido expresamente "filtrar a los que tengan más puntuación": 55 es un punto
+         *  medio razonable (por encima del neutro 50), pensado para no llenar la tabla de
+         *  candidatos mediocres que de todas formas nunca entrarían en el Top 10 final, sin
+         *  ser tan alto como para volver a excluir candidatos fuertes por poco. */
+        private const val UMBRAL_ENTRADA_TOP10_GENERICO = 55.0
+    }
+}
+
+// ---- Mappers ----
+
+private fun UptrendCandidateEntity.toDomain(): UptrendCandidate = UptrendCandidate(
+    symbol = symbol,
+    name = name,
+    sectorEtf = sectorEtf,
+    sectorName = sectorName,
+    indexName = indexName,
+    yearChangePercent = yearChangePercent,
+    trendQuality = trendQuality,
+    rsi14 = rsi14,
+    volumeRatio = volumeRatio,
+    isSectorInFavor = isSectorInFavor
+)
+
+private fun BuyOpportunityEntity.toDomain(): BuyOpportunity {
+    val exhaustionSignal = ExhaustionSignal(
+        detected = true,
+        confidenceScore = confidenceScore,
+        reasons = reasonsCsv.split("||").filter { it.isNotBlank() },
+        recentHigh = recentHigh,
+        recentLow = recentLow,
+        recentLowDate = recentLowDate,
+        declinePercentFromRecentHigh = declinePercentFromRecentHigh,
+        nextResistanceTarget = nextResistanceTarget,
+        recoveryProgressToResistancePercent = recoveryProgressToResistancePercent
+    )
+    val allTimeHighInfo = allTimeHigh?.let { ath ->
+        val pct = percentFromAth ?: 0.0
+        AllTimeHighInfo(
+            allTimeHigh = ath,
+            allTimeHighDate = allTimeHighDate ?: "",
+            currentPrice = ath * (1 + pct / 100),
+            percentFromAth = pct,
+            isNewAllTimeHigh = pct >= 0.0
+        )
+    }
+    // Señal fuerte (varios indicios coinciden) = verde; señal razonable = ámbar.
+    val riskLevel = if (confidenceScore >= 65) RiskLevel.LOW else RiskLevel.MEDIUM
+
+    return BuyOpportunity(
+        symbol = symbol,
+        name = name,
+        sectorEtf = sectorEtf,
+        sectorName = sectorName,
+        indexName = indexName,
+        isSectorInFavor = isSectorInFavor,
+        exhaustionSignal = exhaustionSignal,
+        allTimeHighInfo = allTimeHighInfo,
+        riskLevel = riskLevel,
+        rsi14 = rsi14,
+        volumeRatio = volumeRatio
+    )
+}
+
+private fun ScreenerRunMetaEntity.toDomain(): ScreenerRunMeta = ScreenerRunMeta(
+    indexName = indexName,
+    lastRunEpochMillis = lastRunEpochMillis,
+    symbolsScanned = symbolsScanned,
+    totalSymbols = totalSymbols
+)

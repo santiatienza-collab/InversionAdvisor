@@ -1,0 +1,13 @@
+# Copia este archivo como "local.properties" (sin .example) en la raíz del proyecto
+# y NO lo subas a git (ya debería estar en .gitignore por defecto en proyectos Android).
+sdk.dir=/ruta/a/tu/Android/Sdk
+TWELVE_DATA_API_KEY=tu_api_key_de_twelvedata_aqui
+# Ingresos netos de "Datos de Empresa" — regístrate gratis en https://financialmodelingprep.com/developer/docs/
+FMP_API_KEY=tu_api_key_de_financial_modeling_prep_aqui
+# SEC EDGAR (ingresos netos de EE.UU., sin scraping): no hace falta clave, pero la SEC pide
+# identificarse con un email real en las peticiones. Pon el tuyo aquí.
+SEC_EDGAR_CONTACT_EMAIL=tu_email_real_aqui
+# Traducción de los titulares de Noticias con mucha más calidad que el traductor on-device —
+# regístrate gratis (plan "DeepL API Free", 500.000 caracteres/mes) en https://www.deepl.com/pro-api
+# Si se deja vacío, la app traduce con ML Kit on-device (peor calidad pero funciona sin esto).
+DEEPL_API_KEY=tu_api_key_de_deepl_aqui
