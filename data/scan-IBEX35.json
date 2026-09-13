@@ -1,5 +1,5 @@
 {
-  "generatedAtEpochMillis": 1789334382726,
+  "generatedAtEpochMillis": 1789335860237,
   "indexName": "IBEX35",
   "totalSymbols": 35,
   "symbolsWithData": 35,
@@ -58,7 +58,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -81,7 +81,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (68) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.17x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "Volumen / MACD (peso 10%): volumen 75% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
@@ -99,11 +99,11 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 62.48565323159805,
+      "rsi14": 62.48565428215346,
       "volumeRatio": 0.5231553194782569,
       "isUptrend": true,
-      "trendQuality": 0.7181476605114028,
-      "yearChangePercent": 17.298763612939222,
+      "trendQuality": 0.7181474589874695,
+      "yearChangePercent": 17.29875471090118,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -116,7 +116,7 @@
       "percentFromYearHigh": -1.86418560660415,
       "nearestSupportPercent": 20.75204263592906,
       "nearestResistancePercent": 1.8656755527461484,
-      "macdHistogram": 0.030183358035918983,
+      "macdHistogram": 0.03018336936249033,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -150,7 +150,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -173,7 +173,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (62) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.22x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -246,7 +246,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -269,7 +269,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (47) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 1.15x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "Volumen / MACD (peso 10%): volumen 97% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
@@ -344,7 +344,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -367,7 +367,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (61) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.72x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.20 + 1) × 50 = 60.0"
@@ -433,7 +433,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -456,7 +456,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (68) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.55x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "Volumen / MACD (peso 10%): volumen 76% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
@@ -524,7 +524,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -547,7 +547,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (56) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.63x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "Volumen / MACD (peso 10%): volumen 73% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
@@ -614,7 +614,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -637,7 +637,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (70) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.68x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -655,11 +655,11 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 54.181408725408275,
+      "rsi14": 54.1814103586462,
       "volumeRatio": 0.5284706710633527,
       "isUptrend": true,
-      "trendQuality": 0.8259547486137628,
-      "yearChangePercent": 30.584662682156726,
+      "trendQuality": 0.8259546824578397,
+      "yearChangePercent": 30.584670748820063,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -668,10 +668,10 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.6203632193537029,
+      "stockVolatilityRatio": 0.6203637006246835,
       "percentFromYearHigh": -6.868110234473996,
       "candlestickPattern": "DOJI",
-      "macdHistogram": -0.16463066738117937,
+      "macdHistogram": -0.1646306520415639,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -704,7 +704,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -727,7 +727,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (54) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.62x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -794,7 +794,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -817,7 +817,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (59) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.42x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -835,10 +835,10 @@
       "sectorEtf": "XLB",
       "sectorName": "Materiales",
       "indexName": "IBEX35",
-      "rsi14": 64.45568024948943,
+      "rsi14": 64.45568101026123,
       "volumeRatio": 0.5774818577922256,
       "isUptrend": true,
-      "trendQuality": 0.9123667900377387,
+      "trendQuality": 0.9123667765209772,
       "yearChangePercent": 107.99154140588611,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -848,9 +848,9 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.6742185779692305,
+      "stockVolatilityRatio": 0.6742186326039854,
       "percentFromYearHigh": -6.100409384066657,
-      "macdHistogram": 0.056529085540000246,
+      "macdHistogram": 0.056529075319821764,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -883,7 +883,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -906,7 +906,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (64) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.67x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -924,10 +924,10 @@
       "sectorEtf": "XLE",
       "sectorName": "Energía",
       "indexName": "IBEX35",
-      "rsi14": 70.63036297780766,
+      "rsi14": 70.6303623657973,
       "volumeRatio": 0.6641847922151162,
       "isUptrend": true,
-      "trendQuality": 0.881955168602814,
+      "trendQuality": 0.8819551685511561,
       "yearChangePercent": 95.45079344475052,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -939,7 +939,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.40062623685605936,
       "percentFromYearHigh": -1.0605524146329335,
-      "macdHistogram": 0.31918507061556634,
+      "macdHistogram": 0.3191850759664896,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -973,7 +973,7 @@
           "valueText": "-1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -995,7 +995,7 @@
       ],
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.40x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
@@ -1069,7 +1069,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -1092,7 +1092,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (52) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.10x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.20 + 1) × 50 = 60.0"
@@ -1165,7 +1165,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -1188,7 +1188,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (56) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.36x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.20 + 1) × 50 = 60.0"
@@ -1200,103 +1200,12 @@
       ]
     },
     {
-      "symbol": "SAB.MC",
-      "name": "Banco Sabadell",
-      "sectorEtf": "XLF",
-      "sectorName": "Banca / Finanzas",
-      "indexName": "IBEX35",
-      "rsi14": 75.2070115497217,
-      "volumeRatio": 0.38279091316811786,
-      "isUptrend": true,
-      "trendQuality": 0.6337912657824234,
-      "yearChangePercent": 33.60612815743272,
-      "aboveTrendSma": true,
-      "isBuyOpportunity": false,
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 15.3,
-      "isSectorInFavor": false,
-      "hchState": "NONE",
-      "doubleTopBottomPattern": "DOUBLE_BOTTOM",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.4228254520089318,
-      "percentFromYearHigh": -0.3737303462994808,
-      "nearestSupportPercent": 34.1448688355317,
-      "macdHistogram": 0.046987516608376134,
-      "shortTermBullish": true,
-      "declineAccelerating": false,
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 1,
-      "combinedScore": 57.5,
-      "rewardScore": 15.0,
-      "riskScore": 40.0,
-      "ratingOutOf10": 6,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia: tendencia claramente alcista en los últimos 3 meses. RSI: RSI en sobrecompra (75). Riesgo (volatilidad): volatilidad propia 0.42x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 38% de su media, MACD alcista.",
-      "penaltyWarnings": [],
-      "bonusWarnings": [
-        "Patrón de Doble Suelo Detectado (12 oct 2025 y 8 mar 2026) +10",
-        "Tendencia alcista clara confirmada (52 semanas) +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Valoración",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.42x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "RSI (peso 15%): RSI en sobrecompra (75) → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 38% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Doble Suelo Detectado (12 oct 2025 y 8 mar 2026) +10; Tendencia alcista clara confirmada (52 semanas) +10 → 37.5 pasa a 57.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "ACS.MC",
       "name": "ACS",
       "sectorEtf": "XLI",
       "sectorName": "Industrial",
       "indexName": "IBEX35",
-      "rsi14": 35.85502239760112,
+      "rsi14": 35.85502307732982,
       "volumeRatio": 1.0493532174195368,
       "isUptrend": false,
       "isBuyOpportunity": true,
@@ -1317,7 +1226,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.37384771293976954,
       "percentFromYearHigh": -29.387647055709117,
-      "macdHistogram": -3.7002915541633725,
+      "macdHistogram": -3.7002915568130472,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -1348,7 +1257,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -1371,7 +1280,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (36) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.37x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "Volumen / MACD (peso 10%): volumen 105% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
@@ -1434,7 +1343,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -1457,7 +1366,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (48) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.84x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "Volumen / MACD (peso 10%): volumen 110% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
@@ -1531,7 +1440,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -1554,7 +1463,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (35) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.35x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "Volumen / MACD (peso 10%): volumen 88% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
@@ -1623,7 +1532,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -1646,7 +1555,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (43) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.34x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "Volumen / MACD (peso 10%): volumen 100% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
@@ -1663,7 +1572,7 @@
       "sectorEtf": "XLY",
       "sectorName": "Consumo discrecional",
       "indexName": "IBEX35",
-      "rsi14": 50.16422217328927,
+      "rsi14": 50.16422219403967,
       "volumeRatio": 0.5592823831040403,
       "isUptrend": false,
       "isBuyOpportunity": true,
@@ -1686,7 +1595,7 @@
       "stockVolatilityRatio": 0.6220448944197471,
       "percentFromYearHigh": -19.5666015938587,
       "nearestSupportPercent": 10.879617919012198,
-      "macdHistogram": 0.6017779157486741,
+      "macdHistogram": 0.6017779223657956,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -1717,7 +1626,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -1740,7 +1649,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (50) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.62x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -1810,7 +1719,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -1833,7 +1742,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (42) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.64x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -1907,7 +1816,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -1930,7 +1839,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (46) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.36x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -2000,7 +1909,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -2023,7 +1932,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (41) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.28x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -2097,7 +2006,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -2120,7 +2029,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (49) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.51x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -2132,41 +2041,42 @@
       ]
     },
     {
-      "symbol": "UNI.MC",
-      "name": "Unicaja Banco",
+      "symbol": "SAB.MC",
+      "name": "Banco Sabadell",
       "sectorEtf": "XLF",
       "sectorName": "Banca / Finanzas",
       "indexName": "IBEX35",
-      "rsi14": 75.41140341699285,
-      "volumeRatio": 0.7289221037068472,
+      "rsi14": 75.2070115497217,
+      "volumeRatio": 0.38279091316811786,
       "isUptrend": true,
-      "trendQuality": 0.81427953016542,
-      "yearChangePercent": 63.76354455199695,
+      "trendQuality": 0.6337912657824234,
+      "yearChangePercent": 33.60612815743272,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
       "sectorAveragePe": 15.3,
       "isSectorInFavor": false,
       "hchState": "NONE",
-      "doubleTopBottomPattern": "NONE",
+      "doubleTopBottomPattern": "DOUBLE_BOTTOM",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.3988397528894801,
-      "percentFromYearHigh": -0.5452557530019908,
-      "nearestSupportPercent": 28.864977179791513,
-      "macdHistogram": 0.025614015645195776,
+      "stockVolatilityRatio": 0.4228254520089318,
+      "percentFromYearHigh": -0.3737303462994808,
+      "nearestSupportPercent": 34.1448688355317,
+      "macdHistogram": 0.046987516608376134,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
       "shortTermFlagPattern": "NONE",
       "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 0,
-      "combinedScore": 52.5,
+      "consolidatedBearishMonthsCount": 1,
+      "combinedScore": 50.0,
       "rewardScore": 15.0,
-      "riskScore": 30.0,
+      "riskScore": 55.0,
       "ratingOutOf10": 5,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia: tendencia claramente alcista en los últimos 3 meses. RSI: RSI en sobrecompra (75). Riesgo (volatilidad): volatilidad propia 0.40x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 73% de su media, MACD alcista.",
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia: tendencia claramente alcista en los últimos 3 meses. RSI: RSI en sobrecompra (75). Riesgo (volatilidad): volatilidad propia 0.42x lo habitual. Giro: indicios de techo (patrón bajista + RSI alto cerca de máximos) — aproximación, no un detector completo. Volumen / MACD: volumen 38% de su media, MACD alcista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
+        "Patrón de Doble Suelo Detectado (12 oct 2025 y 8 mar 2026) +10",
         "Tendencia alcista clara confirmada (52 semanas) +10"
       ],
       "factors": [
@@ -2186,7 +2096,7 @@
           "valueText": "-1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -2197,116 +2107,27 @@
         },
         {
           "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
+          "grade": "BAD",
+          "valueText": "-1.0"
         },
         {
           "label": "Volumen / MACD",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
+          "grade": "BAD",
+          "valueText": "-1.0"
         }
       ],
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.40x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "Volumen / MACD (peso 10%): volumen 73% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.15 + 1) × 50 = 42.5"
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.42x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.40 + 1) × 50 = 30.0"
       ],
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "RSI (peso 15%): RSI en sobrecompra (75) → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia alcista clara confirmada (52 semanas) +10 → 42.5 pasa a 52.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
-      "symbol": "BBVA.MC",
-      "name": "BBVA",
-      "sectorEtf": "XLF",
-      "sectorName": "Banca / Finanzas",
-      "indexName": "IBEX35",
-      "rsi14": 76.17144641413216,
-      "volumeRatio": 0.5745846954972186,
-      "isUptrend": true,
-      "trendQuality": 0.7520589619881048,
-      "yearChangePercent": 62.35199205432792,
-      "aboveTrendSma": true,
-      "isBuyOpportunity": false,
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 15.3,
-      "isSectorInFavor": false,
-      "hchState": "NONE",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.18667083911270343,
-      "percentFromYearHigh": 0.0,
-      "macdHistogram": 0.219050966662929,
-      "shortTermBullish": true,
-      "declineAccelerating": false,
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 0,
-      "combinedScore": 47.5,
-      "rewardScore": 15.0,
-      "riskScore": 40.0,
-      "ratingOutOf10": 5,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia: tendencia claramente alcista en los últimos 3 meses. RSI: RSI en sobrecompra (76). Riesgo (volatilidad): volatilidad propia 0.19x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 57% de su media, MACD alcista.",
-      "penaltyWarnings": [],
-      "bonusWarnings": [
-        "Tendencia alcista clara confirmada (52 semanas) +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Valoración",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.19x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "RSI (peso 15%): RSI en sobrecompra (76) → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 57% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia alcista clara confirmada (52 semanas) +10 → 37.5 pasa a 47.5",
+        "Giro (peso 15%): indicios de techo (patrón bajista + RSI alto cerca de máximos) — aproximación, no un detector completo → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 38% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Doble Suelo Detectado (12 oct 2025 y 8 mar 2026) +10; Tendencia alcista clara confirmada (52 semanas) +10 → 30.0 pasa a 50.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -2316,10 +2137,10 @@
       "sectorEtf": "XLF",
       "sectorName": "Banca / Finanzas",
       "indexName": "IBEX35",
-      "rsi14": 71.02320446400573,
+      "rsi14": 71.02320289258819,
       "volumeRatio": 0.599203167555905,
       "isUptrend": true,
-      "trendQuality": 0.7416264822849628,
+      "trendQuality": 0.7416264845837918,
       "yearChangePercent": 33.21457947047474,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -2331,7 +2152,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.1708822621880111,
       "percentFromYearHigh": -0.528790541523382,
-      "macdHistogram": 0.1190737023534546,
+      "macdHistogram": 0.11907370074359491,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -2364,7 +2185,7 @@
           "valueText": "-1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -2386,7 +2207,7 @@
       ],
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.17x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
@@ -2454,7 +2275,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -2476,7 +2297,7 @@
       ],
       "rewardBreakdown": [
         "RSI (peso 15%): RSI en zona neutra (62) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.33x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
@@ -2486,6 +2307,185 @@
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 47% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
         "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia alcista clara confirmada (52 semanas) +10 → 37.5 pasa a 47.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
+      "symbol": "UNI.MC",
+      "name": "Unicaja Banco",
+      "sectorEtf": "XLF",
+      "sectorName": "Banca / Finanzas",
+      "indexName": "IBEX35",
+      "rsi14": 75.41140341699285,
+      "volumeRatio": 0.7289221037068472,
+      "isUptrend": true,
+      "trendQuality": 0.81427953016542,
+      "yearChangePercent": 63.76354455199695,
+      "aboveTrendSma": true,
+      "isBuyOpportunity": false,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 15.3,
+      "isSectorInFavor": false,
+      "hchState": "NONE",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.3988397528894801,
+      "percentFromYearHigh": -0.5452557530019908,
+      "nearestSupportPercent": 28.864977179791513,
+      "macdHistogram": 0.025614015645195776,
+      "shortTermBullish": true,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 0,
+      "combinedScore": 45.0,
+      "rewardScore": 15.0,
+      "riskScore": 45.0,
+      "ratingOutOf10": 5,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia: tendencia claramente alcista en los últimos 3 meses. RSI: RSI en sobrecompra (75). Riesgo (volatilidad): volatilidad propia 0.40x lo habitual. Giro: indicios de techo (patrón bajista + RSI alto cerca de máximos) — aproximación, no un detector completo. Volumen / MACD: volumen 73% de su media, MACD alcista.",
+      "penaltyWarnings": [],
+      "bonusWarnings": [
+        "Tendencia alcista clara confirmada (52 semanas) +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.40x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Volumen / MACD (peso 10%): volumen 73% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.30 + 1) × 50 = 35.0"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "RSI (peso 15%): RSI en sobrecompra (75) → valor -1.0 × 15% = -15.00 pts",
+        "Giro (peso 15%): indicios de techo (patrón bajista + RSI alto cerca de máximos) — aproximación, no un detector completo → valor -1.0 × 15% = -15.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia alcista clara confirmada (52 semanas) +10 → 35.0 pasa a 45.0",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
+      "symbol": "BBVA.MC",
+      "name": "BBVA",
+      "sectorEtf": "XLF",
+      "sectorName": "Banca / Finanzas",
+      "indexName": "IBEX35",
+      "rsi14": 76.17144683441121,
+      "volumeRatio": 0.5745846954972186,
+      "isUptrend": true,
+      "trendQuality": 0.7520589636209903,
+      "yearChangePercent": 62.35200194693351,
+      "aboveTrendSma": true,
+      "isBuyOpportunity": false,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 15.3,
+      "isSectorInFavor": false,
+      "hchState": "NONE",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.18667083911270343,
+      "percentFromYearHigh": 0.0,
+      "macdHistogram": 0.21905096624169085,
+      "shortTermBullish": true,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 0,
+      "combinedScore": 40.0,
+      "rewardScore": 15.0,
+      "riskScore": 55.0,
+      "ratingOutOf10": 4,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia: tendencia claramente alcista en los últimos 3 meses. RSI: RSI en sobrecompra (76). Riesgo (volatilidad): volatilidad propia 0.19x lo habitual. Giro: indicios de techo (patrón bajista + RSI alto cerca de máximos) — aproximación, no un detector completo. Volumen / MACD: volumen 57% de su media, MACD alcista.",
+      "penaltyWarnings": [],
+      "bonusWarnings": [
+        "Tendencia alcista clara confirmada (52 semanas) +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.19x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.40 + 1) × 50 = 30.0"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "RSI (peso 15%): RSI en sobrecompra (76) → valor -1.0 × 15% = -15.00 pts",
+        "Giro (peso 15%): indicios de techo (patrón bajista + RSI alto cerca de máximos) — aproximación, no un detector completo → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 57% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia alcista clara confirmada (52 semanas) +10 → 30.0 pasa a 40.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -2555,7 +2555,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -2578,7 +2578,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (40) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.64x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -2596,7 +2596,7 @@
       "sectorEtf": "XLI",
       "sectorName": "Industrial",
       "indexName": "IBEX35",
-      "rsi14": 49.29603262395499,
+      "rsi14": 49.29603269781544,
       "volumeRatio": 0.5272276798719215,
       "isUptrend": false,
       "isBuyOpportunity": false,
@@ -2616,7 +2616,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.2801644846495081,
       "percentFromYearHigh": -14.568025808248583,
-      "macdHistogram": -0.04911123752234475,
+      "macdHistogram": -0.04911123734846265,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -2647,7 +2647,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -2669,7 +2669,7 @@
       ],
       "rewardBreakdown": [
         "RSI (peso 15%): RSI en zona neutra (49) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.28x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
@@ -2687,7 +2687,7 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 47.60272621876867,
+      "rsi14": 47.60272631987715,
       "volumeRatio": 0.42907688524952464,
       "isUptrend": false,
       "isBuyOpportunity": true,
@@ -2697,9 +2697,9 @@
         "En el mínimo del 2026-01-25 el RSI llegó a sobreventa (33) — no es el RSI de ahora, que puede ser distinto",
         "Ya recuperado un 91% del camino hacia la próxima resistencia (14.93)"
       ],
-      "declinePercentFromRecentHigh": -18.90390203082439,
+      "declinePercentFromRecentHigh": -18.90390691043938,
       "nextResistanceTarget": 14.925719127771458,
-      "recentHigh": 16.76950728718092,
+      "recentHigh": 16.769508296215218,
       "recentLow": 13.599416058560283,
       "recentLowDate": "2026-01-25T23:00:00Z",
       "recoveryProgressToResistancePercent": 90.52110034613982,
@@ -2710,11 +2710,11 @@
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.3220376502735601,
-      "percentFromYearHigh": -11.744573425550819,
+      "percentFromYearHigh": -11.744578735948156,
       "nearestSupportPercent": 7.570898872280693,
       "nearestResistancePercent": 0.8494522663269822,
       "marketTrap": "BULL_TRAP",
-      "macdHistogram": -0.03435005692735005,
+      "macdHistogram": -0.03435005018751586,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "deathCrossDate": "2026-08-28T07:00:00Z",
@@ -2748,7 +2748,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -2771,7 +2771,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (48) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.32x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -2840,7 +2840,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -2862,7 +2862,7 @@
       ],
       "rewardBreakdown": [
         "RSI (peso 15%): RSI en zona neutra (53) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.21x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
@@ -2943,7 +2943,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -2966,7 +2966,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (42) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.71x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "Volumen / MACD (peso 10%): volumen 87% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
@@ -2984,7 +2984,7 @@
       "sectorEtf": "XLC",
       "sectorName": "Comunicación / Medios",
       "indexName": "IBEX35",
-      "rsi14": 42.337124165287634,
+      "rsi14": 42.33712448374094,
       "volumeRatio": 0.496594741851994,
       "isUptrend": false,
       "isBuyOpportunity": false,
@@ -3005,7 +3005,7 @@
       "stockVolatilityRatio": 0.3234536177464769,
       "percentFromYearHigh": -20.33004359958554,
       "nearestSupportPercent": 5.7707830798775674,
-      "macdHistogram": -0.11880163767516744,
+      "macdHistogram": -0.11880165017646627,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -3038,7 +3038,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3060,7 +3060,7 @@
       ],
       "rewardBreakdown": [
         "RSI (peso 15%): RSI en zona neutra (42) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.32x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
@@ -3079,7 +3079,7 @@
       "sectorEtf": "XLI",
       "sectorName": "Industrial",
       "indexName": "IBEX35",
-      "rsi14": 30.381722530872295,
+      "rsi14": 30.381722995421455,
       "volumeRatio": 0.7991404032488876,
       "isUptrend": false,
       "isBuyOpportunity": true,
@@ -3103,7 +3103,7 @@
       "stockVolatilityRatio": 0.49348174008514695,
       "percentFromYearHigh": -23.31107507909057,
       "nearestResistancePercent": 26.826085201662504,
-      "macdHistogram": -1.224789482802561,
+      "macdHistogram": -1.2247894772103707,
       "shortTermBullish": false,
       "declineAccelerating": true,
       "momentumPriceDivergence": "NONE",
@@ -3138,7 +3138,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3161,7 +3161,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (30) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.49x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "Volumen / MACD (peso 10%): volumen 80% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
@@ -3227,7 +3227,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3249,7 +3249,7 @@
       ],
       "rewardBreakdown": [
         "RSI (peso 15%): RSI en zona neutra (43) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.67x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
@@ -3318,7 +3318,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3341,7 +3341,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (68) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.17x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "Volumen / MACD (peso 10%): volumen 75% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
@@ -3359,11 +3359,11 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 62.48565323159805,
+      "rsi14": 62.48565428215346,
       "volumeRatio": 0.5231553194782569,
       "isUptrend": true,
-      "trendQuality": 0.7181476605114028,
-      "yearChangePercent": 17.298763612939222,
+      "trendQuality": 0.7181474589874695,
+      "yearChangePercent": 17.29875471090118,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -3376,7 +3376,7 @@
       "percentFromYearHigh": -1.86418560660415,
       "nearestSupportPercent": 20.75204263592906,
       "nearestResistancePercent": 1.8656755527461484,
-      "macdHistogram": 0.030183358035918983,
+      "macdHistogram": 0.03018336936249033,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -3410,7 +3410,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3433,7 +3433,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (62) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.22x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -3506,7 +3506,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3529,7 +3529,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (47) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 1.15x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "Volumen / MACD (peso 10%): volumen 97% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
@@ -3604,7 +3604,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3627,7 +3627,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (61) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.72x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.20 + 1) × 50 = 60.0"
@@ -3693,7 +3693,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3716,7 +3716,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (68) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.55x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "Volumen / MACD (peso 10%): volumen 76% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
@@ -3784,7 +3784,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3807,7 +3807,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (56) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.63x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "Volumen / MACD (peso 10%): volumen 73% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
@@ -3874,7 +3874,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3897,7 +3897,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (70) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.68x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -3915,11 +3915,11 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 54.181408725408275,
+      "rsi14": 54.1814103586462,
       "volumeRatio": 0.5284706710633527,
       "isUptrend": true,
-      "trendQuality": 0.8259547486137628,
-      "yearChangePercent": 30.584662682156726,
+      "trendQuality": 0.8259546824578397,
+      "yearChangePercent": 30.584670748820063,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -3928,10 +3928,10 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.6203632193537029,
+      "stockVolatilityRatio": 0.6203637006246835,
       "percentFromYearHigh": -6.868110234473996,
       "candlestickPattern": "DOJI",
-      "macdHistogram": -0.16463066738117937,
+      "macdHistogram": -0.1646306520415639,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -3964,7 +3964,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -3987,7 +3987,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (54) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.62x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -4054,7 +4054,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -4077,7 +4077,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (59) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.42x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
@@ -4095,10 +4095,10 @@
       "sectorEtf": "XLB",
       "sectorName": "Materiales",
       "indexName": "IBEX35",
-      "rsi14": 64.45568024948943,
+      "rsi14": 64.45568101026123,
       "volumeRatio": 0.5774818577922256,
       "isUptrend": true,
-      "trendQuality": 0.9123667900377387,
+      "trendQuality": 0.9123667765209772,
       "yearChangePercent": 107.99154140588611,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -4108,9 +4108,9 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.6742185779692305,
+      "stockVolatilityRatio": 0.6742186326039854,
       "percentFromYearHigh": -6.100409384066657,
-      "macdHistogram": 0.056529085540000246,
+      "macdHistogram": 0.056529075319821764,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -4143,7 +4143,7 @@
           "valueText": "+1.0"
         },
         {
-          "label": "Valoración",
+          "label": "Valoración PER",
           "grade": "UNKNOWN",
           "valueText": "—"
         },
@@ -4166,7 +4166,7 @@
       "rewardBreakdown": [
         "Tendencia (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
         "RSI (peso 15%): RSI en zona neutra (64) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración (peso 15%): sin dato, no puntúa",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.67x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
