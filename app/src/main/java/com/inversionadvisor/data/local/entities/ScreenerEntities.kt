@@ -112,5 +112,20 @@ data class Top10GenericCandidateEntity(
      *  guardado aquí para poder aplicarlo DESPUÉS como bono en Top10Calculator, en vez de como
      *  filtro de entrada. */
     val hasClearUptrend: Boolean,
+    /** NUEVO — pedido expresamente: true SOLO cuando esta fila viene de importFromRemoteJson()
+     *  (el JSON de scanner-cli, calculado con la fórmula COMPLETA de Top10Calculator, no una
+     *  versión barata) — cuando es true, Top10Repository puede usar directamente los campos de
+     *  abajo como resultado FINAL, sin volver a pedir nada en directo al móvil. Cuando es false
+     *  (valor por defecto, caso del escaneo en directo de siempre), Top10Repository sigue
+     *  haciendo su fase profunda como siempre — provisionalScore ahí es solo orientativo, no el
+     *  resultado final. */
+    val isCompleteFromRemoteScan: Boolean = false,
+    val rewardScore: Double? = null,
+    val riskScore: Double? = null,
+    val ratingOutOf10: Int? = null,
+    val analystSummary: String? = null,
+    /** Avisos separados por "||" — mismo formato que reasonsCsv en BuyOpportunityEntity. */
+    val penaltyWarningsCsv: String? = null,
+    val bonusWarningsCsv: String? = null,
     val updatedAtEpochMillis: Long
 )

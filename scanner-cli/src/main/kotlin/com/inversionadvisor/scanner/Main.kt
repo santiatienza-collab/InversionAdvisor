@@ -500,6 +500,13 @@ fun main(args: Array<String>) = runBlocking {
 
     val adapter = moshi.adapter(ScanResultJson::class.java).indent("  ")
     val outputPath = args.getOrNull(1) ?: "scan-${market.indexName}.json"
-    File(outputPath).writeText(adapter.toJson(resultadoFinal))
+    val outputFile = File(outputPath)
+    // NUEVO — pedido expresamente tras el fallo real "FileNotFoundException": la carpeta "data/"
+    // no existe todavía en un repositorio recién creado (nadie la ha creado a mano nunca) —
+    // File.writeText() no crea carpetas que falten por su cuenta, solo escribe el archivo si el
+    // directorio que lo contiene ya existe. mkdirs() la crea (junto con cualquier carpeta
+    // intermedia que hiciera falta) si no está, y no hace nada si ya existe.
+    outputFile.parentFile?.mkdirs()
+    outputFile.writeText(adapter.toJson(resultadoFinal))
     println("Listo — ${candidatos.size}/${universe.size} símbolos escritos en $outputPath")
 }

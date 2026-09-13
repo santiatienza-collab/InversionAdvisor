@@ -160,7 +160,9 @@ class ScreenerRepository(
 
             // Tercer cajón (ver Top10GenericCandidateEntity) — mismo umbral (55) que usa
             // ScreenerRepository.scanSymbol en el escaneo en directo, para que Top10 se
-            // comporte igual venga de donde venga el dato.
+            // comporte igual venga de donde venga el dato. isCompleteFromRemoteScan = true:
+            // pedido expresamente, para que Top10Repository use esta puntuación TAL CUAL, sin
+            // volver a pedir nada en directo al móvil — el JSON ya trae la fórmula completa.
             val genericos = resultado.candidates.filter { (it.combinedScore ?: 0.0) >= 55.0 }.map { c ->
                 com.inversionadvisor.data.local.entities.Top10GenericCandidateEntity(
                     indexName = indexName,
@@ -173,6 +175,13 @@ class ScreenerRepository(
                     volumeRatio = c.volumeRatio,
                     provisionalScore = c.combinedScore ?: 0.0,
                     hasClearUptrend = c.isUptrend,
+                    isCompleteFromRemoteScan = true,
+                    rewardScore = c.rewardScore,
+                    riskScore = c.riskScore,
+                    ratingOutOf10 = c.ratingOutOf10,
+                    analystSummary = c.summary,
+                    penaltyWarningsCsv = c.penaltyWarnings?.joinToString("||"),
+                    bonusWarningsCsv = c.bonusWarnings?.joinToString("||"),
                     updatedAtEpochMillis = ahora
                 )
             }

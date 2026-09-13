@@ -84,7 +84,17 @@ class Top10Repository(
             val indexName: String,
             val sectorEtf: String?,
             val sectorName: String?,
-            val provisionalScore: Double
+            val provisionalScore: Double,
+            // NUEVO — pedido expresamente: cuando isCompleteFromRemoteScan es true, estos campos
+            // YA SON el resultado final (vienen del JSON de scanner-cli, fórmula completa) — la
+            // fase profunda de más abajo los usa tal cual, sin pedir nada en directo al móvil
+            // para este candidato.
+            val isCompleteFromRemoteScan: Boolean = false,
+            val rewardScore: Double? = null,
+            val riskScore: Double? = null,
+            val analystSummary: String? = null,
+            val penaltyWarningsCsv: String? = null,
+            val bonusWarningsCsv: String? = null
         )
 
         // Agrupado por símbolo — un mismo símbolo puede venir de más de uno de los tres cajones
@@ -104,6 +114,28 @@ class Top10Repository(
             val uptrend = grupo.uptrend
             val opportunity = grupo.opportunity
             val generic = grupo.generic
+
+            // NUEVO — pedido expresamente: si el cajón genérico ya trae la puntuación COMPLETA
+            // (importada del JSON de scanner-cli), se usa tal cual para este candidato — ni
+            // siquiera hace falta la recomputación "provisional" de más abajo, que es solo una
+            // aproximación barata pensada para cuando SÍ hará falta la fase profunda después.
+            if (generic?.isCompleteFromRemoteScan == true) {
+                return@mapNotNull Candidate(
+                    symbol = symbol,
+                    name = generic.name,
+                    indexName = generic.indexName,
+                    sectorEtf = generic.sectorEtf,
+                    sectorName = generic.sectorName,
+                    provisionalScore = generic.provisionalScore,
+                    isCompleteFromRemoteScan = true,
+                    rewardScore = generic.rewardScore,
+                    riskScore = generic.riskScore,
+                    analystSummary = generic.analystSummary,
+                    penaltyWarningsCsv = generic.penaltyWarningsCsv,
+                    bonusWarningsCsv = generic.bonusWarningsCsv
+                )
+            }
+
             val rsi = uptrend?.rsi14 ?: opportunity?.rsi14 ?: generic?.rsi14
             val volumeRatio = uptrend?.volumeRatio ?: opportunity?.volumeRatio ?: generic?.volumeRatio
             // Puntuación provisional (con los datos GUARDADOS del último "Analizar") —
@@ -184,6 +216,33 @@ class Top10Repository(
 
         val finalEntries = pool.map { candidate ->
             async {
+                // NUEVO — pedido expresamente: si este candidato ya trae la puntuación COMPLETA
+                // (del JSON remoto), se construye el resultado final directamente con esos
+                // datos, SIN pedir nada en directo al móvil (ni velas, ni PER, nada) — esto es
+                // lo que hace que Top10 sea casi instantáneo cuando todo el pool viene del JSON.
+                if (candidate.isCompleteFromRemoteScan) {
+                    onProgress(doneCount.incrementAndGet(), pool.size)
+                    return@async Top10EntryEntity(
+                        symbol = candidate.symbol,
+                        name = candidate.name,
+                        indexName = candidate.indexName,
+                        sectorName = candidate.sectorName,
+                        rewardScore = candidate.rewardScore ?: 0.0,
+                        riskScore = candidate.riskScore ?: 0.0,
+                        combinedScore = candidate.provisionalScore,
+                        analystSummary = candidate.analystSummary ?: "",
+                        // Sin desglose de factores detallado en esta vía rápida (el JSON no lo
+                        // trae todavía) — la ficha del stock, si se entra, sigue calculándolo
+                        // siempre en directo y completo, esto solo afecta al propio panel Top10.
+                        factorsCsv = emptyList<Top10Factor>().toCsv(),
+                        rewardBreakdownText = "",
+                        riskBreakdownText = "",
+                        penaltyWarningsText = (candidate.penaltyWarningsCsv?.split("||")?.filter { it.isNotBlank() } ?: emptyList()).joinToString("\n"),
+                        bonusWarningsText = (candidate.bonusWarningsCsv?.split("||")?.filter { it.isNotBlank() } ?: emptyList()).joinToString("\n"),
+                        rank = 0,
+                        updatedAtEpochMillis = System.currentTimeMillis()
+                    )
+                }
                 semaphore.withPermit {
                     // Velas y PER son dos peticiones INDEPENDIENTES entre sí — antes iban una
                     // detrás de otra (esperando a que terminaran las velas para empezar el PER),

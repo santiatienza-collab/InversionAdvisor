@@ -54,7 +54,7 @@ import com.inversionadvisor.data.local.entities.UptrendCandidateEntity
         EarningsDateEntity::class,
         Top10GenericCandidateEntity::class
     ],
-    version = 29, // AÑADIDO hasNegativeTrailingEarnings a PeRatioEntity — fallbackToDestructiveMigration se encarga, sin migración manual.
+    version = 30, // AÑADIDOS campos de puntuación completa a Top10GenericCandidateEntity — fallbackToDestructiveMigration se encarga, sin migración manual.
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
