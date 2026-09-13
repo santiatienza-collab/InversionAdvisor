@@ -19,14 +19,20 @@ data class Top10Factor(val label: String, val grade: FactorGrade, val valueText:
  *
  *  Categoría        Indicador                          Peso
  *  Macrotendencia   Sector en auge (fuerza relativa)    15%
- *  Tendencia        Tendencia de los últimos 3 meses    20%
+ *  Tendencia        Tendencia de los últimos 3 meses    15%
  *  RSI              RSI(14), zona neutra vs extremos    15%
- *  Valoración       PER (+ deuda — SIN DATO, ver abajo) 20%
+ *  Valoración       PER (+ deuda — SIN DATO, ver abajo) 15%
  *  Riesgo           Volatilidad propia                  15%
- *  Giro             Agotamiento (volumen/velas)          10%
- *  Volumen          Volumen de ruptura / MACD             5%
+ *  Giro             Agotamiento (volumen/velas)         15%
+ *  Volumen          Volumen de ruptura / MACD           10%
  *                                                        ────
  *                                                        100%
+ *
+ * CORREGIDO — esta tabla estaba desactualizada (quedó de una versión anterior de la fórmula,
+ * antes de un reparto posterior a pesos casi iguales) y no coincidía con las constantes
+ * WEIGHT_* reales del código, que son las que de verdad se aplican. La tabla de arriba ya
+ * refleja los pesos reales — si se cambia algún WEIGHT_*, hay que actualizar también esta tabla
+ * a la vez, para que no se repita el desajuste.
  *
  * PENALIZACIÓN APARTE (fuera de la tabla de pesos, no forma parte de las 7 categorías): si la
  * caída se está acelerando claramente (UptrendDetector.isDeclineAcceleratingClearly), se restan
@@ -164,17 +170,18 @@ object Top10Calculator {
          *  UptrendDetector.findSma20CrossedAboveSma50Date) suma 15 puntos a la puntuación final
          *  ya calculada. Cambiado de Boolean a String? (la fecha del cruce) — ver deathCrossDate. */
         goldenCrossDate: String? = null,
-        /** CATEGORÍA NUEVA (5%) — patrón de "bandera" en las últimas 15 velas DIARIAS ("a corto
-         *  plazo"), ver UptrendDetector.detectFlagPattern. null = sin datos suficientes (menos
-         *  de 15 velas diarias) → categoría "sin dato". BULLISH → +1, BEARISH → -1, NONE
-         *  (hay datos, pero no se detectó patrón) → 0. Además de puntuar, cuando SÍ se detecta
-         *  un patrón (BULLISH o BEARISH), se añade un aviso en neón (verde/rojo) — puramente
-         *  informativo, no suma puntos aparte de los que ya aporta esta categoría por su peso. */
+        /** Bono/penalización APARTE (no una categoría ponderada de la tabla de 100%, pese a lo
+         *  que decía antes este comentario) — patrón de "bandera" en las últimas 15 velas
+         *  DIARIAS ("a corto plazo"), ver UptrendDetector.detectFlagPattern. null = sin datos
+         *  suficientes (menos de 15 velas diarias). BULLISH suma 15 puntos a la puntuación final
+         *  ya calculada (o solo aviso informativo si el de largo plazo ya es decisivo, ver más
+         *  abajo), BEARISH resta 15. */
         shortTermFlagPattern: FlagPattern? = null,
-        /** CATEGORÍA NUEVA (5%) — igual que shortTermFlagPattern, pero sobre las últimas 15
-         *  velas MENSUALES ("a largo plazo"), ver MarketRepository.observeMonthlyCandlesForFlag.
-         *  Puede coexistir con shortTermFlagPattern (uno, otro, ambos, o ninguno) — cada una es
-         *  independiente. */
+        /** Bono/penalización APARTE — igual que shortTermFlagPattern (±15 puntos), pero sobre
+         *  las últimas 15 velas MENSUALES ("a largo plazo"), ver
+         *  MarketRepository.observeMonthlyCandlesForFlag. Puede coexistir con
+         *  shortTermFlagPattern (uno, otro, ambos, o ninguno) — si los dos son decisivos, el de
+         *  largo plazo es el que lleva los puntos; el otro queda como aviso informativo. */
         longTermFlagPattern: FlagPattern? = null,
         /** Penalización APARTE — tendencia bajista CONSOLIDADA: 4 o más de los últimos 6 meses
          *  cerraron en negativo (ver UptrendDetector.countBearishMonthsInLast6). Resta 20 puntos
@@ -257,7 +264,7 @@ object Top10Calculator {
         // dos veces por separado.
         val bearishExhaustion = (longTermDecline != null && longTermDecline.detected) || (shortTermPullback != null && shortTermPullback.detected)
 
-        // ---- 2. Tendencia (20%): tendencia de los últimos 3 meses (separada del RSI, que
+        // ---- 2. Tendencia (15%): tendencia de los últimos 3 meses (separada del RSI, que
         // ahora es su propia categoría aparte, ver más abajo) ----
         // Alcista -> suma. Bajista -> resta, A MENOS que haya un giro al alza detectado
         // (bearishExhaustion) — en ese caso no resta, queda neutra (el giro en sí ya se premia
@@ -296,24 +303,23 @@ object Top10Calculator {
             }
         )
 
-        // ---- 3. Valoración (20%): PER (deuda sin datos, ver cabecera) ----
-        // Reescrito de nuevo a petición expresa: vuelve a ser SIMÉTRICO — por debajo del rango
-        // típico del sector (o de su media, si no hay rango guardado) SUMA; dentro del rango
-        // queda neutro; por encima RESTA. (Antes era asimétrico: solo restaba por encima, nunca
-        // sumaba por debajo — se revierte esa parte a petición expresa.)
+        // ---- 3. Valoración (15%): PER (deuda sin datos, ver cabecera) ----
+        // CAMBIADO a petición expresa: ya no es simétrico con un tramo neutro en medio — ahora
+        // SOLO se resta cuando el PER está claramente por ENCIMA del rango/margen (caro de
+        // verdad); tanto por debajo del rango como DENTRO de él (antes neutro) SUMAN los dos
+        // igual — el razonamiento pedido es que "dentro del rango típico" ya es una valoración
+        // razonable, no algo neutro, así que también merece sumar.
         val valuationValue = when {
             stockPe == null -> null
             sectorTypicalPeRange != null -> when {
-                stockPe < sectorTypicalPeRange.first -> 1.0
                 stockPe > sectorTypicalPeRange.second -> -1.0
-                else -> 0.0
+                else -> 1.0
             }
             sectorAveragePe != null && sectorAveragePe > 0.0 -> {
                 val deviation = (stockPe - sectorAveragePe) / sectorAveragePe
                 when {
-                    deviation < -0.15 -> 1.0
                     deviation > 0.40 -> -1.0
-                    else -> 0.0
+                    else -> 1.0
                 }
             }
             else -> null
@@ -347,7 +353,7 @@ object Top10Calculator {
         // ---- 5. Impulso: QUITADA de la fórmula a petición expresa (antes 15%, caída % desde
         // máximos) — ese peso se repartió entre la nueva categoría RSI (15%, ver arriba).
 
-        // ---- 6. Giro (10%): agotamiento (volumen/velas) ----
+        // ---- 6. Giro (15%): agotamiento (volumen/velas) ----
         // bearishExhaustion ya se calculó arriba (la usa también "Tendencia", para no
         // duplicar el cálculo).
         val nearCeilingApprox = percentFromYearHigh != null && percentFromYearHigh >= -5.0
@@ -367,7 +373,7 @@ object Top10Calculator {
             }
         )
 
-        // ---- 7. Volumen (5%): volumen de ruptura / MACD ----
+        // ---- 7. Volumen (10%): volumen de ruptura / MACD ----
         val macdBullish = macd?.let { it.macdLine > it.signalLine }
         val volumeValue = when {
             volumeRatio == null && macdBullish == null -> null

@@ -129,6 +129,9 @@ private interface FinvizApiCli {
 // ---- Forma del JSON de salida ----
 
 @JsonClass(generateAdapter = true)
+data class FactorJson(val label: String, val grade: String, val valueText: String)
+
+@JsonClass(generateAdapter = true)
 data class ScanCandidateJson(
     val symbol: String,
     val name: String,
@@ -178,7 +181,13 @@ data class ScanCandidateJson(
     val ratingOutOf10: Int?,
     val summary: String?,
     val penaltyWarnings: List<String>?,
-    val bonusWarnings: List<String>?
+    val bonusWarnings: List<String>?,
+    // NUEVO — pedido expresamente: antes esta info no se exportaba, así que el desglose "Cómo
+    // se calculó" quedaba vacío en la app para los candidatos importados del JSON. Con esto,
+    // ese desglose funciona igual venga el dato de un escaneo en directo o del JSON.
+    val factors: List<FactorJson>?,
+    val rewardBreakdown: List<String>?,
+    val riskBreakdown: List<String>?
 )
 
 @JsonClass(generateAdapter = true)
@@ -485,7 +494,10 @@ fun main(args: Array<String>) = runBlocking {
             ratingOutOf10 = scored?.ratingOutOf10,
             summary = scored?.analystSummary,
             penaltyWarnings = scored?.penaltyWarnings,
-            bonusWarnings = scored?.bonusWarnings
+            bonusWarnings = scored?.bonusWarnings,
+            factors = scored?.factors?.map { FactorJson(it.label, it.grade.name, it.valueText) },
+            rewardBreakdown = scored?.rewardBreakdown,
+            riskBreakdown = scored?.riskBreakdown
         )
     }.sortedByDescending { it.combinedScore ?: -1.0 }
 

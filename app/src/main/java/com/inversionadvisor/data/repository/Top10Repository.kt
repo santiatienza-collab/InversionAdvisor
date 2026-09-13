@@ -94,7 +94,10 @@ class Top10Repository(
             val riskScore: Double? = null,
             val analystSummary: String? = null,
             val penaltyWarningsCsv: String? = null,
-            val bonusWarningsCsv: String? = null
+            val bonusWarningsCsv: String? = null,
+            val factorsCsv: String? = null,
+            val rewardBreakdownText: String? = null,
+            val riskBreakdownText: String? = null
         )
 
         // Agrupado por símbolo — un mismo símbolo puede venir de más de uno de los tres cajones
@@ -132,7 +135,10 @@ class Top10Repository(
                     riskScore = generic.riskScore,
                     analystSummary = generic.analystSummary,
                     penaltyWarningsCsv = generic.penaltyWarningsCsv,
-                    bonusWarningsCsv = generic.bonusWarningsCsv
+                    bonusWarningsCsv = generic.bonusWarningsCsv,
+                    factorsCsv = generic.factorsCsv,
+                    rewardBreakdownText = generic.rewardBreakdownText,
+                    riskBreakdownText = generic.riskBreakdownText
                 )
             }
 
@@ -231,12 +237,12 @@ class Top10Repository(
                         riskScore = candidate.riskScore ?: 0.0,
                         combinedScore = candidate.provisionalScore,
                         analystSummary = candidate.analystSummary ?: "",
-                        // Sin desglose de factores detallado en esta vía rápida (el JSON no lo
-                        // trae todavía) — la ficha del stock, si se entra, sigue calculándolo
-                        // siempre en directo y completo, esto solo afecta al propio panel Top10.
-                        factorsCsv = emptyList<Top10Factor>().toCsv(),
-                        rewardBreakdownText = "",
-                        riskBreakdownText = "",
+                        // NUEVO — antes esto salía siempre vacío en la vía rápida (el JSON no
+                        // traía el desglose todavía) — ahora si el candidato lo trae, se usa
+                        // igual que en el escaneo en directo.
+                        factorsCsv = candidate.factorsCsv ?: emptyList<Top10Factor>().toCsv(),
+                        rewardBreakdownText = candidate.rewardBreakdownText ?: "",
+                        riskBreakdownText = candidate.riskBreakdownText ?: "",
                         penaltyWarningsText = (candidate.penaltyWarningsCsv?.split("||")?.filter { it.isNotBlank() } ?: emptyList()).joinToString("\n"),
                         bonusWarningsText = (candidate.bonusWarningsCsv?.split("||")?.filter { it.isNotBlank() } ?: emptyList()).joinToString("\n"),
                         rank = 0,

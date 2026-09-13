@@ -170,6 +170,12 @@ class ScreenerRepository(
                     analystSummary = c.summary,
                     penaltyWarningsCsv = c.penaltyWarnings?.joinToString("||"),
                     bonusWarningsCsv = c.bonusWarnings?.joinToString("||"),
+                    // NUEVO — mismo formato que usa Top10Repository (label|GRADE|valueText,
+                    // separados por ";;") para que el desglose "Cómo se calculó" funcione igual
+                    // que si viniera de un escaneo en directo.
+                    factorsCsv = c.factors?.joinToString(";;") { "${it.label}|${it.grade}|${it.valueText}" },
+                    rewardBreakdownText = c.rewardBreakdown?.joinToString("\n"),
+                    riskBreakdownText = c.riskBreakdown?.joinToString("\n"),
                     updatedAtEpochMillis = ahora
                 )
             }
@@ -388,7 +394,7 @@ class ScreenerRepository(
          * fallará siempre (404) y la app caerá automáticamente al escaneo en directo de siempre
          * — no rompe nada, simplemente no aprovecha la ventaja de velocidad hasta que se rellene.
          */
-        private const val GITHUB_REPO_PATH = "santiatienza-collab/InversionAdvisor/main"
+        private const val GITHUB_REPO_PATH = "TU_USUARIO/TU_REPO/main"
 
         /** Umbral de puntuación PROVISIONAL (0-100) para entrar en el cajón genérico de Top10
          *  — pedido expresamente "filtrar a los que tengan más puntuación": 55 es un punto

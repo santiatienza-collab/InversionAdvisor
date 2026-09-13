@@ -31,6 +31,9 @@ data class ScanResultDto(
 )
 
 @JsonClass(generateAdapter = true)
+data class FactorDto(val label: String, val grade: String, val valueText: String)
+
+@JsonClass(generateAdapter = true)
 data class ScanCandidateDto(
     val symbol: String,
     val name: String,
@@ -80,5 +83,8 @@ data class ScanCandidateDto(
     val ratingOutOf10: Int?,
     val summary: String?,
     val penaltyWarnings: List<String>?,
-    val bonusWarnings: List<String>?
+    val bonusWarnings: List<String>?,
+    val factors: List<FactorDto>?,
+    val rewardBreakdown: List<String>?,
+    val riskBreakdown: List<String>?
 )

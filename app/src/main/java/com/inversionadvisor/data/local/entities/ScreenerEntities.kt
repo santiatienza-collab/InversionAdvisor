@@ -127,5 +127,10 @@ data class Top10GenericCandidateEntity(
     /** Avisos separados por "||" — mismo formato que reasonsCsv en BuyOpportunityEntity. */
     val penaltyWarningsCsv: String? = null,
     val bonusWarningsCsv: String? = null,
+    /** Mismo formato que Top10EntryEntity.factorsCsv (ver Top10Repository.kt, toCsv/toFactors):
+     *  "label|GRADE|valueText" por factor, separados por ";;". */
+    val factorsCsv: String? = null,
+    val rewardBreakdownText: String? = null,
+    val riskBreakdownText: String? = null,
     val updatedAtEpochMillis: Long
 )
