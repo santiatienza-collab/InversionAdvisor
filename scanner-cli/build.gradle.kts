@@ -3,10 +3,6 @@ plugins {
     application
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
@@ -43,14 +39,4 @@ kotlin {
 
 application {
     mainClass.set("com.inversionadvisor.scanner.MainKt")
-}
-
-tasks.jar {
-    manifest {
-        attributes["Main-Class"] = "com.inversionadvisor.scanner.MainKt"
-    }
-    // Jar "fat" con todas las dependencias dentro, para poder ejecutarlo con
-    // `java -jar scanner-cli.jar` directamente en GitHub Actions sin classpath aparte.
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-    duplicateFilesStrategy = DuplicatesStrategy.EXCLUDE
 }

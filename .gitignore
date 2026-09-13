@@ -1,0 +1,23 @@
+# NUEVO — pedido expresamente antes de la primera subida a GitHub. Sin esto, local.properties
+# (con tus claves de API reales: DeepL, Twelve Data, FMP) se subiría en texto plano al repo.
+
+# Configuración local de Android Studio — rutas de tu ordenador, no código del proyecto.
+.idea/
+*.iml
+.DS_Store
+
+# CRÍTICO — tus claves de API reales viven aquí. NUNCA debe subirse.
+local.properties
+
+# Carpetas de compilación — se regeneran solas al compilar, no hace falta versionarlas.
+build/
+.gradle/
+*/build/
+captures/
+.cxx/
+
+# Si alguna vez ejecutas el escáner en tu propio ordenador (fuera de GitHub Actions), estos
+# JSON de prueba no hace falta subirlos — los que SÍ quieres en el repo son los que genera el
+# propio workflow dentro de data/, esta línea no afecta a esos.
+scanner-cli/scan-*.json
+scanner-cli/build/

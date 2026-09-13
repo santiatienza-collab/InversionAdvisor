@@ -59,7 +59,7 @@ class ScreenerRepository(
          * fallará siempre (404) y la app caerá automáticamente al escaneo en directo de siempre
          * — no rompe nada, simplemente no aprovecha la ventaja de velocidad hasta que se rellene.
          */
-        private const val GITHUB_REPO_PATH = "santiatienza-collab/InversionAdvisor/main"
+        private const val GITHUB_REPO_PATH = "TU_USUARIO/TU_REPO/main"
     }
 
     fun observeUptrendCandidates(indexName: String): Flow<List<UptrendCandidate>> =

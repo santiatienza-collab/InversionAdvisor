@@ -1,0 +1,63 @@
+# NUEVO — pedido expresamente: corre el escáner (scanner-cli) automáticamente varias veces al
+# día, GRATIS (GitHub Actions da minutos de sobra para esto en repos públicos, y también en
+# privados hasta cierto límite mensual, más que suficiente aquí), y publica el resultado como
+# JSON directamente en el propio repositorio — la app lo descarga desde
+# raw.githubusercontent.com en vez de escanear cientos de stocks en el móvil.
+name: Escaneo de mercados
+
+on:
+  schedule:
+    # Cada 6 horas — pedido con el espíritu de "casi inmediato, sin tener que pagar": para
+    # patrones técnicos SEMANALES (doble techo, HCH...) no hace falta más frecuencia que esta.
+    # Ajustar el cron aquí si se quiere otra cadencia (más frecuente gasta más minutos gratis
+    # del plan, aunque para este tamaño de escaneo no debería ser un problema).
+    - cron: '0 */6 * * *'
+  # Permite lanzarlo a mano desde la pestaña "Actions" de GitHub, sin esperar al cron.
+  workflow_dispatch: {}
+
+jobs:
+  escanear:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      # Los 3 mercados en paralelo, cada uno en su propio runner — más rápido que
+      # escanearlos uno detrás de otro, y cada uno escribe su propio JSON.
+      matrix:
+        mercado: [SP500, NASDAQ100, IBEX35]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Compilar el escáner
+        run: ./gradlew :scanner-cli:installDist --no-daemon
+
+      - name: Escanear ${{ matrix.mercado }}
+        run: |
+          ./scanner-cli/build/install/scanner-cli/bin/scanner-cli \
+            ${{ matrix.mercado }} \
+            data/scan-${{ matrix.mercado }}.json
+
+      - name: Subir resultado como artefacto (por si el commit de abajo falla)
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-${{ matrix.mercado }}
+          path: data/scan-${{ matrix.mercado }}.json
+
+      - name: Publicar el JSON en el repositorio
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/scan-${{ matrix.mercado }}.json
+          git diff --staged --quiet || git commit -m "Escaneo automático: ${{ matrix.mercado }} ($(date -u +%Y-%m-%dT%H:%MZ))"
+          # --rebase, no merge: varios mercados en paralelo pueden terminar y querer subir a la
+          # vez — rebase evita conflictos de merge innecesarios entre 3 commits que solo tocan
+          # ficheros JSON distintos.
+          git pull --rebase origin ${{ github.ref_name }}
+          git push origin HEAD:${{ github.ref_name }}
