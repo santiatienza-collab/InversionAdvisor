@@ -64,24 +64,22 @@ jobs:
           git config core.fileMode false
           git add data/scan-${{ matrix.mercado }}.json
           git diff --staged --quiet || git commit -m "Escaneo automático: ${{ matrix.mercado }} ($(date -u +%Y-%m-%dT%H:%MZ))"
-          # NUEVO — pedido expresamente tras el fallo real "cannot pull with rebase: You have
-          # unstaged changes", persistente incluso con core.fileMode en false (así que el
-          # problema no era solo el permiso de gradlew, algo más deja el árbol de trabajo
-          # "sucio"). En vez de intentar adivinar qué archivo es exactamente, cada intento
-          # descarta primero cualquier cambio suelto en archivos ya rastreados (git checkout --
-          # ., no toca el commit que ya se hizo arriba ni los ficheros nuevos sin rastrear) y
-          # reintenta con un pequeño backoff — como cada mercado en paralelo toca un fichero JSON
-          # DISTINTO, nunca debería haber un conflicto de contenido real, solo la carrera de
-          # quién empuja primero.
+          # NUEVO — pedido expresamente tras el fallo real "CONFLICT (add/add)": si dos
+          # ejecuciones del workflow se solapan en el tiempo (p. ej. la programada y una lanzada
+          # a mano casi a la vez), las dos pueden intentar guardar el MISMO archivo con
+          # contenido distinto — como el JSON se regenera entero cada vez (no tiene sentido
+          # fusionarlo línea a línea), se usa "merge -X ours" en vez de rebase: si hay un
+          # conflicto real de contenido en ESTE archivo, gana la versión que este job acaba de
+          # calcular, sin quedarse atascado reintentando el mismo choque una y otra vez.
           exito=false
           for intento in 1 2 3 4 5; do
             git checkout -- . 2>/dev/null || true
             git fetch origin ${{ github.ref_name }}
-            if git rebase origin/${{ github.ref_name }} && git push origin HEAD:${{ github.ref_name }}; then
+            if git merge -X ours --no-edit -m "Merge tras escaneo de ${{ matrix.mercado }}" origin/${{ github.ref_name }} && git push origin HEAD:${{ github.ref_name }}; then
               exito=true
               break
             fi
-            git rebase --abort 2>/dev/null || true
+            git merge --abort 2>/dev/null || true
             echo "Intento $intento de publicar falló, reintentando..."
             sleep $((RANDOM % 10 + 5))
           done

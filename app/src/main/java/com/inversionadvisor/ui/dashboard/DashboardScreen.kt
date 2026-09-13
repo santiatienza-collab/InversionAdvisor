@@ -135,7 +135,11 @@ private val TYPICAL_SECTOR_PE_RANGES = listOf(
     SectorPeRange("Energía", 13.0, 21.0, ""),
     SectorPeRange("Servicios públicos (utilities)", 15.0, 16.0, ""),
     SectorPeRange("Financiero", 11.0, 15.0, ""),
-    SectorPeRange("Materiales básicos", 24.0, 25.0, "")
+    SectorPeRange("Materiales básicos", 24.0, 25.0, ""),
+    // NUEVO — pedido expresamente, faltaba en esta lista (aunque ya estaba en
+    // Symbols.SECTOR_TYPICAL_PE_RANGES, usado para la puntuación — esta lista de aquí es aparte,
+    // solo para esta tarjeta informativa del Panel).
+    SectorPeRange("Industrial", 18.0, 24.0, "")
 )
 
 /** Paleta fija (una por sector, en el mismo orden que TYPICAL_SECTOR_PE_RANGES) para el gráfico de burbujas. */
@@ -146,7 +150,8 @@ private val SECTOR_PE_BUBBLE_COLORS = listOf(
     Color(0xFFC62828), // Energía — rojo
     Color(0xFFFDD835), // Utilities — amarillo
     Color(0xFF1E88E5), // Financiero — azul
-    Color(0xFF6D4C41)  // Materiales básicos — marrón
+    Color(0xFF6D4C41), // Materiales básicos — marrón
+    Color(0xFF546E7A)  // Industrial — gris azulado
 )
 
 @Composable

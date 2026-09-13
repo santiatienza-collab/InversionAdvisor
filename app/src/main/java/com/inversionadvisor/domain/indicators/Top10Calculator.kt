@@ -325,7 +325,7 @@ object Top10Calculator {
             else -> null
         }
         addCategory(
-            "Valoración", WEIGHT_VALORACION, valuationValue,
+            "Valoración PER", WEIGHT_VALORACION, valuationValue,
             if (stockPe != null) {
                 val comparison = when {
                     sectorTypicalPeRange != null -> "rango típico del sector ${"%.0f".format(sectorTypicalPeRange.first)}-${"%.0f".format(sectorTypicalPeRange.second)}x"
@@ -357,8 +357,17 @@ object Top10Calculator {
         // bearishExhaustion ya se calculó arriba (la usa también "Tendencia", para no
         // duplicar el cálculo).
         val nearCeilingApprox = percentFromYearHigh != null && percentFromYearHigh >= -5.0
-        val toppingApprox = (candlestickPattern == CandlestickPattern.SHOOTING_STAR || candlestickPattern == CandlestickPattern.BEARISH_ENGULFING || marketTrap == MarketTrapType.BULL_TRAP) &&
-            rsi14 != null && rsi14 >= 65.0 && nearCeilingApprox
+        // REFORZADO a petición expresa: antes exigía SIEMPRE vela bajista o trampa alcista, a la
+        // vez que RSI≥65 y cerca de máximos — con eso, el lado bajista casi nunca disparaba en la
+        // práctica. Ahora hay un segundo camino, más simple: RSI MUY sobrecomprado (≥75) cerca de
+        // máximos ya cuenta por sí solo, aunque no haya ninguna vela ni trampa concretas — un
+        // aviso igual de razonable de agotamiento alcista.
+        val toppingApprox = rsi14 != null && rsi14 >= 65.0 && nearCeilingApprox && (
+            candlestickPattern == CandlestickPattern.SHOOTING_STAR ||
+            candlestickPattern == CandlestickPattern.BEARISH_ENGULFING ||
+            marketTrap == MarketTrapType.BULL_TRAP ||
+            rsi14 >= 75.0
+        )
         val turnValue = when {
             bearishExhaustion -> 1.0 // agotamiento bajista, giro al alza
             toppingApprox -> -1.0 // aproximación de agotamiento alcista (techo)

@@ -146,12 +146,14 @@ class ScreenerRepository(
             }
             if (opportunities.isNotEmpty()) screenerDao.insertBuyOpportunities(opportunities)
 
-            // Tercer cajón (ver Top10GenericCandidateEntity) — mismo umbral (55) que usa
-            // ScreenerRepository.scanSymbol en el escaneo en directo, para que Top10 se
-            // comporte igual venga de donde venga el dato. isCompleteFromRemoteScan = true:
-            // pedido expresamente, para que Top10Repository use esta puntuación TAL CUAL, sin
-            // volver a pedir nada en directo al móvil — el JSON ya trae la fórmula completa.
-            val genericos = resultado.candidates.filter { (it.combinedScore ?: 0.0) >= 55.0 }.map { c ->
+            // Tercer cajón (ver Top10GenericCandidateEntity) — CORREGIDO: antes se filtraba por
+            // combinedScore >= 55 (mismo umbral del escaneo en directo), pero eso dejaba SIN
+            // puntuación completa guardada a cualquier candidato de Tendencia alcista/Futuras
+            // compras que no llegara a esos 55 puntos — Top10Repository no encontraba de dónde
+            // tomar el atajo rápido para ellos y los recalculaba en directo (la lentitud real
+            // detectada). Como aquí TODOS los candidatos ya tienen su puntuación calculada
+            // gratis, se guarda para todos, sin filtro.
+            val genericos = resultado.candidates.filter { it.combinedScore != null }.map { c ->
                 com.inversionadvisor.data.local.entities.Top10GenericCandidateEntity(
                     indexName = indexName,
                     symbol = c.symbol,
