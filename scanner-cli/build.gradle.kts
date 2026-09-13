@@ -19,6 +19,14 @@ dependencies {
 // este script es LITERALMENTE el mismo código que usa la app, no una reimplementación aparte
 // que habría que mantener sincronizada a mano.
 kotlin {
+    // NUEVO — pedido expresamente tras el fallo real "UnsupportedClassVersionError": sin esto,
+    // el compilador de Kotlin usaba por defecto la versión de Java del propio demonio de
+    // Gradle en el runner (más nueva que 17), así que el .class resultante quedaba en una
+    // versión de bytecode que el JDK 17 configurado para EJECUTAR el escáner (ver
+    // .github/workflows/scan.yml, actions/setup-java con java-version 17) no podía leer.
+    // jvmToolchain(17) fuerza a compilar (y ejecutar) siempre con Java 17, sin importar qué JDK
+    // tenga instalado el runner por su cuenta.
+    jvmToolchain(17)
     sourceSets {
         main {
             kotlin.srcDir("../app/src/main/java/com/inversionadvisor/domain/model")
