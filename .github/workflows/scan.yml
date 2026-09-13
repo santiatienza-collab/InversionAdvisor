@@ -61,17 +61,31 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # NUEVO — pedido expresamente tras el fallo real "cannot pull with rebase: You have
-          # unstaged changes": el paso "chmod +x gradlew" de más arriba cambia el permiso de
-          # ejecución de un archivo que Git también vigila (el "modo" del archivo, 644 vs 755) —
-          # Git lo veía como un cambio sin guardar y bloqueaba el pull --rebase de abajo. Esto le
-          # dice a Git que ignore los cambios de permisos al comparar, sin afectar para nada al
-          # contenido real de ningún archivo.
           git config core.fileMode false
           git add data/scan-${{ matrix.mercado }}.json
           git diff --staged --quiet || git commit -m "Escaneo automático: ${{ matrix.mercado }} ($(date -u +%Y-%m-%dT%H:%MZ))"
-          # --rebase, no merge: varios mercados en paralelo pueden terminar y querer subir a la
-          # vez — rebase evita conflictos de merge innecesarios entre 3 commits que solo tocan
-          # ficheros JSON distintos.
-          git pull --rebase origin ${{ github.ref_name }}
-          git push origin HEAD:${{ github.ref_name }}
+          # NUEVO — pedido expresamente tras el fallo real "cannot pull with rebase: You have
+          # unstaged changes", persistente incluso con core.fileMode en false (así que el
+          # problema no era solo el permiso de gradlew, algo más deja el árbol de trabajo
+          # "sucio"). En vez de intentar adivinar qué archivo es exactamente, cada intento
+          # descarta primero cualquier cambio suelto en archivos ya rastreados (git checkout --
+          # ., no toca el commit que ya se hizo arriba ni los ficheros nuevos sin rastrear) y
+          # reintenta con un pequeño backoff — como cada mercado en paralelo toca un fichero JSON
+          # DISTINTO, nunca debería haber un conflicto de contenido real, solo la carrera de
+          # quién empuja primero.
+          exito=false
+          for intento in 1 2 3 4 5; do
+            git checkout -- . 2>/dev/null || true
+            git fetch origin ${{ github.ref_name }}
+            if git rebase origin/${{ github.ref_name }} && git push origin HEAD:${{ github.ref_name }}; then
+              exito=true
+              break
+            fi
+            git rebase --abort 2>/dev/null || true
+            echo "Intento $intento de publicar falló, reintentando..."
+            sleep $((RANDOM % 10 + 5))
+          done
+          if [ "$exito" = false ]; then
+            echo "No se pudo publicar tras 5 intentos — el resultado sigue disponible como artefacto de esta ejecución."
+            exit 1
+          fi
