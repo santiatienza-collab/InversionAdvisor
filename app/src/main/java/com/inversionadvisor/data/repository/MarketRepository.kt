@@ -1807,27 +1807,36 @@ class MarketRepository(
     }
 
     /**
-     * "Sector en auge": compara los 11 sectores entre sí (fuerza relativa media 2S/1M/3M/6M
-     * frente al S&P 500 — ver SectorRotationCalculator). Antes esto solo vivía dentro de
-     * ScreenerRepository (privado, solo para el escaneo completo) — se saca aquí, compartido,
-     * para que la ficha de un stock suelto (BuyOpportunityAnalyzer, vía StockDetailViewModel)
-     * también pueda saber si SU sector está en auge, con el MISMO cálculo que usa el escáner,
-     * en vez de quedarse siempre sin este dato (que era la causa real de que el riesgo/recompensa
-     * no coincidiera entre la ficha del stock y Top10/Futuras compras para el mismo símbolo).
-     *
-     * Reutiliza la MISMA caché de velas semanales de 1 año que ya usan el escáner y el
-     * dashboard — si cualquiera de los dos ya las pidió recientemente, esto no vuelve a
-     * gastarlas (solo lectura de Room), pero si nunca se cargaron, sí implica 12 peticiones de
-     * red reales (11 sectores + el S&P 500) la primera vez.
+     * NUEVO — pedido expresamente: versión ampliada de computeSectorFavorability() (ver más
+     * abajo, que ahora delega aquí) — además de isSectorInFavor, también da el cambio % del
+     * S&P 500 en el año y la caída % de cada sector desde su máximo de 26 semanas (mismas velas
+     * ya cargadas para "Macrotendencia", sin ninguna petición de red adicional) — para las
+     * mejoras #1 y #3 (comparación con el mercado y con el propio sector), conectadas ya en
+     * scanner-cli y ahora también aquí, en el escaneo en directo y en la ficha del stock.
      */
-    suspend fun computeSectorFavorability(): Map<String, Boolean> = coroutineScope {
+    data class SectorContext(
+        val isSectorInFavor: Map<String, Boolean>,
+        val benchmarkYearChangePercent: Double?,
+        val sectorDeclinePercentByEtf: Map<String, Double?>
+    )
+
+    private fun declineFromRecentHigh(candles: List<Candle>, semanas: Int = 26): Double? {
+        if (candles.size < 5) return null
+        val ventana = candles.takeLast(semanas)
+        val maximoReciente = ventana.maxOf { it.high }
+        val precioActual = candles.last().close
+        if (maximoReciente <= 0.0) return null
+        return (maximoReciente - precioActual) / maximoReciente * 100
+    }
+
+    suspend fun computeSectorContext(): SectorContext = coroutineScope {
         val benchmarkCandles = try {
             refreshYahooCandlesBulkIfStale(com.inversionadvisor.domain.model.Symbols.SP500_BENCHMARK, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR)
             observeCandles(com.inversionadvisor.domain.model.Symbols.SP500_BENCHMARK, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR).first()
         } catch (e: Exception) {
             emptyList()
         }
-        if (benchmarkCandles.isEmpty()) return@coroutineScope emptyMap()
+        if (benchmarkCandles.isEmpty()) return@coroutineScope SectorContext(emptyMap(), null, emptyMap())
 
         val sectorCandles = com.inversionadvisor.domain.model.Symbols.SECTOR_ETFS.keys.map { etfSymbol ->
             async {
@@ -1843,12 +1852,31 @@ class MarketRepository(
         val sectorPerformance = com.inversionadvisor.domain.indicators.SectorRotationCalculator.calculate(
             sectorCandles, com.inversionadvisor.domain.model.Symbols.SECTOR_ETFS, benchmarkCandles
         )
-        // CAMBIADO a petición expresa: antes bastaba con que la MEDIA de fuerza relativa fuera
-        // positiva (podía colarse un sector con 1 mes muy flojo compensado por un 6 meses muy
-        // fuerte, o al revés) — ahora exige que LOS TRES plazos (1/3/6 meses) sean positivos a
-        // la vez, ver SectorRotationCalculator.isConsistentLeader.
-        sectorPerformance.associate { it.etfSymbol to it.isConsistentLeader }
+        val isSectorInFavor = sectorPerformance.associate { it.etfSymbol to it.isConsistentLeader }
+        val benchmarkYearChangePercent = benchmarkCandles.takeIf { it.size >= 2 }
+            ?.let { (it.last().close - it.first().close) / it.first().close * 100 }
+        val sectorDeclinePercentByEtf = sectorCandles.mapValues { (_, velas) -> declineFromRecentHigh(velas) }
+        SectorContext(isSectorInFavor, benchmarkYearChangePercent, sectorDeclinePercentByEtf)
     }
+
+    /**
+     * "Sector en auge": compara los 11 sectores entre sí (fuerza relativa media 2S/1M/3M/6M
+     * frente al S&P 500 — ver SectorRotationCalculator). Antes esto solo vivía dentro de
+     * ScreenerRepository (privado, solo para el escaneo completo) — se saca aquí, compartido,
+     * para que la ficha de un stock suelto (BuyOpportunityAnalyzer, vía StockDetailViewModel)
+     * también pueda saber si SU sector está en auge, con el MISMO cálculo que usa el escáner,
+     * en vez de quedarse siempre sin este dato (que era la causa real de que el riesgo/recompensa
+     * no coincidiera entre la ficha del stock y Top10/Futuras compras para el mismo símbolo).
+     *
+     * Reutiliza la MISMA caché de velas semanales de 1 año que ya usan el escáner y el
+     * dashboard — si cualquiera de los dos ya las pidió recientemente, esto no vuelve a
+     * gastarlas (solo lectura de Room), pero si nunca se cargaron, sí implica 12 peticiones de
+     * red reales (11 sectores + el S&P 500) la primera vez.
+     *
+     * MANTENIDA por compatibilidad — ahora delega en computeSectorContext(), la versión rica de
+     * arriba, para no duplicar la lógica.
+     */
+    suspend fun computeSectorFavorability(): Map<String, Boolean> = computeSectorContext().isSectorInFavor
 
     companion object {
         /** Nº máximo de símbolos por llamada batch a Twelve Data (sin usar por defecto ahora mismo). */

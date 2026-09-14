@@ -198,8 +198,14 @@ class Top10Repository(
             emptyList()
         }
         // "Sector en auge" UNA sola vez para todos — mismo cálculo que ahora usa también la
-        // ficha de un stock suelto (ver MarketRepository.computeSectorFavorability).
-        val sectorFavorability = runCatching { marketRepository.computeSectorFavorability() }.getOrDefault(emptyMap())
+        // ficha de un stock suelto (ver MarketRepository.computeSectorContext).
+        val sectorContext = runCatching { marketRepository.computeSectorContext() }
+            .getOrDefault(com.inversionadvisor.data.repository.MarketRepository.SectorContext(emptyMap(), null, emptyMap()))
+        val sectorFavorability = sectorContext.isSectorInFavor
+        // NUEVO — pedido expresamente (mejoras #1 y #3): benchmarkCandles ya se cargaba aquí
+        // arriba para otra cosa (spyCandles), así que esto sale gratis.
+        val benchmarkYearChangePercent = spyCandles.takeIf { it.size >= 2 }
+            ?.let { (it.last().close - it.first().close) / it.first().close * 100 }
         // PER medio del sector UNA sola vez para todos (respaldo de "Valoración" para los
         // sectores sin rango típico guardado).
         marketRepository.refreshSectorPeRatiosIfStale()
@@ -316,7 +322,9 @@ class Top10Repository(
                         sectorInFavor = candidate.sectorEtf?.let { sectorFavorability[it] },
                         sectorEtf = candidate.sectorEtf,
                         dailyCandlesForCross = dailyCandlesForCross,
-                        monthlyCandlesForFlag = monthlyCandlesForFlag?.ifEmpty { null }
+                        monthlyCandlesForFlag = monthlyCandlesForFlag?.ifEmpty { null },
+                        benchmarkYearChangePercent = benchmarkYearChangePercent,
+                        sectorDeclinePercent = candidate.sectorEtf?.let { sectorContext.sectorDeclinePercentByEtf[it] }
                     )
 
                     onProgress(doneCount.incrementAndGet(), pool.size)

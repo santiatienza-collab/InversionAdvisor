@@ -218,6 +218,19 @@ object Top10Calculator {
          *  ambos se comprueban de forma independiente, no se excluyen entre sí. Triple techo:
          *  -20 puntos. Triple suelo: +15 puntos. */
         tripleTopBottomResult: UptrendDetector.TripleTopBottomResult = UptrendDetector.TripleTopBottomResult(UptrendDetector.TripleTopBottomPattern.NONE),
+        /** Bono/penalización APARTE, pedido expresamente (mejora #1, opción C: ajuste de
+         *  puntuación, no filtro de entrada) — compara el cambio % del stock en el último año
+         *  con el del S&P 500 en el mismo periodo. Si el stock supera claramente al mercado
+         *  (≥10 puntos porcentuales mejor) suma; si se queda claramente por detrás (≥10 puntos
+         *  peor) resta. null (sin dato del benchmark) = no se aplica nada, ni suma ni resta. */
+        benchmarkYearChangePercent: Double? = null,
+        /** Bono/penalización APARTE, pedido expresamente (mejora #3, opción C) — compara la
+         *  caída del stock (longTermDecline) con la caída de su propio sector (ETF) en la misma
+         *  ventana. Si el stock cayó bastante MENOS que su sector (≥8 puntos porcentuales mejor,
+         *  relativamente fuerte dentro de un sector débil) suma; si cayó bastante MÁS que su
+         *  sector (≥8 puntos peor, especialmente débil dentro de su propio sector) resta. null
+         *  (sin dato del sector, o sin caída detectada) = no se aplica nada. */
+        sectorDeclinePercent: Double? = null,
         requireSignal: Boolean = true
     ): ScoredCandidate? {
         val longTermQualifies = longTermDecline != null && longTermDecline.declinePercentFromRecentHigh >= MIN_DECLINE_PERCENT
@@ -466,6 +479,30 @@ object Top10Calculator {
             val fecha2 = tripleTopBottomResult.secondDate?.let { UptrendDetector.formatCandleDateForDisplay(it) }
             val fecha3 = tripleTopBottomResult.thirdDate?.let { UptrendDetector.formatCandleDateForDisplay(it) }
             bonusWarnings += "Patrón de Triple Suelo Detectado ($fecha1, $fecha2 y $fecha3) +15"
+        }
+        // NUEVO — mejora #1 (opción C): comparación con el mercado, como ajuste de puntuación,
+        // no como filtro de entrada.
+        if (yearChangePercent != null && benchmarkYearChangePercent != null) {
+            val diferenciaVsMercado = yearChangePercent - benchmarkYearChangePercent
+            if (diferenciaVsMercado >= 10.0) {
+                totalBonus += 10.0
+                bonusWarnings += "Supera claramente al S&P 500 en el último año (+%.1f puntos) +10".format(diferenciaVsMercado)
+            } else if (diferenciaVsMercado <= -10.0) {
+                totalPenalty += 10.0
+                penaltyWarnings += "Queda claramente por detrás del S&P 500 en el último año (%.1f puntos) -10".format(diferenciaVsMercado)
+            }
+        }
+        // NUEVO — mejora #3 (opción C): comparación con el propio sector durante la caída, como
+        // ajuste de puntuación, no como filtro de entrada.
+        if (longTermDecline != null && sectorDeclinePercent != null) {
+            val diferenciaVsSector = sectorDeclinePercent - longTermDecline.declinePercentFromRecentHigh
+            if (diferenciaVsSector >= 8.0) {
+                totalBonus += 10.0
+                bonusWarnings += "Ha caído bastante menos que su propio sector (%.1f puntos de diferencia) +10".format(diferenciaVsSector)
+            } else if (diferenciaVsSector <= -8.0) {
+                totalPenalty += 10.0
+                penaltyWarnings += "Ha caído bastante más que su propio sector (%.1f puntos de diferencia) -10".format(diferenciaVsSector)
+            }
         }
         if (earningsWithinThreeWeeks) {
             totalPenalty += 10.0

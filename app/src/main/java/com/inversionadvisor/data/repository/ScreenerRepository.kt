@@ -204,7 +204,8 @@ class ScreenerRepository(
         }
 
     private suspend fun runFullScreenInternal(indexName: String, onProgress: suspend (done: Int, total: Int) -> Unit) = coroutineScope {
-        val sectorInFavor = computeSectorFavorability()
+        val sectorContext = computeSectorContext()
+        val sectorInFavor = sectorContext.isSectorInFavor
         // .distinctBy(symbol): red de seguridad además del arreglo en el parser — si por lo
         // que sea quedara algún símbolo duplicado en el universo (p. ej. caché antigua de
         // antes de este arreglo), aquí se corta antes de escanearlo dos veces.
@@ -225,7 +226,7 @@ class ScreenerRepository(
             async {
                 val result = semaphore.withPermit {
                     try {
-                        scanSymbol(entry, sectorInFavor, now)
+                        scanSymbol(entry, sectorInFavor, sectorContext, now)
                     } catch (e: Exception) {
                         // Un fallo puntual en un símbolo (delisted, sin datos, timeout...)
                         // no debe cortar el escaneo completo de los demás.
@@ -255,6 +256,7 @@ class ScreenerRepository(
     private suspend fun scanSymbol(
         entry: StockUniverseEntry,
         sectorInFavor: Map<String, Boolean>,
+        sectorContext: com.inversionadvisor.data.repository.MarketRepository.SectorContext,
         now: Long
     ): ScanResult? {
         marketRepository.refreshYahooCandlesBulkIfStale(entry.symbol, ChartRange.ONE_YEAR)
@@ -347,6 +349,8 @@ class ScreenerRepository(
             marketTrap = null,
             macd = null,
             hasLongTermUptrend = uptrendSignal != null,
+            benchmarkYearChangePercent = sectorContext.benchmarkYearChangePercent,
+            sectorDeclinePercent = sectorContext.sectorDeclinePercentByEtf[entry.sectorEtf],
             requireSignal = false
         )?.combinedScore
 

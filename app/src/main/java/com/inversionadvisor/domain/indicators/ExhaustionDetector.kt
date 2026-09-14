@@ -107,11 +107,21 @@ object ExhaustionDetector {
             .minByOrNull { it.price }
             ?.price
 
-        val recoveryProgress = nextResistance?.let { resistance ->
-            val range = resistance - recentLowCandle.low
-            if (range <= 0) null
-            else ((currentPrice - recentLowCandle.low) / range * 100).coerceIn(0.0, 100.0)
-        }
+        // NUEVO — pedido expresamente (mejora #4): antes cualquier resistencia por encima del
+        // precio actual valía, aunque estuviera pegada al suelo — con eso, "recuperar el 10% del
+        // camino" era casi gratis si la resistencia más cercana estaba muy cerca. Ahora se exige
+        // que la resistencia esté al menos un 6% por encima del suelo, para que el "camino"
+        // hacia ella sea de verdad significativo, no una distancia minúscula.
+        val distanciaResistenciaDesdeElSuelo = nextResistance?.let { (it - recentLowCandle.low) / recentLowCandle.low * 100 }
+        val resistenciaSuficientementeLejos = distanciaResistenciaDesdeElSuelo != null && distanciaResistenciaDesdeElSuelo >= 6.0
+
+        val recoveryProgress = if (resistenciaSuficientementeLejos) {
+            nextResistance?.let { resistance ->
+                val range = resistance - recentLowCandle.low
+                if (range <= 0) null
+                else ((currentPrice - recentLowCandle.low) / range * 100).coerceIn(0.0, 100.0)
+            }
+        } else null
 
         if (recoveryProgress != null && recoveryProgress > 10) {
             reasons += "Ya recuperado un %.0f%% del camino hacia la próxima resistencia (%.2f)".format(

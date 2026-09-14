@@ -801,6 +801,17 @@ object UptrendDetector {
         }
         if (!higherLows) return null
 
+        // NUEVO — pedido expresamente (mejora #2): la regresión de arriba mira TODO el año, así
+        // que un stock podía seguir etiquetado "tendencia alcista clara" varias semanas después
+        // de haber empezado a girar de verdad a la baja. Se exige, además, que las últimas 5
+        // semanas no muestren una caída clara (más de un 6% desde hace 5 semanas) — si la
+        // muestran, ya no cuenta como tendencia alcista "actual", aunque el año entero cuadre.
+        if (closes.size > 5) {
+            val hace5Semanas = closes[closes.size - 1 - 5]
+            val cambioUltimas5Semanas = (closes.last() - hace5Semanas) / hace5Semanas * 100
+            if (cambioUltimas5Semanas < -6.0) return null
+        }
+
         val yearChangePercent = (closes.last() - closes.first()) / closes.first() * 100
 
         return UptrendSignal(

@@ -127,7 +127,12 @@ object BuyOpportunityAnalyzer {
          *  (fallback, ver FinvizPeParser.parseStockPe), ya que con beneficio negativo no existe
          *  un trailing P/E real que mostrar. Caso real: Lumentum. Puramente informativo — no
          *  cambia ningún cálculo de puntuación, solo se propaga hasta la interfaz. */
-        hasNegativeTrailingEarnings: Boolean = false
+        hasNegativeTrailingEarnings: Boolean = false,
+        /** NUEVO — pedido expresamente (mejoras #1 y #3, opción C), conectadas ya en
+         *  scanner-cli — ver Top10Calculator.score() para el detalle exacto de cuándo suman o
+         *  restan. null = sin dato, no se aplica nada. */
+        benchmarkYearChangePercent: Double? = null,
+        sectorDeclinePercent: Double? = null
     ): Analysis? {
         if (candles.size < 15) return null
 
@@ -228,6 +233,8 @@ object BuyOpportunityAnalyzer {
             hchResult = hchResult,
             hasLongTermUptrend = uptrendSignal != null,
             tripleTopBottomResult = tripleTopBottomResult,
+            benchmarkYearChangePercent = benchmarkYearChangePercent,
+            sectorDeclinePercent = sectorDeclinePercent,
             requireSignal = false
         ) ?: return null
 

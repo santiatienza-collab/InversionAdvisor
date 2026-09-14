@@ -119,7 +119,7 @@ class StockDetailViewModel(
     private val _todayLivePrice = MutableStateFlow<Double?>(null)
     // Se rellena una vez en init (ver más abajo) — el propio cálculo compara los 11 sectores
     // entre sí, así que no tiene sentido repetirlo por cada campo que cambie, solo una vez.
-    private val _sectorFavorability = MutableStateFlow<Map<String, Boolean>>(emptyMap())
+    private val _sectorFavorability = MutableStateFlow(com.inversionadvisor.data.repository.MarketRepository.SectorContext(emptyMap(), null, emptyMap()))
 
     /**
      * SOLO para 1 DÍA: si hoy no hay datos frescos (candles vacío — sea por lo que sea, sin
@@ -293,7 +293,8 @@ class StockDetailViewModel(
         val sectorEtf = values[3] as String?
         val financials = values[4] as com.inversionadvisor.data.local.entities.CompanyFinancialsEntity?
         val spyCandles = values[5] as List<Candle>
-        val sectorFavorability = values[6] as Map<String, Boolean>
+        val sectorContext = values[6] as com.inversionadvisor.data.repository.MarketRepository.SectorContext
+        val sectorFavorability = sectorContext.isSectorInFavor
         val earningsDate = values[7] as com.inversionadvisor.data.local.entities.EarningsDateEntity?
         val dailyCandlesForCross = values[8] as List<Candle>
         val monthlyCandlesForFlag = values[9] as List<Candle>
@@ -310,6 +311,11 @@ class StockDetailViewModel(
         val incomeGrowing = financials?.netIncomeCurrentYear?.let { current ->
             financials.netIncomeTwoYearsAgo?.let { twoYearsAgo -> current > twoYearsAgo }
         }
+        // NUEVO — pedido expresamente (mejoras #1 y #3, conectadas ya en scanner-cli): el
+        // cambio % del S&P 500 sale gratis de spyCandles (ya se cargaba aquí para otra cosa),
+        // y la caída % del propio sector sale de sectorContext (misma vela que isSectorInFavor).
+        val benchmarkYearChangePercent = spyCandles.takeIf { it.size >= 2 }
+            ?.let { (it.last().close - it.first().close) / it.first().close * 100 }
         BuyOpportunityAnalyzer.analyze(
             candles = yearCandles,
             sectorName = sectorName,
@@ -323,7 +329,9 @@ class StockDetailViewModel(
             symbol = symbol,
             dailyCandlesForCross = dailyCandlesForCross,
             monthlyCandlesForFlag = monthlyCandlesForFlag.ifEmpty { null },
-            hasNegativeTrailingEarnings = hasNegativeTrailingEarnings
+            hasNegativeTrailingEarnings = hasNegativeTrailingEarnings,
+            benchmarkYearChangePercent = benchmarkYearChangePercent,
+            sectorDeclinePercent = sectorEtf?.let { sectorContext.sectorDeclinePercentByEtf[it] }
         )
     }
 
@@ -483,7 +491,7 @@ class StockDetailViewModel(
                 // calculaba aquí (demasiado caro traer los 11 sectores solo para ver un stock,
                 // se decía) y por eso los números no cuadraban — el coste real suele ser bajo
                 // si Panel/Análisis ya se han abierto antes (misma caché de velas compartida).
-                runCatching { marketRepository.computeSectorFavorability() }.getOrNull()?.let {
+                runCatching { marketRepository.computeSectorContext() }.getOrNull()?.let {
                     _sectorFavorability.value = it
                 }
             }

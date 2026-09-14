@@ -273,6 +273,20 @@ fun main(args: Array<String>) = runBlocking {
     }
     val isSectorInFavor: Map<String, Boolean> = sectorPerformance.associate { it.etfSymbol to it.isConsistentLeader }
 
+    // NUEVO — pedido expresamente (mejoras #1 y #3, opción C): estas dos cuentas son gratis, ya
+    // se tienen las velas cargadas de la sección de rotación sectorial de arriba.
+    fun declineFromRecentHigh(velas: List<Candle>, semanas: Int = 26): Double? {
+        if (velas.size < 5) return null
+        val ventana = velas.takeLast(semanas)
+        val maximoReciente = ventana.maxOf { it.high }
+        val precioActual = velas.last().close
+        if (maximoReciente <= 0.0) return null
+        return (maximoReciente - precioActual) / maximoReciente * 100
+    }
+    val benchmarkYearChangePercent: Double? = benchmarkCandles.takeIf { it.size >= 2 }
+        ?.let { (it.last().close - it.first().close) / it.first().close * 100 }
+    val sectorDeclinePercentByEtf: Map<String, Double?> = sectorEtfCandles.mapValues { (_, velas) -> declineFromRecentHigh(velas) }
+
     println("Pidiendo PER por sector (Finviz)...")
     val sectorAveragePe: Map<String, Double> = try {
         val html = finvizApi.getSectorGroupsHtml().string()
@@ -442,6 +456,8 @@ fun main(args: Array<String>) = runBlocking {
             hchResult = p.hchResult,
             hasLongTermUptrend = p.uptrend != null,
             tripleTopBottomResult = p.tripleTopBottomResult,
+            benchmarkYearChangePercent = benchmarkYearChangePercent,
+            sectorDeclinePercent = sectorDeclinePercentByEtf[p.entry.sectorEtf],
             requireSignal = false
         )
 
