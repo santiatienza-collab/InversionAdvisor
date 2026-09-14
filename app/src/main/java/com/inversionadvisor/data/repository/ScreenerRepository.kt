@@ -322,6 +322,16 @@ class ScreenerRepository(
         // — independientemente de si tiene tendencia clara o caída con agotamiento. La tendencia
         // alcista clara (hasClearUptrend) YA NO decide si el stock entra o no: se guarda aquí
         // para aplicarse DESPUÉS como bono en Top10Calculator (parámetro hasLongTermUptrend).
+        // NUEVO — pedido expresamente (fallo real: HCH no aparecía penalizado, faltaba en este
+        // 4º sitio) — se calculan aquí también los 3 patrones de techo/suelo, gratis con las
+        // MISMAS velas semanales de 1 año ya cargadas (sin ninguna petición nueva). HCH usa
+        // aquí solo 1 año (no 5, a diferencia de scanner-cli/ficha del stock/tarjeta) porque
+        // pedir 5 años extra para cientos de símbolos en el escaneo en directo saldría caro —
+        // es una aproximación más pobre, aceptada a propósito para esta puntuación PROVISIONAL
+        // (la tarjeta, al mostrarse, recalcula todo en directo con los 5 años completos).
+        val hchResultProvisional = UptrendDetector.detectHeadAndShoulders(candles)
+        val doubleTopBottomResultProvisional = UptrendDetector.detectDoubleTopOrBottom(candles)
+        val tripleTopBottomResultProvisional = UptrendDetector.detectTripleTopOrBottom(candles)
         val provisionalTop10Score = com.inversionadvisor.domain.indicators.Top10Calculator.score(
             trendQuality = uptrendSignal?.trendQuality,
             yearChangePercent = uptrendSignal?.yearChangePercent,
@@ -341,6 +351,9 @@ class ScreenerRepository(
             candlestickPattern = null,
             marketTrap = null,
             macd = null,
+            hchResult = hchResultProvisional,
+            doubleTopBottomResult = doubleTopBottomResultProvisional,
+            tripleTopBottomResult = tripleTopBottomResultProvisional,
             hasLongTermUptrend = uptrendSignal != null,
             hasLongTermDowntrend = UptrendDetector.evaluateDowntrend(candles),
             benchmarkYearChangePercent = sectorContext.benchmarkYearChangePercent,
