@@ -1020,17 +1020,10 @@ private fun BuyOpportunityCard(analysis: com.inversionadvisor.domain.indicators.
                 color = ratioColor,
                 modifier = Modifier.padding(top = 6.dp)
             )
-            // NUEVO — pedido expresamente: aclarar por qué este número puede no coincidir con el
-            // que se vio en Futuras compras/Top10 al analizar — decisión consciente (opción C):
-            // esta ficha SIEMPRE recalcula con datos en vivo del momento actual, mientras que las
-            // listas muestran la foto del último escaneo (hasta varias horas de antigüedad) — no
-            // es un fallo, cada una es correcta en su propio instante.
-            Text(
-                "Recalculado ahora con datos en vivo — puede diferir del que viste en Futuras compras/Top10 (esa lista muestra el último escaneo, no el momento actual)",
-                style = MaterialTheme.typography.labelSmall,
-                color = Color.Gray,
-                modifier = Modifier.padding(top = 4.dp)
-            )
+            // QUITADO a petición expresa: el aviso de "puede diferir de Futuras compras/Top10"
+            // ya no aplica — los 4 sitios (scanner-cli, escaneo en directo, esta ficha y las
+            // tarjetas de Valores Alcistas) están sincronizados con los mismos parámetros
+            // (benchmark, sector, HCH a 5 años, etc.), así que ya no debería diferir por diseño.
 
             // Penalizaciones y bonos APARTE (SMA50, aceleración de caída, resultados
             // trimestrales, divergencia momentum/precio, cruz dorada) — aviso en neón

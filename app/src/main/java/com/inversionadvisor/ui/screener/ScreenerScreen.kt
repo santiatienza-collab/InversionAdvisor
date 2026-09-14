@@ -139,11 +139,20 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
         PestañaSuperior(MarketUniverse.TOP10.displayName, state.selectedMarket == MarketUniverse.TOP10) { viewModel.selectMarket(MarketUniverse.TOP10) }
     )
 
+    // NUEVO — pedido expresamente: declarado aquí (no dentro del "if" del desplegable) para que
+    // también sea accesible más abajo, dentro del LazyColumn, donde se decide si se muestra la
+    // gráfica y Valores Alcistas o no.
+    var indiceElegidoManualmente by remember { mutableStateOf(false) }
+
     Column(modifier = Modifier.fillMaxWidth()) {
-        // CAMBIADO a petición expresa: ya no hace falta que se deslice — con solo 4 pestañas
-        // ("Índices" agrupa las 4 de antes en una), TabRow fijo y centrado ya cabe de sobra.
-        TabRow(
-            selectedTabIndex = pestañasSuperiores.indexOfFirst { it.seleccionada }.coerceAtLeast(0)
+        // CAMBIADO otra vez a petición expresa: con TabRow fijo, las 4 pestañas se estiraban a
+        // partes iguales ocupando todo el ancho — ahora, con ScrollableTabRow, cada una ocupa
+        // solo el espacio que necesita (sin cambiar el tamaño de la fuente), aunque eso implique
+        // que technically sea "deslizante" si algún día no cupieran las 4 — con 4 palabras cortas
+        // no debería notarse en la práctica.
+        ScrollableTabRow(
+            selectedTabIndex = pestañasSuperiores.indexOfFirst { it.seleccionada }.coerceAtLeast(0),
+            edgePadding = 12.dp
         ) {
             pestañasSuperiores.forEach { pestaña ->
                 Tab(
@@ -165,8 +174,12 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
         // dentro de S&P 500/Nasdaq-100/IBEX 35 — ahora todo va seguido en la única pestaña
         // "Índices" (desplegable + gráfica + Valores Alcistas, ver más abajo), sin subpestañas.
         if (esUnMercadoDeIndices) {
-            // NUEVO — el desplegable "Elige un índice bursátil" que sustituye a las 4 pestañas
-            // de antes. ExposedDropdownMenuBox es el "combobox" estándar de Material3.
+            // NUEVO — pedido expresamente: los 3 mercados se siguen cargando solos en segundo
+            // plano desde el arranque (MainActivity), pero aquí NO se muestra nada (ni gráfica
+            // ni Valores Alcistas) hasta que el usuario elige explícitamente un índice en este
+            // desplegable — indiceElegidoManualmente empieza en false cada vez que se entra en
+            // esta pestaña, aunque state.selectedMarket ya tenga un valor por defecto (S&P 500)
+            // por debajo, para otras cosas del ViewModel (declarado arriba, ámbito compartido).
             var desplegableAbierto by remember { mutableStateOf(false) }
             ExposedDropdownMenuBox(
                 expanded = desplegableAbierto,
@@ -174,7 +187,7 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 OutlinedTextField(
-                    value = state.selectedMarket.displayName,
+                    value = if (indiceElegidoManualmente) state.selectedMarket.displayName else "",
                     onValueChange = {},
                     readOnly = true,
                     label = {
@@ -196,6 +209,7 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                             text = { Text(indice.displayName) },
                             onClick = {
                                 viewModel.selectMarket(indice)
+                                indiceElegidoManualmente = true
                                 desplegableAbierto = false
                             }
                         )
@@ -272,14 +286,14 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                 item { MoveIndexSemaphoreCard(marketRepository) }
                 val moveEntry = com.inversionadvisor.domain.model.Symbols.US_BOND_CHART_SYMBOLS.last()
                 item { GenericChartCard(marketRepository, moveEntry.second, "${moveEntry.first} (${moveEntry.second})", showVolume = false, priceChartHeightDp = 195) }
-            } else {
-                // QUITADA la comprobación de subpestaña "Índice" — ya no existen subpestañas,
-                // esto se muestra siempre para los 4 índices (S&P 500/Nasdaq-100/IBEX 35/
-                // Russell 2000), seguido de "Valores Alcistas" más abajo (salvo Russell 2000).
+            } else if (indiceElegidoManualmente) {
+                // QUITADA la comprobación de subpestaña "Índice" — ya no existen subpestañas.
+                // NUEVO — solo se muestra tras elegir un índice en el desplegable de arriba.
                 item { IndexOverviewChartCard(marketRepository, state.selectedMarket) }
-                // MOVIDO a petición expresa: el botón "Analizar" (versión compacta) ya no va
-                // aquí, pegado a la gráfica — se movió al FINAL de la página, después de
-                // "Valores Alcistas" (ver más abajo, CompactScreenerHeader).
+                // VUELTO a petición expresa a su sitio de siempre — justo debajo de la gráfica.
+                if (state.selectedMarket != MarketUniverse.RUSSELL2000) {
+                    item { CompactScreenerHeader(state, onRunClick = viewModel::runScreener) }
+                }
             }
 
             state.error?.let { error ->
@@ -319,48 +333,46 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
 
             // A partir de aquí solo llegan S&P 500/Nasdaq-100/IBEX 35 (Top10/Russell 2000/
             // Divisas/Bonos ya han salido con return@LazyColumn más arriba).
-            // QUITADA la comprobación de subpestaña — ya no existen, esto se muestra siempre
-            // seguido de la gráfica del índice, dentro de la misma pestaña "Índices".
-            // ScreenerHeader ya se mostró una vez arriba (junto a la gráfica) — no se repite aquí.
-            item {
-                // NUEVO — pedido expresamente: mismo formato (fuente/tamaño/color índigo con
-                // sombra gris) que ya se usa para el nombre de la empresa en la ficha del stock.
-                Column {
-                    Text(
-                        "Valores Alcistas",
-                        style = MaterialTheme.typography.titleLarge.copy(shadow = sombraGrisTabs),
-                        fontWeight = FontWeight.Bold,
-                        color = colorIndigoTabs
-                    )
-                    Text(
-                        "Los mejores valores para el índice ${state.selectedMarket.displayName}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray
-                    )
-                }
-            }
-            if (state.uptrendCandidates.isEmpty()) {
+            // QUITADA la comprobación de subpestaña — ya no existen. NUEVO — gateado con
+            // indiceElegidoManualmente: sin elegir nada en el desplegable, nada de esto se ve.
+            if (indiceElegidoManualmente) {
                 item {
-                    EmptyScreenerHint(
-                        state.isRunning,
-                        state.lastRun != null,
-                        "Ningún valor de ${state.selectedMarket.displayName} con puntuación de 55 o más en el último análisis."
-                    )
+                    // NUEVO — pedido expresamente: mismo formato (fuente/tamaño/color índigo con
+                    // sombra gris) que ya se usa para el nombre de la empresa en la ficha del stock.
+                    Column {
+                        Text(
+                            "Valores Alcistas",
+                            style = MaterialTheme.typography.titleLarge.copy(shadow = sombraGrisTabs),
+                            fontWeight = FontWeight.Bold,
+                            color = colorIndigoTabs
+                        )
+                        Text(
+                            "Los mejores valores para el índice ${state.selectedMarket.displayName}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray
+                        )
+                    }
                 }
-            } else {
-                expandableSection(
-                    items = state.uptrendCandidates,
-                    visibleCount = state.uptrendVisibleCount,
-                    onShowMore = { viewModel.showMoreUptrend(state.uptrendCandidates.size) },
-                    onCollapse = viewModel::collapseUptrend,
-                    key = { it.symbol }
-                ) { candidate ->
-                    UptrendCard(candidate, marketRepository, onClick = { viewModel.selectStock(candidate.symbol) })
+                if (state.uptrendCandidates.isEmpty()) {
+                    item {
+                        EmptyScreenerHint(
+                            state.isRunning,
+                            state.lastRun != null,
+                            "Ningún valor de ${state.selectedMarket.displayName} con puntuación de 55 o más en el último análisis."
+                        )
+                    }
+                } else {
+                    expandableSection(
+                        items = state.uptrendCandidates,
+                        visibleCount = state.uptrendVisibleCount,
+                        onShowMore = { viewModel.showMoreUptrend(state.uptrendCandidates.size) },
+                        onCollapse = viewModel::collapseUptrend,
+                        key = { it.symbol }
+                    ) { candidate ->
+                        UptrendCard(candidate, marketRepository, onClick = { viewModel.selectStock(candidate.symbol) })
+                    }
                 }
             }
-            // NUEVO — pedido expresamente: el botón "Analizar" (versión compacta, más pequeña
-            // que antes) va ahora al FINAL de la página, después de "Valores Alcistas".
-            item { CompactScreenerHeader(state, onRunClick = viewModel::runScreener) }
         }
 
         // Botón flotante transparente para volver al principio tras un scroll largo — pedido
@@ -443,12 +455,15 @@ private fun CompactScreenerHeader(state: ScreenerUiState, onRunClick: () -> Unit
                 modifier = Modifier.fillMaxWidth().height(40.dp),
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
-                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                    disabledContentColor = MaterialTheme.colorScheme.onPrimary
+                    // NUEVO — pedido expresamente: azul índigo, mismo tono que el resto de la UI.
+                    containerColor = Color(0xFF3F51B5),
+                    contentColor = Color.White,
+                    disabledContainerColor = Color(0xFF3F51B5).copy(alpha = 0.5f),
+                    disabledContentColor = Color.White
                 )
             ) {
                 if (state.isRunning) {
-                    CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.onPrimary)
+                    CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = Color.White)
                     Spacer(modifier = Modifier.padding(start = 8.dp))
                     Text("Analizando ${state.selectedMarket.displayName}…", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
                 } else {
@@ -1504,15 +1519,9 @@ private fun Top10Section(
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text("Top10 - Las acciones más rentables", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-        Surface(shape = RoundedCornerShape(8.dp), color = Color(0xFF1565C0).copy(alpha = 0.10f), modifier = Modifier.padding(top = 8.dp)) {
-            Text(
-                "Importante: hace falta haber pulsado \"Analizar\" antes en las pestañas S&P 500, Nasdaq-100 e IBEX 35 " +
-                    "— el Top 10 se calcula con esos resultados ya guardados, no dispara ningún escaneo nuevo por su cuenta.",
-                style = MaterialTheme.typography.bodySmall,
-                color = Color(0xFF1565C0),
-                modifier = Modifier.padding(10.dp)
-            )
-        }
+        // QUITADO a petición expresa: el aviso "hace falta haber pulsado Analizar antes" — ya no
+        // aplica, S&P 500/Nasdaq-100/IBEX 35 (y luego Top10) se cargan solos al abrir la app
+        // (ver MainActivity), no hace falta pulsar nada a mano para tener datos aquí.
 
         Spacer(modifier = Modifier.padding(top = 12.dp))
         Button(
