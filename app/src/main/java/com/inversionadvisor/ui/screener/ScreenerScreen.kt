@@ -512,7 +512,6 @@ private fun EmptyScreenerHint(isRunning: Boolean, hasRunBefore: Boolean, emptyMe
 }
 
 @Composable
-@Composable
 @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class) // FlowRow — ver comentario donde se usa
 private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRepository, onClick: () -> Unit) {
     // REESCRITA POR COMPLETO a petición expresa: "Valores Alcistas" (antes "Tendencia alcista")
