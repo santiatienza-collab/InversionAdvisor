@@ -214,6 +214,24 @@ fun main(args: Array<String>) = runBlocking {
     }
     println("Escaneando ${universe.size} símbolos de ${market.displayName}...")
 
+    // NUEVO — pedido expresamente tras el fallo real "Connection reset by peer": a diferencia
+    // de la app (ver NetworkModule.browserHeadersInterceptor), este script no llevaba ninguna
+    // cabecera de navegador — sin User-Agent, Yahoo/Finviz pueden tratar la petición como
+    // tráfico de bot y cortar la conexión en vez de responder. Mismas cabeceras que ya usa la
+    // app, para que el escáner se comporte de cara al servidor igual que un navegador normal.
+    fun cabecerasDeNavegador(referer: String) = okhttp3.Interceptor { chain ->
+        val request = chain.request().newBuilder()
+            .header(
+                "User-Agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+                    "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            )
+            .header("Accept", "application/json, text/plain, */*")
+            .header("Referer", referer)
+            .build()
+        chain.proceed(request)
+    }
+
     val client = OkHttpClient.Builder()
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
@@ -221,19 +239,37 @@ fun main(args: Array<String>) = runBlocking {
     val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     val yahooApi = Retrofit.Builder()
         .baseUrl("https://query1.finance.yahoo.com/")
-        .client(client)
+        .client(client.newBuilder().addInterceptor(cabecerasDeNavegador("https://finance.yahoo.com/")).build())
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
         .create(YahooChartApiCli::class.java)
     val finvizApi = Retrofit.Builder()
         .baseUrl("https://finviz.com/")
-        .client(client)
+        .client(client.newBuilder().addInterceptor(cabecerasDeNavegador("https://finviz.com/")).build())
         .build()
         .create(FinvizApiCli::class.java)
 
+    // NUEVO — pedido junto con las cabeceras de navegador: además de parecer un navegador real,
+    // un reintento simple absorbe los cortes de conexión puntuales (bastante probables con el
+    // volumen de peticiones que hace este script) sin tener que relanzar todo el escaneo.
+    suspend fun <T> conReintentos(intentos: Int = 3, bloque: suspend () -> T): T {
+        var ultimoError: Exception? = null
+        repeat(intentos) { intento ->
+            try {
+                return bloque()
+            } catch (e: Exception) {
+                ultimoError = e
+                if (intento < intentos - 1) kotlinx.coroutines.delay(500L * (intento + 1))
+            }
+        }
+        throw ultimoError ?: IllegalStateException("fallo sin excepción registrada")
+    }
+
     suspend fun fetchWeeklyCandles(symbol: String): List<Candle> = try {
-        val respuesta = yahooApi.getChart(symbol, range = "1y", interval = "1wk")
-        respuesta.chart.result?.firstOrNull()?.toCandles() ?: emptyList()
+        conReintentos {
+            val respuesta = yahooApi.getChart(symbol, range = "1y", interval = "1wk")
+            respuesta.chart.result?.firstOrNull()?.toCandles() ?: emptyList()
+        }
     } catch (e: Exception) {
         println("  $symbol: fallo al pedir velas semanales (${e.message ?: e::class.simpleName})")
         emptyList()
@@ -245,16 +281,20 @@ fun main(args: Array<String>) = runBlocking {
     // MENSUALES (10 años, igual que MarketRepository.refreshMonthlyCandlesForFlagIfStale) para
     // el patrón de bandera a largo plazo y el conteo de meses bajistas consolidados.
     suspend fun fetchDailyCandles(symbol: String): List<Candle> = try {
-        val respuesta = yahooApi.getChart(symbol, range = "1y", interval = "1d")
-        respuesta.chart.result?.firstOrNull()?.toCandles() ?: emptyList()
+        conReintentos {
+            val respuesta = yahooApi.getChart(symbol, range = "1y", interval = "1d")
+            respuesta.chart.result?.firstOrNull()?.toCandles() ?: emptyList()
+        }
     } catch (e: Exception) {
         println("  $symbol: fallo al pedir velas diarias (${e.message ?: e::class.simpleName})")
         emptyList()
     }
 
     suspend fun fetchMonthlyCandles(symbol: String): List<Candle> = try {
-        val respuesta = yahooApi.getChart(symbol, range = "10y", interval = "1mo")
-        respuesta.chart.result?.firstOrNull()?.toCandles() ?: emptyList()
+        conReintentos {
+            val respuesta = yahooApi.getChart(symbol, range = "10y", interval = "1mo")
+            respuesta.chart.result?.firstOrNull()?.toCandles() ?: emptyList()
+        }
     } catch (e: Exception) {
         println("  $symbol: fallo al pedir velas mensuales (${e.message ?: e::class.simpleName})")
         emptyList()
