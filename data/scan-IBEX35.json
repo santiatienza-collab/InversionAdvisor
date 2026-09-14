@@ -10,11 +10,11 @@
       "sectorEtf": "XLF",
       "sectorName": "Banca / Finanzas",
       "indexName": "IBEX35",
-      "rsi14": 64.22901992636449,
+      "rsi14": 64.30718906515884,
       "volumeRatio": 0.76170989984898,
       "isUptrend": true,
-      "trendQuality": 0.9011008155054486,
-      "yearChangePercent": 54.79132553549256,
+      "trendQuality": 0.901128203539247,
+      "yearChangePercent": 54.85027255265881,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -23,9 +23,9 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.6451435639419713,
-      "percentFromYearHigh": -3.0996315157333387,
-      "macdHistogram": -0.007009328455441999,
+      "stockVolatilityRatio": 0.6422341234227571,
+      "percentFromYearHigh": -3.062730302666663,
+      "macdHistogram": -0.006690232833000409,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -36,10 +36,10 @@
       "rewardScore": 15.0,
       "riskScore": 15.0,
       "ratingOutOf10": 7,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en zona neutra (64). Riesgo (volatilidad): volatilidad propia 0.65x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 76% de su media, MACD bajista.",
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en zona neutra (64). Riesgo (volatilidad): volatilidad propia 0.64x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 76% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+37.2 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+37.3 puntos) +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10"
       ],
       "factors": [
@@ -83,14 +83,14 @@
         "Tendencia (corto plazo, 3 meses) (peso 15%): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (64) → valor 1.0 × 15% = +15.00 pts",
         "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.65x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.64x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "Volumen / MACD (peso 10%): volumen 76% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.00 + 1) × 50 = 50.0"
       ],
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+37.2 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 50.0 pasa a 70.0",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+37.3 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 50.0 pasa a 70.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -1050,7 +1050,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (63). Riesgo (volatilidad): volatilidad propia 0.39x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 47% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+13.6 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+13.5 puntos) +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
       ],
       "factors": [
@@ -1091,7 +1091,7 @@
         }
       ],
       "rewardBreakdown": [
-        "RSI (peso 15%): RSI en zona neutra (63) → valor 1.0 × 15% = +15.00 pts",
+        "RSI (peso 15%): RSI en zona neutra (62) → valor 1.0 × 15% = +15.00 pts",
         "Valoración PER (peso 15%): sin dato, no puntúa",
         "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.39x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
@@ -1101,7 +1101,99 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 47% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+13.6 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 57.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+13.5 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 57.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
+      "symbol": "UNI.MC",
+      "name": "Unicaja Banco",
+      "sectorEtf": "XLF",
+      "sectorName": "Banca / Finanzas",
+      "indexName": "IBEX35",
+      "rsi14": 74.93751121088897,
+      "volumeRatio": 0.7289221037068472,
+      "isUptrend": true,
+      "trendQuality": 0.8143292862706897,
+      "yearChangePercent": 63.40441859569057,
+      "aboveTrendSma": true,
+      "isBuyOpportunity": false,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 15.27,
+      "isSectorInFavor": false,
+      "hchState": "NONE",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.4164545239040074,
+      "percentFromYearHigh": -0.8714549844677306,
+      "nearestSupportPercent": 28.708638487626814,
+      "candlestickPattern": "DOJI",
+      "macdHistogram": 0.024932929485340205,
+      "shortTermBullish": true,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 1,
+      "combinedScore": 55.0,
+      "rewardScore": 0.0,
+      "riskScore": 30.0,
+      "ratingOutOf10": 6,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en sobrecompra (75). Riesgo (volatilidad): volatilidad propia 0.42x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 73% de su media, MACD alcista.",
+      "penaltyWarnings": [],
+      "bonusWarnings": [
+        "Supera claramente al S&P 500 en el último año (+45.9 puntos) +10",
+        "Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "Tendencia (corto plazo, 3 meses) (peso 15%): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces → valor 0.0 × 15% = +0.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.42x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "Volumen / MACD (peso 10%): volumen 73% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.30 + 1) × 50 = 35.0"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "RSI (peso 15%): RSI en sobrecompra (75) → valor -1.0 × 15% = -15.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+45.9 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 35.0 pasa a 55.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -3295,11 +3387,11 @@
       "sectorEtf": "XLF",
       "sectorName": "Banca / Finanzas",
       "indexName": "IBEX35",
-      "rsi14": 64.22901992636449,
+      "rsi14": 64.30718906515884,
       "volumeRatio": 0.76170989984898,
       "isUptrend": true,
-      "trendQuality": 0.9011008155054486,
-      "yearChangePercent": 54.79132553549256,
+      "trendQuality": 0.901128203539247,
+      "yearChangePercent": 54.85027255265881,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -3308,9 +3400,9 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.6451435639419713,
-      "percentFromYearHigh": -3.0996315157333387,
-      "macdHistogram": -0.007009328455441999,
+      "stockVolatilityRatio": 0.6422341234227571,
+      "percentFromYearHigh": -3.062730302666663,
+      "macdHistogram": -0.006690232833000409,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -3321,10 +3413,10 @@
       "rewardScore": 15.0,
       "riskScore": 15.0,
       "ratingOutOf10": 7,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en zona neutra (64). Riesgo (volatilidad): volatilidad propia 0.65x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 76% de su media, MACD bajista.",
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en zona neutra (64). Riesgo (volatilidad): volatilidad propia 0.64x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 76% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+37.2 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+37.3 puntos) +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10"
       ],
       "factors": [
@@ -3368,14 +3460,14 @@
         "Tendencia (corto plazo, 3 meses) (peso 15%): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces → valor 0.0 × 15% = +0.00 pts",
         "RSI (peso 15%): RSI en zona neutra (64) → valor 1.0 × 15% = +15.00 pts",
         "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.65x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.64x lo habitual → valor 0.0 × 15% = +0.00 pts",
         "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
         "Volumen / MACD (peso 10%): volumen 76% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
         "PUNTUACIÓN TOTAL (0-100) = (0.00 + 1) × 50 = 50.0"
       ],
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+37.2 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 50.0 pasa a 70.0",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+37.3 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 50.0 pasa a 70.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
