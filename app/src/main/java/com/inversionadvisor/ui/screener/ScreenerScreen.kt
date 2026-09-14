@@ -30,6 +30,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.ExposedDropdownMenu
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -114,68 +119,88 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
     }
 
     // NUEVO — pedido expresamente: mismo color índigo con sombra gris que el nombre del stock,
-    // reutilizado aquí para las pestañas superiores (tanto las de mercado como las 3 nuevas
-    // subpestañas de abajo).
+    // reutilizado aquí para las pestañas superiores y para el desplegable de índices de abajo.
     val colorIndigoTabs = Color(0xFF3F51B5)
     val sombraGrisTabs = Shadow(color = Color.Gray, offset = Offset(1.5f, 1.5f), blurRadius = 3f)
 
+    // NUEVO — pedido expresamente: las 4 pestañas de mercados de acciones (S&P 500/Nasdaq-100/
+    // IBEX 35/Russell 2000) se sustituyen por UNA sola pestaña "Índices" — dentro de ella, un
+    // desplegable elige cuál de los 4 se muestra (ver más abajo). Divisas/Bonos/Top10 se quedan
+    // como pestañas propias, sin cambios.
+    val gruposDeIndices = setOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35, MarketUniverse.RUSSELL2000)
+    val esUnMercadoDeIndices = state.selectedMarket in gruposDeIndices
+    data class PestañaSuperior(val etiqueta: String, val seleccionada: Boolean, val alPulsar: () -> Unit)
+    val pestañasSuperiores = listOf(
+        PestañaSuperior("Índices", esUnMercadoDeIndices) {
+            if (!esUnMercadoDeIndices) viewModel.selectMarket(MarketUniverse.SP500)
+        },
+        PestañaSuperior(MarketUniverse.DIVISAS.displayName, state.selectedMarket == MarketUniverse.DIVISAS) { viewModel.selectMarket(MarketUniverse.DIVISAS) },
+        PestañaSuperior(MarketUniverse.BONOS.displayName, state.selectedMarket == MarketUniverse.BONOS) { viewModel.selectMarket(MarketUniverse.BONOS) },
+        PestañaSuperior(MarketUniverse.TOP10.displayName, state.selectedMarket == MarketUniverse.TOP10) { viewModel.selectMarket(MarketUniverse.TOP10) }
+    )
+
     Column(modifier = Modifier.fillMaxWidth()) {
-        // ScrollableTabRow (no TabRow fijo): al añadir más universos (p. ej. Russell 2000) las
-        // pestañas se deslizan lateralmente en vez de apretujarse — se pidió a propósito para
-        // poder seguir añadiendo mercados sin que la estética se resienta.
+        // ScrollableTabRow (no TabRow fijo): mismo motivo que siempre — que quepan bien sin
+        // apretujarse si en el futuro se añade alguna pestaña más.
         ScrollableTabRow(
-            selectedTabIndex = MarketUniverse.entries.indexOf(state.selectedMarket),
+            selectedTabIndex = pestañasSuperiores.indexOfFirst { it.seleccionada }.coerceAtLeast(0),
             edgePadding = 12.dp
         ) {
-            MarketUniverse.entries.forEach { market ->
+            pestañasSuperiores.forEach { pestaña ->
                 Tab(
-                    selected = state.selectedMarket == market,
-                    onClick = { viewModel.selectMarket(market) },
+                    selected = pestaña.seleccionada,
+                    onClick = pestaña.alPulsar,
                     text = {
                         Text(
-                            market.displayName,
+                            pestaña.etiqueta,
                             style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGrisTabs),
                             color = colorIndigoTabs,
-                            fontWeight = if (state.selectedMarket == market) FontWeight.Bold else FontWeight.Normal
+                            fontWeight = if (pestaña.seleccionada) FontWeight.Bold else FontWeight.Normal
                         )
                     }
                 )
             }
         }
 
-        // NUEVO — pedido expresamente: 3 subpestañas SOLO para los mercados de acciones con
-        // universo propio a escanear (S&P 500/Nasdaq-100/IBEX 35) — antes, para estos 3
-        // mercados, la pantalla era una única página larga con la gráfica del índice, el botón
-        // "Analizar" y las DOS listas (Tendencia alcista + Futuras compras) todo seguido, algo
-        // "caótico" de navegar. Ahora cada cosa vive en su propia subpestaña: "Índice" (lo que
-        // había antes de las 2 listas), "Tendencia alcista" y "Futuras compras". Top10/Russell
-        // 2000/Divisas/Bonos NO tienen estas subpestañas — mantienen su estructura propia de
-        // siempre, ya que ninguno de ellos tiene esta combinación de 3 secciones.
-        val esUnMercadoDeAcciones = state.selectedMarket == MarketUniverse.SP500 ||
-            state.selectedMarket == MarketUniverse.NASDAQ100 ||
-            state.selectedMarket == MarketUniverse.IBEX35
-        if (esUnMercadoDeAcciones) {
-            // ScrollableTabRow (no TabRow fijo) — pedido expresamente: con TabRow fijo, el ancho
-            // se repartía a partes iguales entre las 3 y el texto podía forzarse a dos líneas si
-            // no cabía. Así cada subpestaña ocupa solo el espacio que necesita, en una sola
-            // línea, y si no caben todas se desliza lateralmente en vez de apretujarse.
-            ScrollableTabRow(
-                selectedTabIndex = AnalysisSubTab.entries.indexOf(state.selectedAnalysisSubTab),
-                edgePadding = 12.dp
+        // QUITADAS a petición expresa: las subpestañas "Índice"/"Valores Alcistas" que había
+        // dentro de S&P 500/Nasdaq-100/IBEX 35 — ahora todo va seguido en la única pestaña
+        // "Índices" (desplegable + gráfica + Valores Alcistas, ver más abajo), sin subpestañas.
+        if (esUnMercadoDeIndices) {
+            // NUEVO — el desplegable "Elige un índice bursátil" que sustituye a las 4 pestañas
+            // de antes. ExposedDropdownMenuBox es el "combobox" estándar de Material3.
+            var desplegableAbierto by remember { mutableStateOf(false) }
+            ExposedDropdownMenuBox(
+                expanded = desplegableAbierto,
+                onExpandedChange = { desplegableAbierto = it },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                AnalysisSubTab.entries.forEach { subTab ->
-                    Tab(
-                        selected = state.selectedAnalysisSubTab == subTab,
-                        onClick = { viewModel.selectAnalysisSubTab(subTab) },
-                        text = {
-                            Text(
-                                subTab.displayName,
-                                style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGrisTabs),
-                                color = colorIndigoTabs,
-                                fontWeight = if (state.selectedAnalysisSubTab == subTab) FontWeight.Bold else FontWeight.Normal
-                            )
-                        }
-                    )
+                OutlinedTextField(
+                    value = state.selectedMarket.displayName,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = {
+                        Text(
+                            "Elige un índice bursátil",
+                            style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGrisTabs),
+                            color = colorIndigoTabs
+                        )
+                    },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = desplegableAbierto) },
+                    modifier = Modifier.fillMaxWidth().menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = desplegableAbierto,
+                    onDismissRequest = { desplegableAbierto = false }
+                ) {
+                    listOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35, MarketUniverse.RUSSELL2000).forEach { indice ->
+                        DropdownMenuItem(
+                            text = { Text(indice.displayName) },
+                            onClick = {
+                                viewModel.selectMarket(indice)
+                                desplegableAbierto = false
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -249,18 +274,15 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                 val moveEntry = com.inversionadvisor.domain.model.Symbols.US_BOND_CHART_SYMBOLS.last()
                 item { GenericChartCard(marketRepository, moveEntry.second, "${moveEntry.first} (${moveEntry.second})", showVolume = false, priceChartHeightDp = 195) }
             } else {
-                // NUEVO — pedido expresamente: esto solo se muestra en la subpestaña "Índice"
-                // para los 3 mercados de acciones con subpestañas; Russell 2000 no tiene
-                // subpestañas (esUnMercadoDeAcciones es false para él), así que sigue mostrando
-                // esto siempre, como antes.
-                if (!esUnMercadoDeAcciones || state.selectedAnalysisSubTab == AnalysisSubTab.INDICE) {
-                    item { IndexOverviewChartCard(marketRepository, state.selectedMarket) }
-                    // "Análisis · [mercado]" con el botón "Analizar" — no tiene sentido en pestañas
-                    // sin universo de acciones que escanear (Divisas/Bonos ya no llegan aquí, ver
-                    // arriba; Russell 2000 sí llega, pero tampoco tiene nada que analizar).
-                    if (state.selectedMarket != MarketUniverse.RUSSELL2000) {
-                        item { ScreenerHeader(state, onRunClick = viewModel::runScreener) }
-                    }
+                // QUITADA la comprobación de subpestaña "Índice" — ya no existen subpestañas,
+                // esto se muestra siempre para los 4 índices (S&P 500/Nasdaq-100/IBEX 35/
+                // Russell 2000), seguido de "Valores Alcistas" más abajo (salvo Russell 2000).
+                item { IndexOverviewChartCard(marketRepository, state.selectedMarket) }
+                // "Análisis · [mercado]" con el botón "Analizar" — no tiene sentido en pestañas
+                // sin universo de acciones que escanear (Divisas/Bonos ya no llegan aquí, ver
+                // arriba; Russell 2000 sí llega, pero tampoco tiene nada que analizar).
+                if (state.selectedMarket != MarketUniverse.RUSSELL2000) {
+                    item { ScreenerHeader(state, onRunClick = viewModel::runScreener) }
                 }
             }
 
@@ -300,37 +322,44 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
             }
 
             // A partir de aquí solo llegan S&P 500/Nasdaq-100/IBEX 35 (Top10/Russell 2000/
-            // Divisas/Bonos ya han salido con return@LazyColumn más arriba) — así que
-            // esUnMercadoDeAcciones es siempre true en este punto.
-            // RENOMBRADA ("Tendencia alcista" → "Valores Alcistas") y AMPLIADA a petición
-            // expresa: ahora es la ÚNICA subpestaña de candidatos (se quitó "Futuras compras" —
-            // ver comentario en AnalysisSubTab) — cada tarjeta (UptrendCard) muestra toda la
-            // información y la puntuación completa, con el mismo formato que antes tenía
-            // "Futuras compras".
-            if (state.selectedAnalysisSubTab == AnalysisSubTab.VALORES_ALCISTAS) {
-                // NUEVO — pedido expresamente, para mayor comodidad: el botón "Analizar" también
-                // aquí, no solo en "Índice" — así no hace falta cambiar de subpestaña para
-                // lanzar un análisis nuevo mientras se están viendo estos resultados.
-                item { ScreenerHeader(state, onRunClick = viewModel::runScreener) }
-                item { SectionHeader("Valores Alcistas (último año)") }
-                if (state.uptrendCandidates.isEmpty()) {
-                    item {
-                        EmptyScreenerHint(
-                            state.isRunning,
-                            state.lastRun != null,
-                            "Ningún valor de ${state.selectedMarket.displayName} con puntuación de 55 o más en el último análisis."
-                        )
-                    }
-                } else {
-                    expandableSection(
-                        items = state.uptrendCandidates,
-                        visibleCount = state.uptrendVisibleCount,
-                        onShowMore = { viewModel.showMoreUptrend(state.uptrendCandidates.size) },
-                        onCollapse = viewModel::collapseUptrend,
-                        key = { it.symbol }
-                    ) { candidate ->
-                        UptrendCard(candidate, marketRepository, onClick = { viewModel.selectStock(candidate.symbol) })
-                    }
+            // Divisas/Bonos ya han salido con return@LazyColumn más arriba).
+            // QUITADA la comprobación de subpestaña — ya no existen, esto se muestra siempre
+            // seguido de la gráfica del índice, dentro de la misma pestaña "Índices".
+            // ScreenerHeader ya se mostró una vez arriba (junto a la gráfica) — no se repite aquí.
+            item {
+                // NUEVO — pedido expresamente: mismo formato (fuente/tamaño/color índigo con
+                // sombra gris) que ya se usa para el nombre de la empresa en la ficha del stock.
+                Column {
+                    Text(
+                        "Valores Alcistas",
+                        style = MaterialTheme.typography.titleLarge.copy(shadow = sombraGrisTabs),
+                        fontWeight = FontWeight.Bold,
+                        color = colorIndigoTabs
+                    )
+                    Text(
+                        "Los mejores valores para el índice ${state.selectedMarket.displayName}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                }
+            }
+            if (state.uptrendCandidates.isEmpty()) {
+                item {
+                    EmptyScreenerHint(
+                        state.isRunning,
+                        state.lastRun != null,
+                        "Ningún valor de ${state.selectedMarket.displayName} con puntuación de 55 o más en el último análisis."
+                    )
+                }
+            } else {
+                expandableSection(
+                    items = state.uptrendCandidates,
+                    visibleCount = state.uptrendVisibleCount,
+                    onShowMore = { viewModel.showMoreUptrend(state.uptrendCandidates.size) },
+                    onCollapse = viewModel::collapseUptrend,
+                    key = { it.symbol }
+                ) { candidate ->
+                    UptrendCard(candidate, marketRepository, onClick = { viewModel.selectStock(candidate.symbol) })
                 }
             }
         }
@@ -537,12 +566,22 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
     var longTermFlagPattern by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.FlagPattern?>(null) }
     var consolidatedBearishMonthsCount by remember(candidate.symbol) { mutableStateOf<Int?>(null) }
     var doubleTopBottomResult by remember(candidate.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.DoubleTopBottomResult(com.inversionadvisor.domain.indicators.DoubleTopBottomPattern.NONE)) }
-    var hchResult by remember(candidate.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersResult(com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersState.NONE)) }
     var tripleTopBottomResult by remember(candidate.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomPattern.NONE)) }
     var macd by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.TechnicalAnalysis.MacdResult?>(null) }
     var benchmarkYearChangePercent by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
     var sectorDeclinePercent by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
     var hchCandles by remember(candidate.symbol) { mutableStateOf<List<com.inversionadvisor.domain.model.Candle>>(emptyList()) }
+    // NUEVO — pedido expresamente (fallo real: HCH no aparecía penalizado porque hchCandles, la
+    // vela de 5 años, a veces llegaba DESPUÉS de que ya se hubiera calculado hchResult con la de
+    // 1 año dentro del propio bloque de la corrutina — una vez calculado ahí, no se recalculaba
+    // solo porque hchCandles cambiara después). Ahora se guarda la vela de 1 año como estado
+    // (oneYearCandles) y hchResult se calcula FUERA de la corrutina, con "remember" reactivo a
+    // los dos (oneYearCandles Y hchCandles) — así, venga cual venga antes, en cuanto ambas estén
+    // disponibles, se recalcula solo, sin depender del orden de llegada.
+    var oneYearCandles by remember(candidate.symbol) { mutableStateOf<List<com.inversionadvisor.domain.model.Candle>>(emptyList()) }
+    val hchResult = remember(oneYearCandles, hchCandles) {
+        com.inversionadvisor.domain.indicators.UptrendDetector.detectHeadAndShoulders(hchCandles.ifEmpty { oneYearCandles })
+    }
     var aboveTrendSma by remember(candidate.symbol) { mutableStateOf<Boolean?>(null) }
     // NUEVO — para que "Giro" (agotamiento/techo) también cuente aquí, igual que en Futuras
     // Compras — un valor alcista también puede mostrar indicios de techo si está sobrecomprado.
@@ -585,6 +624,7 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
         }
         launch {
             marketRepository.observeCandles(candidate.symbol, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR).collect { candles ->
+                oneYearCandles = candles
                 stockVolatilityRatio = com.inversionadvisor.domain.indicators.TechnicalAnalysis.ownVolatilityRatio(candles)
                 macd = com.inversionadvisor.domain.indicators.TechnicalAnalysis.calculateMacd(candles)
                 longTermDecline = com.inversionadvisor.domain.indicators.ExhaustionDetector.detect(candles)
@@ -606,7 +646,9 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
                     deathCrossDate = com.inversionadvisor.domain.indicators.UptrendDetector.findSma20CrossedBelowSma50Date(candles)
                     goldenCrossDate = com.inversionadvisor.domain.indicators.UptrendDetector.findSma20CrossedAboveSma50Date(candles)
                     doubleTopBottomResult = com.inversionadvisor.domain.indicators.UptrendDetector.detectDoubleTopOrBottom(candles)
-                    hchResult = com.inversionadvisor.domain.indicators.UptrendDetector.detectHeadAndShoulders(hchCandles.ifEmpty { candles })
+                    // hchResult ya NO se asigna aquí — se calcula reactivamente más arriba
+                    // (remember(oneYearCandles, hchCandles)), ver el comentario junto a esa
+                    // declaración para el motivo (fallo real corregido).
                     tripleTopBottomResult = com.inversionadvisor.domain.indicators.UptrendDetector.detectTripleTopOrBottom(candles)
                     try {
                         marketRepository.refreshDailyCandlesForSmaIfStale(candidate.symbol, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR)
