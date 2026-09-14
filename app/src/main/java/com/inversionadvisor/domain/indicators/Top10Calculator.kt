@@ -228,12 +228,12 @@ object Top10Calculator {
          *  (≥10 puntos porcentuales mejor) suma; si se queda claramente por detrás (≥10 puntos
          *  peor) resta. null (sin dato del benchmark) = no se aplica nada, ni suma ni resta. */
         benchmarkYearChangePercent: Double? = null,
-        /** Bono/penalización APARTE, pedido expresamente (mejora #3, opción C) — compara la
-         *  caída del stock (longTermDecline) con la caída de su propio sector (ETF) en la misma
-         *  ventana. Si el stock cayó bastante MENOS que su sector (≥8 puntos porcentuales mejor,
-         *  relativamente fuerte dentro de un sector débil) suma; si cayó bastante MÁS que su
-         *  sector (≥8 puntos peor, especialmente débil dentro de su propio sector) resta. null
-         *  (sin dato del sector, o sin caída detectada) = no se aplica nada. */
+        /** CAMBIADO a petición expresa — mejora #3, ELIMINADA como bono/penalización: ya NO
+         *  suma ni resta puntos. Compara la caída del stock (longTermDecline) con la caída de
+         *  su propio sector (ETF) en la misma ventana, y si la diferencia es de ≥8 puntos
+         *  porcentuales (en cualquier sentido), se deja como aviso puramente INFORMATIVO en
+         *  neón — sin efecto en la puntuación final. null (sin dato del sector, o sin caída
+         *  detectada) = no se muestra ningún aviso. */
         sectorDeclinePercent: Double? = null,
         requireSignal: Boolean = true
     ): ScoredCandidate? {
@@ -519,16 +519,16 @@ object Top10Calculator {
                 penaltyWarnings += "Queda claramente por detrás del S&P 500 en el último año (%.1f puntos) -10".format(diferenciaVsMercado)
             }
         }
-        // NUEVO — mejora #3 (opción C): comparación con el propio sector durante la caída, como
-        // ajuste de puntuación, no como filtro de entrada.
+        // CAMBIADO a petición expresa: mejora #3 (comparación con el propio sector durante la
+        // caída) ELIMINADA como bono/penalización — ya NO suma ni resta puntos a la puntuación
+        // final. Se deja solo como aviso informativo en neón (verde/rojo), para que se siga
+        // viendo el dato sin que afecte al cálculo.
         if (longTermDecline != null && sectorDeclinePercent != null) {
             val diferenciaVsSector = sectorDeclinePercent - longTermDecline.declinePercentFromRecentHigh
             if (diferenciaVsSector >= 8.0) {
-                totalBonus += 10.0
-                bonusWarnings += "Ha caído bastante menos que su propio sector (%.1f puntos de diferencia) +10".format(diferenciaVsSector)
+                bonusWarnings += "Ha caído bastante menos que su propio sector (%.1f puntos de diferencia)".format(diferenciaVsSector)
             } else if (diferenciaVsSector <= -8.0) {
-                totalPenalty += 10.0
-                penaltyWarnings += "Ha caído bastante más que su propio sector (%.1f puntos de diferencia) -10".format(diferenciaVsSector)
+                penaltyWarnings += "Ha caído bastante más que su propio sector (%.1f puntos de diferencia)".format(diferenciaVsSector)
             }
         }
         if (earningsWithinThreeWeeks) {
