@@ -22,6 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.lifecycleScope
+import com.inversionadvisor.domain.model.MarketUniverse
+import kotlinx.coroutines.launch
 import com.inversionadvisor.data.connectivity.NetworkConnectivityObserver
 import com.inversionadvisor.di.ServiceLocator
 import com.inversionadvisor.ui.common.ConnectivityBanner
@@ -45,6 +48,23 @@ class MainActivity : ComponentActivity() {
         val top10Repository = ServiceLocator.provideTop10Repository(applicationContext)
         val newsRepository = ServiceLocator.provideNewsRepository()
         val connectivityObserver = NetworkConnectivityObserver(applicationContext)
+
+        // NUEVO — pedido expresamente: al abrir la app, se importan los 3 mercados (S&P 500,
+        // Nasdaq-100, IBEX 35) y luego se recalcula Top10, todo en segundo plano — el usuario no
+        // tiene que ir pestaña por pestaña pulsando "Analizar" a mano cada vez que abre la app.
+        // Igual que en ScreenerViewModel.runScreener(): se intenta PRIMERO el JSON (rápido), y
+        // solo si falla se cae al escaneo en directo de ese mercado en concreto — nunca deja un
+        // mercado sin datos por completo. lifecycleScope se cancela solo si la Activity se
+        // destruye a media carga, sin dejar corrutinas huérfanas corriendo de fondo.
+        lifecycleScope.launch {
+            listOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35).forEach { market ->
+                val importado = runCatching { screenerRepository.importFromRemoteJson(market.indexName) }.getOrDefault(false)
+                if (!importado) {
+                    runCatching { screenerRepository.runFullScreen(market.indexName) { _, _ -> } }
+                }
+            }
+            runCatching { top10Repository.refresh { _, _ -> } }
+        }
 
         setContent {
             MaterialTheme {
