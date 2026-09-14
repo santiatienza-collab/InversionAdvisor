@@ -85,6 +85,7 @@ import java.util.Locale
  * gráfica de detalle (precio + SMA + volumen).
  */
 @Composable
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class) // ExposedDropdownMenuBox/ExposedDropdownMenu (el desplegable de índices) siguen marcadas como experimentales en esta versión de Material3.
 fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketRepository) {
     val state by viewModel.uiState.collectAsState()
 
