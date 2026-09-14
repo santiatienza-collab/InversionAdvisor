@@ -232,6 +232,7 @@ object BuyOpportunityAnalyzer {
             doubleTopBottomResult = doubleTopBottomResult,
             hchResult = hchResult,
             hasLongTermUptrend = uptrendSignal != null,
+            hasLongTermDowntrend = UptrendDetector.evaluateDowntrend(candles),
             tripleTopBottomResult = tripleTopBottomResult,
             benchmarkYearChangePercent = benchmarkYearChangePercent,
             sectorDeclinePercent = sectorDeclinePercent,

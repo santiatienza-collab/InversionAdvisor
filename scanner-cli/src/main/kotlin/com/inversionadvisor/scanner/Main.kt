@@ -332,7 +332,8 @@ fun main(args: Array<String>) = runBlocking {
         val consolidatedBearishMonthsCount: Int?,
         val deathCrossDate: String?,
         val goldenCrossDate: String?,
-        val momentumPriceDivergence: com.inversionadvisor.domain.indicators.MomentumPriceDivergence
+        val momentumPriceDivergence: com.inversionadvisor.domain.indicators.MomentumPriceDivergence,
+        val hasLongTermDowntrend: Boolean
     )
 
     val parciales = universe.map { entry ->
@@ -383,7 +384,8 @@ fun main(args: Array<String>) = runBlocking {
                     consolidatedBearishMonthsCount = monthlyCandles.takeIf { it.isNotEmpty() }?.let { UptrendDetector.countBearishMonthsInLast6(it) },
                     deathCrossDate = UptrendDetector.findSma20CrossedBelowSma50Date(crossSourceCandles, lookbackPeriods = if (usingDailyPrecision) 10 else 2),
                     goldenCrossDate = UptrendDetector.findSma20CrossedAboveSma50Date(crossSourceCandles, lookbackPeriods = if (usingDailyPrecision) 10 else 2),
-                    momentumPriceDivergence = UptrendDetector.detectMomentumPriceDivergence(candles)
+                    momentumPriceDivergence = UptrendDetector.detectMomentumPriceDivergence(candles),
+                    hasLongTermDowntrend = UptrendDetector.evaluateDowntrend(candles)
                 )
             }
             val hechos = done.incrementAndGet()
@@ -455,6 +457,7 @@ fun main(args: Array<String>) = runBlocking {
             doubleTopBottomResult = p.doubleTopBottomResult,
             hchResult = p.hchResult,
             hasLongTermUptrend = p.uptrend != null,
+            hasLongTermDowntrend = p.hasLongTermDowntrend,
             tripleTopBottomResult = p.tripleTopBottomResult,
             benchmarkYearChangePercent = benchmarkYearChangePercent,
             sectorDeclinePercent = sectorDeclinePercentByEtf[p.entry.sectorEtf],

@@ -176,15 +176,17 @@ object Top10Calculator {
         /** Bono/penalización APARTE (no una categoría ponderada de la tabla de 100%, pese a lo
          *  que decía antes este comentario) — patrón de "bandera" en las últimas 15 velas
          *  DIARIAS ("a corto plazo"), ver UptrendDetector.detectFlagPattern. null = sin datos
-         *  suficientes (menos de 15 velas diarias). BULLISH suma 15 puntos a la puntuación final
-         *  ya calculada (o solo aviso informativo si el de largo plazo ya es decisivo, ver más
-         *  abajo), BEARISH resta 15. */
+         *  suficientes (menos de 15 velas diarias). CAMBIADO a petición expresa (antes ±15): BULLISH
+         *  suma 5 puntos a la puntuación final ya calculada (o solo aviso informativo si el de
+         *  largo plazo ya es decisivo, ver más abajo), BEARISH resta 5. */
         shortTermFlagPattern: FlagPattern? = null,
-        /** Bono/penalización APARTE — igual que shortTermFlagPattern (±15 puntos), pero sobre
-         *  las últimas 15 velas MENSUALES ("a largo plazo"), ver
-         *  MarketRepository.observeMonthlyCandlesForFlag. Puede coexistir con
-         *  shortTermFlagPattern (uno, otro, ambos, o ninguno) — si los dos son decisivos, el de
-         *  largo plazo es el que lleva los puntos; el otro queda como aviso informativo. */
+        /** Bono/penalización APARTE — igual que shortTermFlagPattern pero sobre las últimas 15
+         *  velas MENSUALES ("a largo plazo"), ver MarketRepository.observeMonthlyCandlesForFlag.
+         *  CAMBIADO a petición expresa (antes ±15): vale el DOBLE que el de corto plazo, ±10 —
+         *  un patrón mensual refleja un movimiento más grande y estructural que uno diario.
+         *  Puede coexistir con shortTermFlagPattern (uno, otro, ambos, o ninguno) — si los dos
+         *  son decisivos, el de largo plazo es el que lleva los puntos; el otro queda como
+         *  aviso informativo. */
         longTermFlagPattern: FlagPattern? = null,
         /** Penalización APARTE — tendencia bajista CONSOLIDADA: 4 o más de los últimos 6 meses
          *  cerraron en negativo (ver UptrendDetector.countBearishMonthsInLast6). Resta 20 puntos
@@ -209,11 +211,18 @@ object Top10Calculator {
          *  no la cumplía (y tampoco tenía caída con agotamiento), ni siquiera se puntuaba con la
          *  fórmula completa en Top10 — caso real que esto excluía injustamente: SanDisk, con 85
          *  puntos en la fórmula completa, fuera de Top10 por no encajar en ninguna de las dos
-         *  formas. Invertido a petición expresa: ahora CUALQUIER candidato con puntuación
-         *  decente entra en el pool (ver Top10GenericCandidateEntity), y la tendencia alcista
-         *  clara se aplica AQUÍ, como bono (+10) si se cumple — ya no excluye a nadie por su
-         *  ausencia. */
+        /** ACLARADO a petición expresa (plazos distintos, para no confundir con la categoría
+         *  "Tendencia" de abajo, que mira los últimos 3 MESES): esto mira los últimos 52
+         *  SEMANAS — un año completo. Invertido a petición expresa: ahora CUALQUIER candidato
+         *  con puntuación decente entra en el pool (ver Top10GenericCandidateEntity), y la
+         *  tendencia alcista clara se aplica AQUÍ, como bono (+10) si se cumple — ya no excluye
+         *  a nadie por su ausencia. */
         hasLongTermUptrend: Boolean = false,
+        /** NUEVO — pedido expresamente (mejora B): el lado que faltaba, simétrico al de arriba
+         *  — penaliza (-10) cuando el LARGO PLAZO (52 semanas) es claramente bajista (ver
+         *  UptrendDetector.evaluateDowntrend, el espejo exacto de evaluate()). Antes solo se
+         *  premiaba el largo plazo alcista, nunca se penalizaba el largo plazo bajista. */
+        hasLongTermDowntrend: Boolean = false,
         /** Triple techo/suelo, pedido expresamente como patrón APARTE del doble techo/suelo —
          *  ambos se comprueban de forma independiente, no se excluyen entre sí. Triple techo:
          *  -20 puntos. Triple suelo: +15 puntos. */
@@ -280,20 +289,43 @@ object Top10Calculator {
         // dos veces por separado.
         val bearishExhaustion = (longTermDecline != null && longTermDecline.detected) || (shortTermPullback != null && shortTermPullback.detected)
 
-        // ---- 2. Tendencia (15%): tendencia de los últimos 3 meses (separada del RSI, que
-        // ahora es su propia categoría aparte, ver más abajo) ----
-        // Alcista -> suma. Bajista -> resta, A MENOS que haya un giro al alza detectado
-        // (bearishExhaustion) — en ese caso no resta, queda neutra (el giro en sí ya se premia
-        // aparte en la categoría "Giro").
+        // ---- 2. Tendencia A CORTO PLAZO — 3 MESES (15%) — separada del RSI, que ahora es su
+        // propia categoría aparte, ver más abajo. ACLARADO A PETICIÓN EXPRESA: esto NO es lo
+        // mismo que "Tendencia alcista/bajista clara confirmada" de más abajo (bono/penalización
+        // aparte, ±10 puntos) — esa otra mira 52 SEMANAS (un año), esta mira solo 3 MESES.
+        //
+        // NUEVO (mejora C, pedida junto con B): cuando el corto plazo (3 meses) y el largo plazo
+        // (52 semanas) APUNTAN A LO MISMO — los dos alcistas, o los dos bajistas sin giro — esta
+        // categoría queda NEUTRA (0) a propósito, y es el bono/penalización de largo plazo (más
+        // abajo, ±10, "la más pesada") el que puntúa por los dos a la vez — así no se cuenta dos
+        // veces la misma idea general ("este stock tiende al alza/a la baja") por partida doble.
+        // Si NO coinciden (señales mixtas, o falta dato de uno de los dos plazos), cada uno
+        // puntúa por su cuenta, de forma independiente, como toda la vida.
+        val direccionCortoPlazo = when {
+            shortTermBullish == null -> 0
+            shortTermBullish -> 1
+            bearishExhaustion -> 0 // bajista con giro al alza: no cuenta como "bajista" para la comparación
+            else -> -1
+        }
+        val direccionLargoPlazo = when {
+            hasLongTermUptrend -> 1
+            hasLongTermDowntrend -> -1
+            else -> 0
+        }
+        val coincideAlcista = direccionCortoPlazo == 1 && direccionLargoPlazo == 1
+        val coincideBajista = direccionCortoPlazo == -1 && direccionLargoPlazo == -1
         val trendValue = when {
             shortTermBullish == null -> null
+            coincideAlcista || coincideBajista -> 0.0 // ya puntúa el bono/penalización de largo plazo, ver arriba
             shortTermBullish -> 1.0
             bearishExhaustion -> 0.0 // bajista, pero con giro al alza detectado: no resta
             else -> -1.0 // bajista sin giro: resta
         }
         addCategory(
-            "Tendencia", WEIGHT_TENDENCIA, trendValue,
+            "Tendencia (corto plazo, 3 meses)", WEIGHT_TENDENCIA, trendValue,
             when {
+                coincideAlcista -> "alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces"
+                coincideBajista -> "bajista en los últimos 3 meses, coincide con la tendencia bajista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces"
                 shortTermBullish == true -> "tendencia claramente alcista en los últimos 3 meses"
                 shortTermBullish == false && bearishExhaustion -> "tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza"
                 shortTermBullish == false -> "tendencia bajista en los últimos 3 meses, sin señales de giro"
@@ -527,37 +559,41 @@ object Top10Calculator {
         }
         if (hasLongTermUptrend) {
             totalBonus += 10.0
-            bonusWarnings += "Tendencia alcista clara confirmada (52 semanas) +10"
+            bonusWarnings += "Tendencia alcista clara confirmada (largo plazo, 52 semanas)${if (coincideAlcista) " — incluye la de corto plazo (3 meses), que coincide" else ""} +10"
+        }
+        // NUEVO — mejora B (pedida junto con la aclaración de plazos y la regla C): el lado que
+        // faltaba, simétrico al de arriba.
+        if (hasLongTermDowntrend) {
+            totalPenalty += 10.0
+            penaltyWarnings += "Tendencia bajista clara confirmada (largo plazo, 52 semanas)${if (coincideBajista) " — incluye la de corto plazo (3 meses), que coincide" else ""} -10"
         }
         // Bandera — SACADA DE LA FÓRMULA (antes categoría con peso del 15%) y convertida en
-        // bono/penalización APARTE, a petición expresa: +15 si es alcista, -15 si es bajista.
-        // Misma prioridad que antes: si hay patrón a LARGO plazo (mensual), ese es el que
-        // puntúa (un patrón mensual refleja un movimiento más grande y estructural que uno
-        // diario); si no lo hay pero SÍ a corto plazo, puntúa ese. Los dos se siguen avisando
-        // por separado en neón, aunque solo uno de ellos sume/reste puntos.
-        val effectiveFlagPattern = when {
-            longTermFlagPattern == FlagPattern.BULLISH || longTermFlagPattern == FlagPattern.BEARISH -> longTermFlagPattern
-            shortTermFlagPattern == FlagPattern.BULLISH || shortTermFlagPattern == FlagPattern.BEARISH -> shortTermFlagPattern
-            else -> FlagPattern.NONE
-        }
-        if (effectiveFlagPattern == FlagPattern.BULLISH) {
-            totalBonus += 15.0
-        } else if (effectiveFlagPattern == FlagPattern.BEARISH) {
-            totalPenalty += 15.0
+        // bono/penalización APARTE. CAMBIADO a petición expresa: antes ±15 para los dos plazos
+        // por igual; ahora CORTO plazo (diario) vale ±5, LARGO plazo (mensual) vale ±10 — un
+        // patrón mensual refleja un movimiento más grande y estructural que uno diario, así que
+        // pesa el doble. Misma prioridad que antes: si hay patrón a LARGO plazo, ese es el que
+        // puntúa; si no lo hay pero SÍ a corto plazo, puntúa ese (con su propio valor, ±5, no el
+        // del largo). Los dos se siguen avisando por separado en neón, aunque solo uno sume/reste.
+        val longTermFlagDecisive = longTermFlagPattern == FlagPattern.BULLISH || longTermFlagPattern == FlagPattern.BEARISH
+        if (longTermFlagDecisive) {
+            if (longTermFlagPattern == FlagPattern.BULLISH) totalBonus += 10.0
+            else if (longTermFlagPattern == FlagPattern.BEARISH) totalPenalty += 10.0
+        } else {
+            if (shortTermFlagPattern == FlagPattern.BULLISH) totalBonus += 5.0
+            else if (shortTermFlagPattern == FlagPattern.BEARISH) totalPenalty += 5.0
         }
         // Avisos en neón del patrón de bandera — el que gana la prioridad (largo plazo si es
         // decisivo, si no corto plazo) lleva los puntos ya sumados/restados arriba anotados en
         // el propio texto; el otro, si lo hay, es solo informativo (sin anotación de puntos).
-        val longTermFlagDecisive = longTermFlagPattern == FlagPattern.BULLISH || longTermFlagPattern == FlagPattern.BEARISH
         if (shortTermFlagPattern == FlagPattern.BULLISH) {
-            bonusWarnings += "Patrón de Bandera Alcista a Corto Plazo" + if (!longTermFlagDecisive) " +15" else ""
+            bonusWarnings += "Patrón de Bandera Alcista a Corto Plazo" + if (!longTermFlagDecisive) " +5" else ""
         } else if (shortTermFlagPattern == FlagPattern.BEARISH) {
-            penaltyWarnings += "Patrón de Bandera Bajista a Corto Plazo" + if (!longTermFlagDecisive) " -15" else ""
+            penaltyWarnings += "Patrón de Bandera Bajista a Corto Plazo" + if (!longTermFlagDecisive) " -5" else ""
         }
         if (longTermFlagPattern == FlagPattern.BULLISH) {
-            bonusWarnings += "Patrón de Bandera Alcista a Largo Plazo +15"
+            bonusWarnings += "Patrón de Bandera Alcista a Largo Plazo +10"
         } else if (longTermFlagPattern == FlagPattern.BEARISH) {
-            penaltyWarnings += "Patrón de Bandera Bajista a Largo Plazo -15"
+            penaltyWarnings += "Patrón de Bandera Bajista a Largo Plazo -10"
         }
         // Divergencia alcista momentum/precio — el mismo patrón, tres lecturas distintas según
         // el contexto (ver MomentumPriceDivergence).

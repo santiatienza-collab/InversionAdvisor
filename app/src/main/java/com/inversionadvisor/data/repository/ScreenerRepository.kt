@@ -349,6 +349,7 @@ class ScreenerRepository(
             marketTrap = null,
             macd = null,
             hasLongTermUptrend = uptrendSignal != null,
+            hasLongTermDowntrend = UptrendDetector.evaluateDowntrend(candles),
             benchmarkYearChangePercent = sectorContext.benchmarkYearChangePercent,
             sectorDeclinePercent = sectorContext.sectorDeclinePercentByEtf[entry.sectorEtf],
             requireSignal = false

@@ -821,6 +821,66 @@ object UptrendDetector {
         )
     }
 
+    /**
+     * NUEVO — pedido expresamente (mejora B): el espejo EXACTO de evaluate() de arriba, pero
+     * mirando la CAÍDA en vez de la subida — antes solo existía un bono para "tendencia alcista
+     * clara a largo plazo" (52 semanas), sin ninguna penalización si el largo plazo era
+     * claramente bajista (asimetría real). Mismas 5 condiciones, todas invertidas:
+     *  1. Precio por DEBAJO de su SMA(40)
+     *  2. SMA(40) con pendiente NEGATIVA
+     *  3. Regresión lineal del año: pendiente NEGATIVA y R² ≥ 0,5 (caída "limpia", no errática)
+     *  4. Máximos DESCENDENTES (mismo margen de tolerancia que "mínimos ascendentes")
+     *  5. Las últimas 5 semanas no pueden mostrar un rebote claro (>6%) — un stock que ya está
+     *     rebotando con fuerza no es una "tendencia bajista actual", aunque el año entero cuadre.
+     * Devuelve simplemente true/false (a diferencia de evaluate(), que devuelve un UptrendSignal
+     * completo) — para esta penalización solo hace falta saber SI hay tendencia bajista clara,
+     * no su magnitud exacta.
+     */
+    fun evaluateDowntrend(
+        candles: List<Candle>,
+        minWeeks: Int = 40,
+        trendSmaWeeks: Int = 40,
+        smaSlopeLookbackWeeks: Int = 10,
+        minTrendQuality: Double = 0.5,
+        maxHigherHighToleragePercent: Double = 5.0
+    ): Boolean {
+        if (candles.size < minWeeks) return false
+
+        val window = candles.takeLast(52).ifEmpty { candles }
+        val closes = window.map { it.close }
+
+        val smaSeries = TechnicalAnalysis.simpleMovingAverage(window, trendSmaWeeks)
+        val currentSma = smaSeries.lastOrNull() ?: return false
+        val currentPrice = closes.last()
+        val belowSma = currentPrice < currentSma
+
+        val referenceIndex = (smaSeries.size - 1 - smaSlopeLookbackWeeks).coerceAtLeast(0)
+        val referenceSma = smaSeries.getOrNull(referenceIndex) ?: return false
+        val smaSlopeNegative = currentSma < referenceSma
+
+        if (!belowSma || !smaSlopeNegative) return false
+
+        val (slope, rSquared) = linearRegression(closes)
+        if (slope >= 0 || rSquared < minTrendQuality) return false
+
+        val firstHalf = closes.take(closes.size / 2)
+        val secondHalf = closes.takeLast(closes.size / 2)
+        val lowerHighs = if (firstHalf.isEmpty() || secondHalf.isEmpty()) {
+            true
+        } else {
+            secondHalf.max() <= firstHalf.max() * (1 + maxHigherHighToleragePercent / 100)
+        }
+        if (!lowerHighs) return false
+
+        if (closes.size > 5) {
+            val hace5Semanas = closes[closes.size - 1 - 5]
+            val cambioUltimas5Semanas = (closes.last() - hace5Semanas) / hace5Semanas * 100
+            if (cambioUltimas5Semanas > 6.0) return false
+        }
+
+        return true
+    }
+
     /** Regresión lineal simple sobre una serie; devuelve (pendiente, R²). */
     private fun linearRegression(values: List<Double>): Pair<Double, Double> {
         val n = values.size
