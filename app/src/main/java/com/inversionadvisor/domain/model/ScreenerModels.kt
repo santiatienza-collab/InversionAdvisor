@@ -37,7 +37,82 @@ data class UptrendCandidate(
     val volumeRatio: Double? = null,
     /** Si el sector de este stock está en rotación favorable (fuerza relativa media > 0 frente al S&P 500) en el momento del escaneo. */
     val isSectorInFavor: Boolean = false
-)
+) {
+    /**
+     * NUEVO — pedido expresamente: "Valores Alcistas" (antes "Tendencia alcista") ahora muestra
+     * la puntuación completa con el MISMO formato que "Futuras compras" — misma función
+     * Top10Calculator.score() que usan Top10 y la ficha de cada stock. Espejo exacto de
+     * BuyOpportunity.unifiedScore() de más abajo, con los mismos parámetros opcionales
+     * (PER/patrones/etc. en directo, calculados por la propia tarjeta) — la única diferencia real
+     * es que aquí trendQuality/yearChangePercent/aboveTrendSma SÍ vienen ya guardados del
+     * escaneo (por eso "Tendencia" nunca sale "sin dato" aquí, a diferencia de en
+     * BuyOpportunity), y longTermDecline se pasa aparte porque UptrendCandidate no lo guarda.
+     */
+    fun unifiedScore(
+        aboveTrendSma: Boolean? = null,
+        longTermDecline: ExhaustionSignal? = null,
+        stockPe: Double? = null,
+        sectorAveragePe: Double? = null,
+        sectorTypicalPeRange: Pair<Double, Double>? = null,
+        stockVolatilityRatio: Double? = null,
+        percentFromYearHigh: Double? = null,
+        nearestSupportPercent: Double? = null,
+        nearestResistancePercent: Double? = null,
+        candlestickPattern: com.inversionadvisor.domain.indicators.CandlestickPattern? = null,
+        marketTrap: com.inversionadvisor.domain.indicators.MarketTrapType? = null,
+        macd: com.inversionadvisor.domain.indicators.TechnicalAnalysis.MacdResult? = null,
+        shortTermBullish: Boolean? = null,
+        declineAccelerating: Boolean = false,
+        deathCrossDate: String? = null,
+        earningsWithinThreeWeeks: Boolean = false,
+        momentumPriceDivergence: com.inversionadvisor.domain.indicators.MomentumPriceDivergence = com.inversionadvisor.domain.indicators.MomentumPriceDivergence.NONE,
+        goldenCrossDate: String? = null,
+        shortTermFlagPattern: com.inversionadvisor.domain.indicators.FlagPattern? = null,
+        longTermFlagPattern: com.inversionadvisor.domain.indicators.FlagPattern? = null,
+        consolidatedBearishMonthsCount: Int? = null,
+        doubleTopBottomResult: com.inversionadvisor.domain.indicators.DoubleTopBottomResult = com.inversionadvisor.domain.indicators.DoubleTopBottomResult(com.inversionadvisor.domain.indicators.DoubleTopBottomPattern.NONE),
+        hchResult: com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersResult = com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersResult(com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersState.NONE),
+        tripleTopBottomResult: com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult = com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomPattern.NONE),
+        benchmarkYearChangePercent: Double? = null,
+        sectorDeclinePercent: Double? = null
+    ): com.inversionadvisor.domain.indicators.Top10Calculator.ScoredCandidate? =
+        com.inversionadvisor.domain.indicators.Top10Calculator.score(
+            trendQuality = trendQuality,
+            yearChangePercent = yearChangePercent,
+            aboveTrendSma = aboveTrendSma,
+            isSectorInFavor = isSectorInFavor,
+            longTermDecline = longTermDecline,
+            shortTermPullback = null,
+            rsi14 = rsi14,
+            volumeRatio = volumeRatio,
+            stockVolatilityRatio = stockVolatilityRatio,
+            stockPe = stockPe,
+            sectorAveragePe = sectorAveragePe,
+            sectorTypicalPeRange = sectorTypicalPeRange,
+            percentFromYearHigh = percentFromYearHigh,
+            nearestSupportPercent = nearestSupportPercent,
+            nearestResistancePercent = nearestResistancePercent,
+            candlestickPattern = candlestickPattern,
+            marketTrap = marketTrap,
+            macd = macd,
+            shortTermBullish = shortTermBullish,
+            declineAccelerating = declineAccelerating,
+            deathCrossDate = deathCrossDate,
+            earningsWithinThreeWeeks = earningsWithinThreeWeeks,
+            momentumPriceDivergence = momentumPriceDivergence,
+            goldenCrossDate = goldenCrossDate,
+            shortTermFlagPattern = shortTermFlagPattern,
+            longTermFlagPattern = longTermFlagPattern,
+            consolidatedBearishMonthsCount = consolidatedBearishMonthsCount,
+            doubleTopBottomResult = doubleTopBottomResult,
+            hchResult = hchResult,
+            hasLongTermUptrend = true, // por definición, este candidato YA es de "tendencia alcista clara"
+            tripleTopBottomResult = tripleTopBottomResult,
+            benchmarkYearChangePercent = benchmarkYearChangePercent,
+            sectorDeclinePercent = sectorDeclinePercent,
+            requireSignal = false
+        )
+}
 
 /** Metadatos del último escaneo de UN mercado (una pestaña: S&P 500 / Nasdaq-100 / IBEX 35). */
 data class ScreenerRunMeta(

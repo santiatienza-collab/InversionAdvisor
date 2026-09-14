@@ -132,7 +132,14 @@ object BuyOpportunityAnalyzer {
          *  scanner-cli — ver Top10Calculator.score() para el detalle exacto de cuándo suman o
          *  restan. null = sin dato, no se aplica nada. */
         benchmarkYearChangePercent: Double? = null,
-        sectorDeclinePercent: Double? = null
+        sectorDeclinePercent: Double? = null,
+        /** NUEVO — pedido expresamente tras detectar el fallo real (HCH casi nunca se detectaba
+         *  aquí): antes se usaba "candles" (1 año) para el HCH, cuando la propia función
+         *  detectHeadAndShoulders necesita hasta 5 AÑOS para encontrar hombros que tardaron más
+         *  de un año en formarse — igual que ya hacía correctamente SellTimingAnalyzer
+         *  ("Momento idóneo para la venta") con su propio hchCandles. null = se cae a "candles"
+         *  (1 año), peor que tener 5 años pero mejor que fallar del todo si no hay dato. */
+        hchCandles: List<Candle>? = null
     ): Analysis? {
         if (candles.size < 15) return null
 
@@ -197,7 +204,7 @@ object BuyOpportunityAnalyzer {
         // fórmula, sin petición de red adicional (ver decisión expresa: en Top10/Futuras Compras
         // se acepta la ventana de 1 año en vez de los 5 años completos, por coste de red al
         // escanear cientos de candidatos a la vez).
-        val hchResult = UptrendDetector.detectHeadAndShoulders(candles)
+        val hchResult = UptrendDetector.detectHeadAndShoulders(hchCandles?.takeIf { it.isNotEmpty() } ?: candles)
         val tripleTopBottomResult = UptrendDetector.detectTripleTopOrBottom(candles)
 
         // LA MISMA función que usa Top10 — ver cabecera de la clase.

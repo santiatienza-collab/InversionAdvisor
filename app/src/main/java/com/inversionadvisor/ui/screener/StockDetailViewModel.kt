@@ -285,7 +285,11 @@ class StockDetailViewModel(
         // NUEVO — pedido expresamente: reflejar cuándo el "PER" mostrado viene en realidad del
         // Forward P/E (fallback, ver FinvizPeParser.parseStockPe) porque el beneficio de los
         // últimos 12 meses es negativo — caso real: Lumentum.
-        marketRepository.observeHasNegativeTrailingEarnings(symbol)
+        marketRepository.observeHasNegativeTrailingEarnings(symbol),
+        // NUEVO — pedido expresamente (fallo real: HCH casi nunca se detectaba en "Análisis de
+        // opciones de compra" por usar solo 1 año de velas) — reutiliza la MISMA fuente que ya
+        // carga "Momento idóneo para la venta" (ver sellTimingFlow más arriba), sin petición nueva.
+        marketRepository.observeCandles(symbol, ChartRange.FIVE_YEARS)
     ) { values ->
         val yearCandles = values[0] as List<Candle>
         val stockPe = values[1] as Double?
@@ -299,6 +303,7 @@ class StockDetailViewModel(
         val dailyCandlesForCross = values[8] as List<Candle>
         val monthlyCandlesForFlag = values[9] as List<Candle>
         val hasNegativeTrailingEarnings = values[10] as Boolean
+        val hchCandles = values[11] as List<Candle>
         val sectorName = sectorEtf?.let { Symbols.SECTOR_ETFS[it] }
         // Mismo diagnóstico que en ScreenerRepository.scanSymbol — para comparar la vela
         // final y el RSI que ve cada camino cuando dan valores distintos para el mismo símbolo.
@@ -331,7 +336,8 @@ class StockDetailViewModel(
             monthlyCandlesForFlag = monthlyCandlesForFlag.ifEmpty { null },
             hasNegativeTrailingEarnings = hasNegativeTrailingEarnings,
             benchmarkYearChangePercent = benchmarkYearChangePercent,
-            sectorDeclinePercent = sectorEtf?.let { sectorContext.sectorDeclinePercentByEtf[it] }
+            sectorDeclinePercent = sectorEtf?.let { sectorContext.sectorDeclinePercentByEtf[it] },
+            hchCandles = hchCandles.ifEmpty { null }
         )
     }
 

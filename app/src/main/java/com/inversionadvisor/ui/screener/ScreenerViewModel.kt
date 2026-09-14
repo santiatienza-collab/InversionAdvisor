@@ -29,8 +29,13 @@ import kotlinx.coroutines.launch
  *  expresamente para separar lo que antes iba todo junto en una sola página larga. */
 enum class AnalysisSubTab(val displayName: String) {
     INDICE("Índice"),
-    TENDENCIA_ALCISTA("Tendencia alcista"),
-    FUTURAS_COMPRAS("Futuras compras")
+    // RENOMBRADA a petición expresa: "Tendencia alcista" → "Valores Alcistas".
+    VALORES_ALCISTAS("Valores Alcistas")
+    // QUITADA a petición expresa (de momento): "Futuras compras" — al cambiar el criterio de
+    // "Futuras compras" a "mayor puntuación", se solapaba casi del todo con Valores Alcistas, así
+    // que se retira la pestaña por ahora. El resto de la lógica (BuyOpportunity, ExhaustionDetector,
+    // el flujo buyOpportunities de ScreenerRepository) se deja INTACTA, sin tocar — solo se
+    // oculta esta pestaña concreta, fácil de volver a añadir si hace falta más adelante.
 }
 
 data class ScreenerUiState(

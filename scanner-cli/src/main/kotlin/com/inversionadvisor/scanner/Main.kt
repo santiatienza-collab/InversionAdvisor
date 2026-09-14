@@ -300,6 +300,19 @@ fun main(args: Array<String>) = runBlocking {
         emptyList()
     }
 
+    // NUEVO — pedido expresamente (fallo real: HCH casi nunca se detectaba por usar solo 1 año
+    // de velas, cuando la propia función necesita hasta 5 años) — igual que ya hace
+    // correctamente SellTimingAnalyzer en la app.
+    suspend fun fetchFiveYearCandles(symbol: String): List<Candle> = try {
+        conReintentos {
+            val respuesta = yahooApi.getChart(symbol, range = "5y", interval = "1wk")
+            respuesta.chart.result?.firstOrNull()?.toCandles() ?: emptyList()
+        }
+    } catch (e: Exception) {
+        println("  $symbol: fallo al pedir velas de 5 años (${e.message ?: e::class.simpleName})")
+        emptyList()
+    }
+
     println("Calculando rotación sectorial...")
     val sectorEtfCandles: Map<String, List<Candle>> = Symbols.SECTOR_ETFS.keys.associateWith { etf ->
         fetchWeeklyCandles(etf)
@@ -390,6 +403,7 @@ fun main(args: Array<String>) = runBlocking {
 
                 val dailyCandles = fetchDailyCandles(entry.symbol)
                 val monthlyCandles = fetchMonthlyCandles(entry.symbol)
+                val fiveYearCandles = fetchFiveYearCandles(entry.symbol)
                 // Mismo criterio que BuyOpportunityAnalyzer: con precisión diaria si hay al menos
                 // 51 velas diarias (hacen falta 50 para la SMA50), si no se cae a las semanales.
                 val crossSourceCandles = if (dailyCandles.size >= 51) dailyCandles else candles
@@ -401,8 +415,14 @@ fun main(args: Array<String>) = runBlocking {
                     rsi14 = TechnicalAnalysis.calculateRsi(candles).lastOrNull(),
                     volumeRatio = TechnicalAnalysis.volumeRatio(candles),
                     uptrend = UptrendDetector.evaluate(candles),
-                    exhaustion = ExhaustionDetector.detect(candles),
-                    hchResult = UptrendDetector.detectHeadAndShoulders(candles),
+                    exhaustion = ExhaustionDetector.detect(
+                        candles,
+                        // NUEVO — pedido expresamente, casos reales concretos: diagnóstico
+                        // temporal solo para estos 3 símbolos, para ver en el log de GitHub
+                        // Actions exactamente en qué paso se descartan.
+                        debugSymbol = entry.symbol.takeIf { it in setOf("LOG.MC", "ACX.MC", "MTS.MC") }
+                    ),
+                    hchResult = UptrendDetector.detectHeadAndShoulders(fiveYearCandles.takeIf { it.isNotEmpty() } ?: candles),
                     doubleTopBottomResult = UptrendDetector.detectDoubleTopOrBottom(candles),
                     tripleTopBottomResult = UptrendDetector.detectTripleTopOrBottom(candles),
                     stockVolatilityRatio = TechnicalAnalysis.ownVolatilityRatio(candles),

@@ -38,18 +38,37 @@ object ExhaustionDetector {
     fun detect(
         candles: List<Candle>,
         minDeclinePercent: Double = 10.0,
-        lookbackForHigh: Int = 26
+        lookbackForHigh: Int = 26,
+        // NUEVO — pedido expresamente (casos reales Logista, Acerinox, ArcelorMittal en IBEX
+        // 35): este detector no tenía ningún diagnóstico, a diferencia de los patrones de
+        // techo/suelo. Con debugSymbol se ve exactamente en qué paso se descarta cada candidato.
+        debugSymbol: String? = null
     ): ExhaustionSignal? {
-        if (candles.size < 30) return null
+        if (candles.size < 30) {
+            if (debugSymbol != null) android.util.Log.i("ExhaustionDiagnostic", "$debugSymbol: descartado — menos de 30 velas (${candles.size})")
+            return null
+        }
 
         val recentHighCandle = candles.takeLast(lookbackForHigh).maxByOrNull { it.high } ?: return null
         val recentHighIndex = candles.indexOf(recentHighCandle)
         val afterHigh = candles.subList(recentHighIndex, candles.size)
-        if (afterHigh.size < 5) return null
+        if (afterHigh.size < 5) {
+            if (debugSymbol != null) android.util.Log.i("ExhaustionDiagnostic", "$debugSymbol: descartado — menos de 5 velas tras el máximo reciente")
+            return null
+        }
 
         val recentLowCandle = afterHigh.minByOrNull { it.low } ?: return null
         val declinePercent = (recentLowCandle.low - recentHighCandle.high) / recentHighCandle.high * 100
-        if (declinePercent > -minDeclinePercent) return null // no ha caído lo suficiente todavía
+        if (declinePercent > -minDeclinePercent) {
+            if (debugSymbol != null) {
+                android.util.Log.i(
+                    "ExhaustionDiagnostic",
+                    "$debugSymbol: descartado — caída insuficiente (${"%.1f".format(declinePercent)}%%, hace falta ≥${minDeclinePercent}%% en las últimas $lookbackForHigh semanas) — " +
+                        "máximo reciente ${recentHighCandle.datetime.take(10)}=${recentHighCandle.high}, mínimo posterior ${recentLowCandle.datetime.take(10)}=${recentLowCandle.low}"
+                )
+            }
+            return null // no ha caído lo suficiente todavía
+        }
 
         val reasons = mutableListOf<String>()
         // CORREGIDO — fallo real detectado (casos MERLIN, ACS en IBEX 35): antes esta caída
@@ -128,6 +147,14 @@ object ExhaustionDetector {
                 recoveryProgress, nextResistance
             )
             recoveryScore += 25
+        }
+
+        if (debugSymbol != null) {
+            android.util.Log.i(
+                "ExhaustionDiagnostic",
+                "$debugSymbol: caída=${"%.1f".format(declinePercent)}%% (desde ${recentHighCandle.datetime.take(10)} hasta el suelo ${recentLowCandle.datetime.take(10)}) — " +
+                    "recoveryScore=$recoveryScore/75 (hace falta ≥40) — detected=${recoveryScore >= 40} — razones: ${reasons.joinToString(" | ")}"
+            )
         }
 
         return ExhaustionSignal(

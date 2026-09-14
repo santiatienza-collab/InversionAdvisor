@@ -100,7 +100,15 @@ class ScreenerRepository(
             screenerDao.clearBuyOpportunities(indexName)
             screenerDao.clearTop10GenericCandidates(indexName)
 
-            val uptrends = resultado.candidates.filter { it.isUptrend }.map { c ->
+            // CAMBIADO a petición expresa: "Valores Alcistas" (antes "Tendencia alcista") ya NO
+            // selecciona por tendencia limpia (UptrendDetector.evaluate()) — ahora selecciona por
+            // PUNTUACIÓN, con el mismo umbral (≥55) que ya usa el "cajón genérico" de Top10, para
+            // ser coherente con ese otro criterio ya establecido. isUptrend (el campo original)
+            // se SIGUE guardando tal cual en la entidad (yearChangePercent/trendQuality), para
+            // que la fórmula de puntuación (hasLongTermUptrend) siga funcionando igual — solo
+            // cambia QUIÉN aparece en la lista, no lo que cuenta como "tendencia alcista clara"
+            // de cara al bono/penalización de esa categoría.
+            val uptrends = resultado.candidates.filter { (it.combinedScore ?: 0.0) >= 55.0 }.map { c ->
                 UptrendCandidateEntity(
                     indexName = indexName,
                     symbol = c.symbol,
@@ -276,21 +284,6 @@ class ScreenerRepository(
         )
 
         val uptrendSignal = UptrendDetector.evaluate(candles)
-        val uptrend = uptrendSignal?.let { signal ->
-            UptrendCandidateEntity(
-                indexName = entry.indexName,
-                symbol = entry.symbol,
-                name = entry.name,
-                sectorEtf = entry.sectorEtf,
-                sectorName = sectorName,
-                yearChangePercent = signal.yearChangePercent,
-                trendQuality = signal.trendQuality,
-                rsi14 = rsi14,
-                volumeRatio = volumeRatio,
-                isSectorInFavor = sectorInFavor[entry.sectorEtf] ?: false,
-                updatedAtEpochMillis = now
-            )
-        }
 
         val exhaustion = ExhaustionDetector.detect(candles)
         val opportunity = if (exhaustion != null && exhaustion.detected) {
@@ -354,6 +347,29 @@ class ScreenerRepository(
             sectorDeclinePercent = sectorContext.sectorDeclinePercentByEtf[entry.sectorEtf],
             requireSignal = false
         )?.combinedScore
+
+        // CAMBIADO a petición expresa: "Valores Alcistas" (antes "Tendencia alcista") ya NO
+        // selecciona por tendencia limpia (uptrendSignal != null) — ahora selecciona por
+        // PUNTUACIÓN, con el mismo umbral (≥55, UMBRAL_ENTRADA_TOP10_GENERICO) que ya usa el
+        // "cajón genérico" de Top10, para ser coherente con ese otro criterio ya establecido.
+        // uptrendSignal se sigue calculando arriba y pasando a hasLongTermUptrend más abajo —
+        // solo cambia QUIÉN aparece en la lista, no lo que cuenta como "tendencia alcista clara"
+        // de cara al bono/penalización de esa categoría en la fórmula.
+        val uptrend = if (provisionalTop10Score != null && provisionalTop10Score >= UMBRAL_ENTRADA_TOP10_GENERICO) {
+            UptrendCandidateEntity(
+                indexName = entry.indexName,
+                symbol = entry.symbol,
+                name = entry.name,
+                sectorEtf = entry.sectorEtf,
+                sectorName = sectorName,
+                yearChangePercent = uptrendSignal?.yearChangePercent ?: 0.0,
+                trendQuality = uptrendSignal?.trendQuality ?: 0.0,
+                rsi14 = rsi14,
+                volumeRatio = volumeRatio,
+                isSectorInFavor = sectorInFavor[entry.sectorEtf] ?: false,
+                updatedAtEpochMillis = now
+            )
+        } else null
 
         val genericCandidate = if (provisionalTop10Score != null && provisionalTop10Score >= UMBRAL_ENTRADA_TOP10_GENERICO) {
             com.inversionadvisor.data.local.entities.Top10GenericCandidateEntity(

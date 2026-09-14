@@ -285,7 +285,7 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                         Text(
                             "El Russell 2000 no tiene por ahora una lista de constituyentes fiable de la que sacar los ~2000 valores " +
                                 "(a diferencia de S&P 500/Nasdaq-100/IBEX 35), así que esta pestaña solo trae la gráfica del índice, " +
-                                "sin \"Tendencia alcista\" ni \"Futuras compras\".",
+                                "sin \"Valores Alcistas\".",
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(16.dp)
                         )
@@ -301,20 +301,24 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
 
             // A partir de aquí solo llegan S&P 500/Nasdaq-100/IBEX 35 (Top10/Russell 2000/
             // Divisas/Bonos ya han salido con return@LazyColumn más arriba) — así que
-            // esUnMercadoDeAcciones es siempre true en este punto, cada sección solo se
-            // construye si es la subpestaña activa.
-            if (state.selectedAnalysisSubTab == AnalysisSubTab.TENDENCIA_ALCISTA) {
+            // esUnMercadoDeAcciones es siempre true en este punto.
+            // RENOMBRADA ("Tendencia alcista" → "Valores Alcistas") y AMPLIADA a petición
+            // expresa: ahora es la ÚNICA subpestaña de candidatos (se quitó "Futuras compras" —
+            // ver comentario en AnalysisSubTab) — cada tarjeta (UptrendCard) muestra toda la
+            // información y la puntuación completa, con el mismo formato que antes tenía
+            // "Futuras compras".
+            if (state.selectedAnalysisSubTab == AnalysisSubTab.VALORES_ALCISTAS) {
                 // NUEVO — pedido expresamente, para mayor comodidad: el botón "Analizar" también
                 // aquí, no solo en "Índice" — así no hace falta cambiar de subpestaña para
                 // lanzar un análisis nuevo mientras se están viendo estos resultados.
                 item { ScreenerHeader(state, onRunClick = viewModel::runScreener) }
-                item { SectionHeader("Tendencia alcista clara (último año)") }
+                item { SectionHeader("Valores Alcistas (último año)") }
                 if (state.uptrendCandidates.isEmpty()) {
                     item {
                         EmptyScreenerHint(
                             state.isRunning,
                             state.lastRun != null,
-                            "Ningún valor de ${state.selectedMarket.displayName} con tendencia alcista clara en el último análisis."
+                            "Ningún valor de ${state.selectedMarket.displayName} con puntuación de 55 o más en el último análisis."
                         )
                     }
                 } else {
@@ -325,26 +329,7 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                         onCollapse = viewModel::collapseUptrend,
                         key = { it.symbol }
                     ) { candidate ->
-                        UptrendCard(candidate, onClick = { viewModel.selectStock(candidate.symbol) })
-                    }
-                }
-            }
-
-            if (state.selectedAnalysisSubTab == AnalysisSubTab.FUTURAS_COMPRAS) {
-                // Mismo motivo que en Tendencia alcista — consistencia.
-                item { ScreenerHeader(state, onRunClick = viewModel::runScreener) }
-                item { SectionHeader("Futuras compras (caída + agotamiento)") }
-                if (state.buyOpportunities.isEmpty()) {
-                    item { EmptyScreenerHint(state.isRunning, state.lastRun != null, "No se han encontrado oportunidades en el último análisis.") }
-                } else {
-                    expandableSection(
-                        items = state.buyOpportunities,
-                        visibleCount = state.opportunitiesVisibleCount,
-                        onShowMore = { viewModel.showMoreOpportunities(state.buyOpportunities.size) },
-                        onCollapse = viewModel::collapseOpportunities,
-                        key = { it.symbol }
-                    ) { opportunity ->
-                        BuyOpportunityCard(opportunity, marketRepository, onClick = { viewModel.selectStock(opportunity.symbol) })
+                        UptrendCard(candidate, marketRepository, onClick = { viewModel.selectStock(candidate.symbol) })
                     }
                 }
             }
@@ -527,43 +512,262 @@ private fun EmptyScreenerHint(isRunning: Boolean, hasRunBefore: Boolean, emptyMe
 }
 
 @Composable
-private fun UptrendCard(candidate: UptrendCandidate, onClick: () -> Unit) {
+@Composable
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class) // FlowRow — ver comentario donde se usa
+private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRepository, onClick: () -> Unit) {
+    // REESCRITA POR COMPLETO a petición expresa: "Valores Alcistas" (antes "Tendencia alcista")
+    // ahora muestra toda la información en directo y la puntuación con el MISMO formato que
+    // "Futuras compras" — mismo patrón exacto que BuyOpportunityCard de más abajo, adaptado a
+    // UptrendCandidate (que ya trae trendQuality/yearChangePercent del escaneo, a diferencia de
+    // BuyOpportunity).
+    var stockPe by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    var sectorAveragePe by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    var stockVolatilityRatio by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    var percentFromYearHigh by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    var nearestSupportPercent by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    var nearestResistancePercent by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    var candlestickPattern by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.CandlestickPattern?>(null) }
+    var marketTrap by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.MarketTrapType?>(null) }
+    var shortTermBullish by remember(candidate.symbol) { mutableStateOf<Boolean?>(null) }
+    var declineAccelerating by remember(candidate.symbol) { mutableStateOf(false) }
+    var deathCrossDate by remember(candidate.symbol) { mutableStateOf<String?>(null) }
+    var earningsWithinThreeWeeks by remember(candidate.symbol) { mutableStateOf(false) }
+    var momentumPriceDivergence by remember(candidate.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.MomentumPriceDivergence.NONE) }
+    var goldenCrossDate by remember(candidate.symbol) { mutableStateOf<String?>(null) }
+    var shortTermFlagPattern by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.FlagPattern?>(null) }
+    var longTermFlagPattern by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.FlagPattern?>(null) }
+    var consolidatedBearishMonthsCount by remember(candidate.symbol) { mutableStateOf<Int?>(null) }
+    var doubleTopBottomResult by remember(candidate.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.DoubleTopBottomResult(com.inversionadvisor.domain.indicators.DoubleTopBottomPattern.NONE)) }
+    var hchResult by remember(candidate.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersResult(com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersState.NONE)) }
+    var tripleTopBottomResult by remember(candidate.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomPattern.NONE)) }
+    var macd by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.TechnicalAnalysis.MacdResult?>(null) }
+    var benchmarkYearChangePercent by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    var sectorDeclinePercent by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    var hchCandles by remember(candidate.symbol) { mutableStateOf<List<com.inversionadvisor.domain.model.Candle>>(emptyList()) }
+    var aboveTrendSma by remember(candidate.symbol) { mutableStateOf<Boolean?>(null) }
+    // NUEVO — para que "Giro" (agotamiento/techo) también cuente aquí, igual que en Futuras
+    // Compras — un valor alcista también puede mostrar indicios de techo si está sobrecomprado.
+    var longTermDecline by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.ExhaustionSignal?>(null) }
+
+    LaunchedEffect(candidate.symbol) {
+        runCatching { marketRepository.refreshStockPeIfStale(candidate.symbol) }
+        runCatching { marketRepository.refreshSectorPeRatiosIfStale() }
+        runCatching { marketRepository.refreshYahooCandlesIfStale(candidate.symbol, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR) }
+        launch {
+            marketRepository.observeStockPe(candidate.symbol).collect { stockPe = it }
+        }
+        launch {
+            marketRepository.observeSectorPeRatios().collect { map ->
+                sectorAveragePe = map[candidate.sectorEtf]
+            }
+        }
+        launch {
+            marketRepository.observeEarningsDate(candidate.symbol).collect { entity ->
+                earningsWithinThreeWeeks = marketRepository.isEarningsWithinThreeWeeks(entity)
+            }
+        }
+        launch {
+            runCatching {
+                marketRepository.refreshYahooCandlesBulkIfStale(com.inversionadvisor.domain.model.Symbols.SP500_BENCHMARK, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR)
+                val spyCandles = marketRepository.observeCandles(com.inversionadvisor.domain.model.Symbols.SP500_BENCHMARK, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR).first()
+                benchmarkYearChangePercent = spyCandles.takeIf { it.size >= 2 }
+                    ?.let { (it.last().close - it.first().close) / it.first().close * 100 }
+            }
+            runCatching {
+                val sectorContext = marketRepository.computeSectorContext()
+                sectorDeclinePercent = sectorContext.sectorDeclinePercentByEtf[candidate.sectorEtf]
+            }
+        }
+        launch {
+            runCatching {
+                marketRepository.refreshYahooCandlesIfStale(candidate.symbol, com.inversionadvisor.domain.model.ChartRange.FIVE_YEARS)
+                hchCandles = marketRepository.observeCandles(candidate.symbol, com.inversionadvisor.domain.model.ChartRange.FIVE_YEARS).first()
+            }
+        }
+        launch {
+            marketRepository.observeCandles(candidate.symbol, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR).collect { candles ->
+                stockVolatilityRatio = com.inversionadvisor.domain.indicators.TechnicalAnalysis.ownVolatilityRatio(candles)
+                macd = com.inversionadvisor.domain.indicators.TechnicalAnalysis.calculateMacd(candles)
+                longTermDecline = com.inversionadvisor.domain.indicators.ExhaustionDetector.detect(candles)
+                if (candles.isNotEmpty()) {
+                    val currentPrice = candles.last().close
+                    val yearHigh = candles.maxOf { it.high }
+                    percentFromYearHigh = if (yearHigh > 0) (currentPrice - yearHigh) / yearHigh * 100 else null
+                    val sma40 = com.inversionadvisor.domain.indicators.TechnicalAnalysis.simpleMovingAverage(candles, 40).lastOrNull()
+                    aboveTrendSma = sma40?.let { currentPrice > it }
+                    val levels = com.inversionadvisor.domain.indicators.TechnicalAnalysis.detectSupportResistanceLevels(candles)
+                    val resistancesAbove = levels.filter { it.type == com.inversionadvisor.domain.indicators.LevelType.RESISTANCE && it.price >= currentPrice }
+                    val supportsBelow = levels.filter { it.type == com.inversionadvisor.domain.indicators.LevelType.SUPPORT && it.price <= currentPrice }
+                    nearestResistancePercent = resistancesAbove.minByOrNull { it.price }?.let { (it.price - currentPrice) / currentPrice * 100 }
+                    nearestSupportPercent = supportsBelow.maxByOrNull { it.price }?.let { (currentPrice - it.price) / currentPrice * 100 }
+                    candlestickPattern = com.inversionadvisor.domain.indicators.TechnicalAnalysis.detectCandlestickPattern(candles)
+                    marketTrap = com.inversionadvisor.domain.indicators.TechnicalAnalysis.detectTrap(candles, levels)
+                    shortTermBullish = com.inversionadvisor.domain.indicators.UptrendDetector.isClearlyBullishShortTerm(candles)
+                    declineAccelerating = com.inversionadvisor.domain.indicators.UptrendDetector.isDeclineAcceleratingClearly(candles)
+                    deathCrossDate = com.inversionadvisor.domain.indicators.UptrendDetector.findSma20CrossedBelowSma50Date(candles)
+                    goldenCrossDate = com.inversionadvisor.domain.indicators.UptrendDetector.findSma20CrossedAboveSma50Date(candles)
+                    doubleTopBottomResult = com.inversionadvisor.domain.indicators.UptrendDetector.detectDoubleTopOrBottom(candles)
+                    hchResult = com.inversionadvisor.domain.indicators.UptrendDetector.detectHeadAndShoulders(hchCandles.ifEmpty { candles })
+                    tripleTopBottomResult = com.inversionadvisor.domain.indicators.UptrendDetector.detectTripleTopOrBottom(candles)
+                    try {
+                        marketRepository.refreshDailyCandlesForSmaIfStale(candidate.symbol, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR)
+                        val dailyCandles = marketRepository.observeDailyCandlesForSma(candidate.symbol, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR).first()
+                        if (dailyCandles.size >= 51) {
+                            deathCrossDate = com.inversionadvisor.domain.indicators.UptrendDetector.findSma20CrossedBelowSma50Date(dailyCandles, lookbackPeriods = 10)
+                            goldenCrossDate = com.inversionadvisor.domain.indicators.UptrendDetector.findSma20CrossedAboveSma50Date(dailyCandles, lookbackPeriods = 10)
+                        }
+                        shortTermFlagPattern = com.inversionadvisor.domain.indicators.UptrendDetector.detectFlagPattern(dailyCandles)
+                    } catch (e: Exception) {
+                        // Sin confirmación diaria, se deja el resultado semanal.
+                    }
+                    try {
+                        marketRepository.refreshMonthlyCandlesForFlagIfStale(candidate.symbol)
+                        val monthlyCandles = marketRepository.observeMonthlyCandlesForFlag(candidate.symbol).first()
+                        longTermFlagPattern = com.inversionadvisor.domain.indicators.UptrendDetector.detectFlagPattern(monthlyCandles)
+                        consolidatedBearishMonthsCount = com.inversionadvisor.domain.indicators.UptrendDetector.countBearishMonthsInLast6(monthlyCandles, debugSymbol = candidate.symbol)
+                    } catch (e: Exception) {
+                        // Sin patrón mensual si falla, no corta el resto.
+                    }
+                    momentumPriceDivergence = com.inversionadvisor.domain.indicators.UptrendDetector.detectMomentumPriceDivergence(candles)
+                }
+            }
+        }
+    }
+    val sectorTypicalPeRange = com.inversionadvisor.domain.model.Symbols.SECTOR_TYPICAL_PE_RANGES[candidate.sectorEtf]
+
+    val scored = remember(candidate, stockPe, sectorAveragePe, stockVolatilityRatio, percentFromYearHigh, nearestSupportPercent, nearestResistancePercent, candlestickPattern, marketTrap, macd, shortTermBullish, declineAccelerating, deathCrossDate, earningsWithinThreeWeeks, momentumPriceDivergence, goldenCrossDate, shortTermFlagPattern, longTermFlagPattern, consolidatedBearishMonthsCount, doubleTopBottomResult, hchResult, tripleTopBottomResult, benchmarkYearChangePercent, sectorDeclinePercent, aboveTrendSma, longTermDecline) {
+        candidate.unifiedScore(
+            aboveTrendSma = aboveTrendSma,
+            longTermDecline = longTermDecline,
+            stockPe = stockPe,
+            sectorAveragePe = sectorAveragePe,
+            sectorTypicalPeRange = sectorTypicalPeRange,
+            stockVolatilityRatio = stockVolatilityRatio,
+            percentFromYearHigh = percentFromYearHigh,
+            nearestSupportPercent = nearestSupportPercent,
+            nearestResistancePercent = nearestResistancePercent,
+            candlestickPattern = candlestickPattern,
+            marketTrap = marketTrap,
+            macd = macd,
+            shortTermBullish = shortTermBullish,
+            declineAccelerating = declineAccelerating,
+            deathCrossDate = deathCrossDate,
+            earningsWithinThreeWeeks = earningsWithinThreeWeeks,
+            momentumPriceDivergence = momentumPriceDivergence,
+            goldenCrossDate = goldenCrossDate,
+            shortTermFlagPattern = shortTermFlagPattern,
+            longTermFlagPattern = longTermFlagPattern,
+            consolidatedBearishMonthsCount = consolidatedBearishMonthsCount,
+            doubleTopBottomResult = doubleTopBottomResult,
+            hchResult = hchResult,
+            tripleTopBottomResult = tripleTopBottomResult,
+            benchmarkYearChangePercent = benchmarkYearChangePercent,
+            sectorDeclinePercent = sectorDeclinePercent
+        )
+    }
+    val ratingColor = scored?.let {
+        when {
+            it.combinedScore < 25 -> Color(0xFFC62828)
+            it.combinedScore < 50 -> Color(0xFFEF6C00)
+            it.combinedScore < 75 -> Color(0xFFF9A825)
+            else -> Color(0xFF2E7D32)
+        }
+    } ?: RiskLevel.LOW.toColor()
+    var openBreakdown by remember { mutableStateOf(false) }
+    if (openBreakdown && scored != null) {
+        CalculationBreakdownDialog("Cómo se calculó (0-100)", scored.rewardBreakdown + scored.riskBreakdown, onDismiss = { openBreakdown = false })
+    }
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = RiskLevel.LOW.toColor().copy(alpha = 0.08f)),
+        colors = CardDefaults.cardColors(containerColor = ratingColor.copy(alpha = 0.10f)),
         onClick = onClick
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f).padding(end = 8.dp)) {
-                Text(
-                    candidate.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    "${candidate.symbol} · ${candidate.sectorName}",
-                    style = MaterialTheme.typography.bodySmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    "Calidad de tendencia: ${"%.0f".format(candidate.trendQuality * 100)}%",
-                    style = MaterialTheme.typography.bodySmall
-                )
+        Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f).padding(end = 8.dp)) {
+                    Text(
+                        candidate.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(candidate.symbol, style = MaterialTheme.typography.bodySmall)
+                }
+                if (scored != null) {
+                    Surface(
+                        modifier = Modifier.width(76.dp).clickable { openBreakdown = true },
+                        shape = RoundedCornerShape(14.dp),
+                        color = ratingColor
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(vertical = 6.dp, horizontal = 4.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                "Puntuación ℹ",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color.White.copy(alpha = 0.85f),
+                                textAlign = TextAlign.Center,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                "%.0f".format(scored.combinedScore),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                } else {
+                    ConfidenceBadge((candidate.trendQuality * 100).toInt(), RiskLevel.LOW.toColor())
+                }
             }
+
+            if (scored != null && (scored.penaltyWarnings.isNotEmpty() || scored.bonusWarnings.isNotEmpty())) {
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    scored.bonusWarnings.forEach { warning ->
+                        com.inversionadvisor.ui.common.BlinkingNeonBadge(warning, positive = true)
+                    }
+                    scored.penaltyWarnings.forEach { warning ->
+                        com.inversionadvisor.ui.common.BlinkingNeonBadge(warning)
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.padding(top = 8.dp))
+
             Text(
-                "${if (candidate.yearChangePercent >= 0) "+" else ""}${"%.1f".format(candidate.yearChangePercent)}%",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = RiskLevel.LOW.toColor()
+                "${if (candidate.yearChangePercent >= 0) "+" else ""}${"%.1f".format(candidate.yearChangePercent)}% en el último año — calidad de tendencia ${"%.0f".format(candidate.trendQuality * 100)}%",
+                style = MaterialTheme.typography.bodyMedium
             )
+
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 6.dp)) {
+                Surface(
+                    shape = RoundedCornerShape(6.dp),
+                    color = if (candidate.isSectorInFavor) RiskLevel.LOW.toColor() else Color(0xFF9E9E9E)
+                ) {
+                    Text(
+                        if (candidate.isSectorInFavor) "${candidate.sectorName} · sector en auge" else candidate.sectorName,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -607,6 +811,10 @@ private fun BuyOpportunityCard(opportunity: BuyOpportunity, marketRepository: Ma
     // tenía estos dos datos): comparación con el mercado (S&P 500) y con el propio sector.
     var benchmarkYearChangePercent by remember(opportunity.symbol) { mutableStateOf<Double?>(null) }
     var sectorDeclinePercent by remember(opportunity.symbol) { mutableStateOf<Double?>(null) }
+    // NUEVO — pedido expresamente (fallo real: HCH casi nunca se detectaba aquí por usar solo
+    // las velas de 1 año, cuando la propia función necesita hasta 5 años para hombros que
+    // tardaron más de un año en formarse).
+    var hchCandles by remember(opportunity.symbol) { mutableStateOf<List<com.inversionadvisor.domain.model.Candle>>(emptyList()) }
     LaunchedEffect(opportunity.symbol) {
         runCatching { marketRepository.refreshStockPeIfStale(opportunity.symbol) }
         runCatching { marketRepository.refreshSectorPeRatiosIfStale() }
@@ -650,6 +858,12 @@ private fun BuyOpportunityCard(opportunity: BuyOpportunity, marketRepository: Ma
             }
         }
         launch {
+            runCatching {
+                marketRepository.refreshYahooCandlesIfStale(opportunity.symbol, com.inversionadvisor.domain.model.ChartRange.FIVE_YEARS)
+                hchCandles = marketRepository.observeCandles(opportunity.symbol, com.inversionadvisor.domain.model.ChartRange.FIVE_YEARS).first()
+            }
+        }
+        launch {
             marketRepository.observeCandles(opportunity.symbol, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR).collect { candles ->
                 stockVolatilityRatio = com.inversionadvisor.domain.indicators.TechnicalAnalysis.ownVolatilityRatio(candles)
                 macd = com.inversionadvisor.domain.indicators.TechnicalAnalysis.calculateMacd(candles)
@@ -671,8 +885,11 @@ private fun BuyOpportunityCard(opportunity: BuyOpportunity, marketRepository: Ma
                     // Doble techo/doble suelo — usa las MISMAS velas semanales ya cargadas
                     // arriba, sin pedir ningún dato nuevo.
                     doubleTopBottomResult = com.inversionadvisor.domain.indicators.UptrendDetector.detectDoubleTopOrBottom(candles)
-                    // Hombro-Cabeza-Hombro — mismas velas semanales ya cargadas, sin petición nueva.
-                    hchResult = com.inversionadvisor.domain.indicators.UptrendDetector.detectHeadAndShoulders(candles)
+                    // Hombro-Cabeza-Hombro — CAMBIADO a petición expresa: ahora usa hchCandles (5
+                    // años, ver arriba), no "candles" (1 año) — antes casi nunca se detectaba
+                    // nada porque la propia función necesita hasta 5 años para encontrar hombros
+                    // que tardaron más de un año en formarse.
+                    hchResult = com.inversionadvisor.domain.indicators.UptrendDetector.detectHeadAndShoulders(hchCandles.ifEmpty { candles })
                     tripleTopBottomResult = com.inversionadvisor.domain.indicators.UptrendDetector.detectTripleTopOrBottom(candles)
                     // CAMBIADO A PETICIÓN EXPRESA: antes solo se pedían velas diarias cuando el
                     // cruce SEMANAL (barato) ya encontraba algo que confirmar — ahora se piden
