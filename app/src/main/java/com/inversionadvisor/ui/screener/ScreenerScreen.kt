@@ -140,11 +140,10 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
     )
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        // ScrollableTabRow (no TabRow fijo): mismo motivo que siempre — que quepan bien sin
-        // apretujarse si en el futuro se añade alguna pestaña más.
-        ScrollableTabRow(
-            selectedTabIndex = pestañasSuperiores.indexOfFirst { it.seleccionada }.coerceAtLeast(0),
-            edgePadding = 12.dp
+        // CAMBIADO a petición expresa: ya no hace falta que se deslice — con solo 4 pestañas
+        // ("Índices" agrupa las 4 de antes en una), TabRow fijo y centrado ya cabe de sobra.
+        TabRow(
+            selectedTabIndex = pestañasSuperiores.indexOfFirst { it.seleccionada }.coerceAtLeast(0)
         ) {
             pestañasSuperiores.forEach { pestaña ->
                 Tab(
@@ -278,12 +277,9 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                 // esto se muestra siempre para los 4 índices (S&P 500/Nasdaq-100/IBEX 35/
                 // Russell 2000), seguido de "Valores Alcistas" más abajo (salvo Russell 2000).
                 item { IndexOverviewChartCard(marketRepository, state.selectedMarket) }
-                // "Análisis · [mercado]" con el botón "Analizar" — no tiene sentido en pestañas
-                // sin universo de acciones que escanear (Divisas/Bonos ya no llegan aquí, ver
-                // arriba; Russell 2000 sí llega, pero tampoco tiene nada que analizar).
-                if (state.selectedMarket != MarketUniverse.RUSSELL2000) {
-                    item { ScreenerHeader(state, onRunClick = viewModel::runScreener) }
-                }
+                // MOVIDO a petición expresa: el botón "Analizar" (versión compacta) ya no va
+                // aquí, pegado a la gráfica — se movió al FINAL de la página, después de
+                // "Valores Alcistas" (ver más abajo, CompactScreenerHeader).
             }
 
             state.error?.let { error ->
@@ -362,6 +358,9 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                     UptrendCard(candidate, marketRepository, onClick = { viewModel.selectStock(candidate.symbol) })
                 }
             }
+            // NUEVO — pedido expresamente: el botón "Analizar" (versión compacta, más pequeña
+            // que antes) va ahora al FINAL de la página, después de "Valores Alcistas".
+            item { CompactScreenerHeader(state, onRunClick = viewModel::runScreener) }
         }
 
         // Botón flotante transparente para volver al principio tras un scroll largo — pedido
@@ -422,6 +421,64 @@ private fun <T> LazyListScope.expandableSection(
                 )
                 Spacer(modifier = Modifier.padding(start = 4.dp))
                 Text(if (allShown) "Ver menos" else "Ver ${(items.size - visibleCount).coerceAtMost(COLLAPSED_ITEM_COUNT)} más (quedan ${items.size - visibleCount})")
+            }
+        }
+    }
+}
+
+@Composable
+private fun CompactScreenerHeader(state: ScreenerUiState, onRunClick: () -> Unit) {
+    // NUEVO — pedido expresamente: versión reducida de ScreenerHeader (más abajo) — sin el
+    // título grande ni el bloque de info del universo (eso ya se ve en la gráfica/desplegable
+    // de arriba), botón más bajo (40dp en vez de 52dp), pensada para ir al FINAL de la página.
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+    ) {
+        Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
+            Button(
+                onClick = onRunClick,
+                enabled = !state.isRunning,
+                modifier = Modifier.fillMaxWidth().height(40.dp),
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                    disabledContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            ) {
+                if (state.isRunning) {
+                    CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.onPrimary)
+                    Spacer(modifier = Modifier.padding(start = 8.dp))
+                    Text("Analizando ${state.selectedMarket.displayName}…", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                } else {
+                    Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.padding(start = 6.dp))
+                    Text("Analizar ${state.selectedMarket.displayName}", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                }
+            }
+            if (state.isRunning) {
+                Spacer(modifier = Modifier.padding(top = 8.dp))
+                val progressFraction = if (state.progressTotal > 0) state.progressDone.toFloat() / state.progressTotal else 0f
+                LinearProgressIndicator(
+                    progress = progressFraction,
+                    modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(50)),
+                    strokeCap = StrokeCap.Round
+                )
+                Text(
+                    "${state.progressDone} / ${state.progressTotal} valores",
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            } else {
+                state.lastRun?.let { lastRun ->
+                    val formatter = remember(lastRun.lastRunEpochMillis) { SimpleDateFormat("d MMM HH:mm", Locale("es", "ES")) }
+                    Text(
+                        "Último análisis: ${formatter.format(Date(lastRun.lastRunEpochMillis))} · ${lastRun.symbolsScanned} valores",
+                        style = MaterialTheme.typography.labelSmall,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+                }
             }
         }
     }

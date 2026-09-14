@@ -24,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.lifecycleScope
 import com.inversionadvisor.domain.model.MarketUniverse
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import com.inversionadvisor.data.connectivity.NetworkConnectivityObserver
 import com.inversionadvisor.di.ServiceLocator
@@ -57,12 +59,18 @@ class MainActivity : ComponentActivity() {
         // mercado sin datos por completo. lifecycleScope se cancela solo si la Activity se
         // destruye a media carga, sin dejar corrutinas huérfanas corriendo de fondo.
         lifecycleScope.launch {
-            listOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35).forEach { market ->
-                val importado = runCatching { screenerRepository.importFromRemoteJson(market.indexName) }.getOrDefault(false)
-                if (!importado) {
-                    runCatching { screenerRepository.runFullScreen(market.indexName) { _, _ -> } }
+            // CAMBIADO a petición expresa: antes se cargaban SP500 → NASDAQ100 → IBEX35 uno
+            // detrás de otro (secuencial) — si SP500 tardaba, daba la sensación de que los
+            // otros dos "no cargaban solos" cuando en realidad solo estaban esperando su turno.
+            // Ahora los 3 se lanzan A LA VEZ (en paralelo), y Top10 espera a que los 3 terminen.
+            listOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35).map { market ->
+                async {
+                    val importado = runCatching { screenerRepository.importFromRemoteJson(market.indexName) }.getOrDefault(false)
+                    if (!importado) {
+                        runCatching { screenerRepository.runFullScreen(market.indexName) { _, _ -> } }
+                    }
                 }
-            }
+            }.awaitAll()
             runCatching { top10Repository.refresh { _, _ -> } }
         }
 
