@@ -1305,6 +1305,26 @@ object UptrendDetector {
                                 continue
                             }
                         }
+                    } else {
+                        // NUEVO — pedido expresamente: el HCH CONFIRMADO no tenía ningún límite
+                        // de caducidad (a diferencia del doble/triple techo-suelo, que sí caducan
+                        // 26 semanas después de la ruptura) — así que una ruptura de hace años
+                        // seguía penalizando para siempre. Se usa el mismo umbral de 78 semanas
+                        // (1,5 años) que ya usa la "memoria diluida" de arriba, y no las 26
+                        // semanas del doble/triple, porque el HCH es un patrón bastante más
+                        // grande y estructural (ventana de 6 meses a 5 años entre hombros) —
+                        // aplicarle un plazo pensado para un patrón mucho más corto no tendría
+                        // sentido.
+                        val semanasDesdeConfirmacion = candles.size - 1 - (h2.index + 1 until candles.size).first { k -> candles[k].close < necklineEn(k) }
+                        if (semanasDesdeConfirmacion > umbralMemoriaDiluidaSemanas) {
+                            if (debugSymbol != null) {
+                                android.util.Log.i(
+                                    "HchDiagnostic",
+                                    "$debugSymbol: descartado por caducidad — confirmado hace $semanasDesdeConfirmacion semanas (> $umbralMemoriaDiluidaSemanas)"
+                                )
+                            }
+                            continue
+                        }
                     }
 
                     if (diffHombros < mejorDiff) {
