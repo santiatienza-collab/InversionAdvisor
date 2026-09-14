@@ -204,7 +204,7 @@ class ScreenerRepository(
         }
 
     private suspend fun runFullScreenInternal(indexName: String, onProgress: suspend (done: Int, total: Int) -> Unit) = coroutineScope {
-        val sectorContext = computeSectorContext()
+        val sectorContext = marketRepository.computeSectorContext()
         val sectorInFavor = sectorContext.isSectorInFavor
         // .distinctBy(symbol): red de seguridad además del arreglo en el parser — si por lo
         // que sea quedara algún símbolo duplicado en el universo (p. ej. caché antigua de
@@ -381,8 +381,10 @@ class ScreenerRepository(
      * saber qué sectores están en auge, también en paralelo. Ahora vive en
      * MarketRepository (compartido con la ficha de un stock suelto, ver
      * StockDetailViewModel) — antes era una copia privada solo de aquí.
+     * CORREGIDO — este envoltorio ya no se usaba (se llama directamente a
+     * marketRepository.computeSectorContext() más arriba, la versión rica), se quita para no
+     * dejar código muerto.
      */
-    private suspend fun computeSectorFavorability(): Map<String, Boolean> = marketRepository.computeSectorFavorability()
 
     companion object {
         /**
