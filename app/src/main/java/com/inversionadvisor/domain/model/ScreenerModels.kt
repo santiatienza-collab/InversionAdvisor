@@ -114,7 +114,12 @@ data class BuyOpportunity(
         consolidatedBearishMonthsCount: Int? = null,
         doubleTopBottomResult: com.inversionadvisor.domain.indicators.DoubleTopBottomResult = com.inversionadvisor.domain.indicators.DoubleTopBottomResult(com.inversionadvisor.domain.indicators.DoubleTopBottomPattern.NONE),
         hchResult: com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersResult = com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersResult(com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersState.NONE),
-        tripleTopBottomResult: com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult = com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomPattern.NONE)
+        tripleTopBottomResult: com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult = com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomPattern.NONE),
+        /** NUEVO — pedido expresamente tras detectar que esta tarjeta (recálculo en directo,
+         *  separado del JSON importado) no tenía estos dos datos, mientras que la ficha del
+         *  stock sí — causaba incoherencia entre lo que se veía aquí y al entrar al stock. */
+        benchmarkYearChangePercent: Double? = null,
+        sectorDeclinePercent: Double? = null
     ): com.inversionadvisor.domain.indicators.Top10Calculator.ScoredCandidate? =
         com.inversionadvisor.domain.indicators.Top10Calculator.score(
             trendQuality = null,
@@ -147,6 +152,8 @@ data class BuyOpportunity(
             doubleTopBottomResult = doubleTopBottomResult,
             hchResult = hchResult,
             tripleTopBottomResult = tripleTopBottomResult,
+            benchmarkYearChangePercent = benchmarkYearChangePercent,
+            sectorDeclinePercent = sectorDeclinePercent,
             requireSignal = false
         )
 }

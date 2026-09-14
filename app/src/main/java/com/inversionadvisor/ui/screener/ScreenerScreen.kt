@@ -603,6 +603,10 @@ private fun BuyOpportunityCard(opportunity: BuyOpportunity, marketRepository: Ma
     var hchResult by remember(opportunity.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersResult(com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersState.NONE)) }
     var tripleTopBottomResult by remember(opportunity.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomPattern.NONE)) }
     var macd by remember(opportunity.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.TechnicalAnalysis.MacdResult?>(null) }
+    // NUEVO — pedido expresamente tras detectar incoherencia con la ficha del stock (que ya
+    // tenía estos dos datos): comparación con el mercado (S&P 500) y con el propio sector.
+    var benchmarkYearChangePercent by remember(opportunity.symbol) { mutableStateOf<Double?>(null) }
+    var sectorDeclinePercent by remember(opportunity.symbol) { mutableStateOf<Double?>(null) }
     LaunchedEffect(opportunity.symbol) {
         runCatching { marketRepository.refreshStockPeIfStale(opportunity.symbol) }
         runCatching { marketRepository.refreshSectorPeRatiosIfStale() }
@@ -628,6 +632,21 @@ private fun BuyOpportunityCard(opportunity: BuyOpportunity, marketRepository: Ma
         launch {
             marketRepository.observeEarningsDate(opportunity.symbol).collect { entity ->
                 earningsWithinThreeWeeks = marketRepository.isEarningsWithinThreeWeeks(entity)
+            }
+        }
+        // NUEVO — pedido expresamente: mismo cálculo que ya usa la ficha del stock (comparación
+        // con el S&P 500 y con el propio sector) — antes esta tarjeta no lo pedía, así que el
+        // número que se veía aquí no coincidía con el de la ficha para el mismo símbolo.
+        launch {
+            runCatching {
+                marketRepository.refreshYahooCandlesBulkIfStale(com.inversionadvisor.domain.model.Symbols.SP500_BENCHMARK, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR)
+                val spyCandles = marketRepository.observeCandles(com.inversionadvisor.domain.model.Symbols.SP500_BENCHMARK, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR).first()
+                benchmarkYearChangePercent = spyCandles.takeIf { it.size >= 2 }
+                    ?.let { (it.last().close - it.first().close) / it.first().close * 100 }
+            }
+            runCatching {
+                val sectorContext = marketRepository.computeSectorContext()
+                sectorDeclinePercent = opportunity.sectorEtf?.let { sectorContext.sectorDeclinePercentByEtf[it] }
             }
         }
         launch {
@@ -695,7 +714,7 @@ private fun BuyOpportunityCard(opportunity: BuyOpportunity, marketRepository: Ma
     // lista no espera a nada de esto (se calculó ya, sin ellos, para que sea rápido); esta
     // tarjeta en concreto sí los añade en cuanto llegan, así que el número que ves aquí puede
     // afinarse un poco después de que la lista ya esté ordenada — no reordena la lista sola.
-    val scored = remember(opportunity, stockPe, sectorAveragePe, stockVolatilityRatio, percentFromYearHigh, nearestSupportPercent, nearestResistancePercent, candlestickPattern, marketTrap, macd, shortTermBullish, declineAccelerating, deathCrossDate, earningsWithinThreeWeeks, momentumPriceDivergence, goldenCrossDate, shortTermFlagPattern, longTermFlagPattern, consolidatedBearishMonthsCount, doubleTopBottomResult, hchResult, tripleTopBottomResult) {
+    val scored = remember(opportunity, stockPe, sectorAveragePe, stockVolatilityRatio, percentFromYearHigh, nearestSupportPercent, nearestResistancePercent, candlestickPattern, marketTrap, macd, shortTermBullish, declineAccelerating, deathCrossDate, earningsWithinThreeWeeks, momentumPriceDivergence, goldenCrossDate, shortTermFlagPattern, longTermFlagPattern, consolidatedBearishMonthsCount, doubleTopBottomResult, hchResult, tripleTopBottomResult, benchmarkYearChangePercent, sectorDeclinePercent) {
         opportunity.unifiedScore(
             stockPe = stockPe,
             sectorAveragePe = sectorAveragePe,
@@ -717,7 +736,10 @@ private fun BuyOpportunityCard(opportunity: BuyOpportunity, marketRepository: Ma
             longTermFlagPattern = longTermFlagPattern,
             consolidatedBearishMonthsCount = consolidatedBearishMonthsCount,
             doubleTopBottomResult = doubleTopBottomResult,
-            hchResult = hchResult
+            hchResult = hchResult,
+            tripleTopBottomResult = tripleTopBottomResult,
+            benchmarkYearChangePercent = benchmarkYearChangePercent,
+            sectorDeclinePercent = sectorDeclinePercent
         )
     }
     // Vuelta a la escala 0-100, 4 colores: 0-25 rojo, 25-50 naranja, 50-75 amarillo, 75-100 verde.
