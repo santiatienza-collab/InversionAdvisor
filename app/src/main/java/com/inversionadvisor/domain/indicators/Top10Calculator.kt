@@ -206,11 +206,6 @@ object Top10Calculator {
          *  resta 7 puntos) y CONFIRMADO (ruptura de la línea clavicular ya ocurrida, aviso rojo,
          *  resta 15 puntos). NONE (valor por defecto) no penaliza nada. */
         hchResult: UptrendDetector.HeadAndShouldersResult = UptrendDetector.HeadAndShouldersResult(UptrendDetector.HeadAndShouldersState.NONE),
-        /** Bono APARTE, pedido expresamente — antes "tendencia alcista clara" (UptrendDetector.
-         *  evaluate(), regresión de 52 semanas con R²≥0.5) era un FILTRO DE ENTRADA: si un stock
-         *  no la cumplía (y tampoco tenía caída con agotamiento), ni siquiera se puntuaba con la
-         *  fórmula completa en Top10 — caso real que esto excluía injustamente: SanDisk, con 85
-         *  puntos en la fórmula completa, fuera de Top10 por no encajar en ninguna de las dos
         /** ACLARADO a petición expresa (plazos distintos, para no confundir con la categoría
          *  "Tendencia" de abajo, que mira los últimos 3 MESES): esto mira los últimos 52
          *  SEMANAS — un año completo. Invertido a petición expresa: ahora CUALQUIER candidato
