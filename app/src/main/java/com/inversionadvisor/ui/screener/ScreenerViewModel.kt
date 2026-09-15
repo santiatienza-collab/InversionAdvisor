@@ -75,6 +75,8 @@ data class ScreenerUiState(
      *  (el valor inicial de _selectedMarket) desde el principio, sin tener que elegir nada a
      *  mano en el desplegable primero. El desplegable sigue sirviendo para CAMBIAR de índice. */
     val indiceElegidoManualmente: Boolean = true,
+    /** NUEVO — pedido expresamente: Top 20 ahora se muestra de 5 en 5. */
+    val top10VisibleCount: Int = COLLAPSED_ITEM_COUNT,
     /** "Top 10" — se calcula solo al pulsar el botón, nunca solo, y solo con lo que ya haya en
      *  Room de haber pulsado "Analizar" antes en los 3 mercados (ver Top10Repository). */
     val top10Entries: List<Top10Entry> = emptyList(),
@@ -134,6 +136,7 @@ class ScreenerViewModel(
     // Un contador por mercado (no uno global) — cada pestaña de mercado mantiene su propio
     // "punto de lectura" independiente de las demás.
     private val _uptrendVisibleCounts = MutableStateFlow<Map<String, Int>>(emptyMap())
+    private val _top10VisibleCount = MutableStateFlow(COLLAPSED_ITEM_COUNT)
     private val _opportunitiesVisibleCounts = MutableStateFlow<Map<String, Int>>(emptyMap())
     // Igual, para el punto de scroll exacto — un (índice, desplazamiento) por mercado.
     private val _scrollPositions = MutableStateFlow<Map<String, Pair<Int, Int>>>(emptyMap())
@@ -207,7 +210,8 @@ class ScreenerViewModel(
         top10EntriesState,
         top10StatusFlow,
         _selectedAnalysisSubTab,
-        _indiceElegidoManualmente
+        _indiceElegidoManualmente,
+        _top10VisibleCount
     ) { values ->
         val market = values[0] as MarketUniverse
         val results = values[1] as MarketResults
@@ -222,11 +226,13 @@ class ScreenerViewModel(
         val top10Status = values[10] as Top10Status
         val selectedAnalysisSubTab = values[11] as AnalysisSubTab
         val indiceElegidoManualmente = values[12] as Boolean
+        val top10VisibleCount = values[13] as Int
         val scrollPosition = scrollPositions[market.indexName] ?: (0 to 0)
         ScreenerUiState(
             selectedMarket = market,
             selectedAnalysisSubTab = selectedAnalysisSubTab,
             indiceElegidoManualmente = indiceElegidoManualmente,
+            top10VisibleCount = top10VisibleCount,
             uptrendCandidates = results.uptrends.sortedWith(
                 compareByDescending<UptrendCandidate> { it.trendQuality }.thenByDescending { it.yearChangePercent }
             ),
@@ -254,7 +260,15 @@ class ScreenerViewModel(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
+        // CAMBIADO a petición expresa, tras confirmar el escenario exacto: "funciona si entro
+        // en un stock, pero no si no llego a entrar en ninguno" — eso apuntaba a una ventana de
+        // tiempo al RECONECTAR (WhileSubscribed(5_000) para el todo el combine grande, incluida
+        // la consulta a Room de marketResultsFlow, se PARABA 5s después de salir de la pestaña y
+        // tenía que REINICIARSE al volver — esa reconexión daba pie a que el primer frame se
+        // sirviera con datos a medio recalcular). Con Eagerly, el combine entero NUNCA se para
+        // mientras el ViewModel esté vivo (que ya sabemos que sobrevive al cambio de pestaña),
+        // así que no hay ninguna reconexión que gestionar — siempre está ya calculado y listo.
+        started = SharingStarted.Eagerly,
         initialValue = ScreenerUiState()
     )
 
@@ -309,6 +323,17 @@ class ScreenerViewModel(
     fun collapseOpportunities() {
         val market = _selectedMarket.value.indexName
         _opportunitiesVisibleCounts.value = _opportunitiesVisibleCounts.value + (market to COLLAPSED_ITEM_COUNT)
+    }
+
+    // NUEVO — pedido expresamente: Top 20 ahora se muestra de 5 en 5 (como ya hacía Valores
+    // Alcistas), no todos de golpe. No es por mercado (Top 20 es una única lista combinada de
+    // los 4 mercados), así que basta un único contador, no un mapa.
+    fun showMoreTop10(totalAvailable: Int) {
+        _top10VisibleCount.value = (_top10VisibleCount.value + COLLAPSED_ITEM_COUNT).coerceAtMost(totalAvailable)
+    }
+
+    fun collapseTop10() {
+        _top10VisibleCount.value = COLLAPSED_ITEM_COUNT
     }
 
     /**

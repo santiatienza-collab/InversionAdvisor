@@ -432,7 +432,7 @@ class ScreenerRepository(
          * fallará siempre (404) y la app caerá automáticamente al escaneo en directo de siempre
          * — no rompe nada, simplemente no aprovecha la ventaja de velocidad hasta que se rellene.
          */
-        private const val GITHUB_REPO_PATH = "santiatienza-collab/InversionAdvisor/main"
+        private const val GITHUB_REPO_PATH = "TU_USUARIO/TU_REPO/main"
 
         /** Umbral de puntuación PROVISIONAL (0-100) para entrar en el cajón genérico de Top10
          *  — pedido expresamente "filtrar a los que tengan más puntuación": 55 es un punto

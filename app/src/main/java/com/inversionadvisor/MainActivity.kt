@@ -86,6 +86,27 @@ class MainActivity : ComponentActivity() {
                     var selectedTab by remember { mutableStateOf(0) }
                     val tabTitles = listOf("Panel", "Análisis", "Busca", "Noticias")
 
+                    // CAMBIADO a petición expresa, tras varios intentos fallidos con viewModel()
+                    // dentro del when (clave explícita, SavedStateHandle...): los 4 ViewModel se
+                    // crean AQUÍ, AL MISMO NIVEL que selectedTab — que ya sabemos con certeza que
+                    // sobrevive al cambio de pestaña, porque es la propia variable que decide qué
+                    // pestaña se ve. Poniendo los ViewModel exactamente en ese mismo sitio (no
+                    // dentro de las ramas del when, que se activan/desactivan), quedan protegidos
+                    // por la misma garantía, sin depender de ningún mecanismo interno de caché de
+                    // viewModel() que evidentemente no se estaba comportando como cabía esperar.
+                    val dashboardViewModel: DashboardViewModel = viewModel(
+                        factory = DashboardViewModel.Factory(marketRepository, marketMoversRepository)
+                    )
+                    val screenerViewModel: ScreenerViewModel = viewModel(
+                        factory = ScreenerViewModel.Factory(this@MainActivity, screenerRepository, favoritesRepository, stockUniverseRepository, top10Repository)
+                    )
+                    val searchViewModel: SearchViewModel = viewModel(
+                        factory = SearchViewModel.Factory(stockUniverseRepository, favoritesRepository)
+                    )
+                    val noticiasViewModel: NoticiasViewModel = viewModel(
+                        factory = NoticiasViewModel.Factory(newsRepository)
+                    )
+
                     // Box en vez de Column directamente — para poder superponer el banner de
                     // conexión ENCIMA de todo el contenido (pestañas incluidas), pedido
                     // expresamente "en la parte superior de la pantalla", no dentro de una
@@ -124,40 +145,10 @@ class MainActivity : ComponentActivity() {
                             }
 
                             when (selectedTab) {
-                                0 -> {
-                                    // NUEVO — pedido expresamente tras fallo real confirmado: el
-                                    // estado del ViewModel (mercado elegido, scroll...) se estaba
-                                    // perdiendo al cambiar de pestaña y volver — señal de que
-                                    // viewModel() sin clave explícita no estaba devolviendo
-                                    // siempre la MISMA instancia. Con "key" a mano, no hay
-                                    // ambigüedad posible: siempre la misma, pase lo que pase.
-                                    val viewModel: DashboardViewModel = viewModel(
-                                        key = "dashboard",
-                                        factory = DashboardViewModel.Factory(marketRepository, marketMoversRepository)
-                                    )
-                                    DashboardScreen(viewModel, marketRepository)
-                                }
-                                1 -> {
-                                    val viewModel: ScreenerViewModel = viewModel(
-                                        key = "screener",
-                                        factory = ScreenerViewModel.Factory(this@MainActivity, screenerRepository, favoritesRepository, stockUniverseRepository, top10Repository)
-                                    )
-                                    ScreenerScreen(viewModel, marketRepository)
-                                }
-                                2 -> {
-                                    val viewModel: SearchViewModel = viewModel(
-                                        key = "search",
-                                        factory = SearchViewModel.Factory(stockUniverseRepository, favoritesRepository)
-                                    )
-                                    SearchScreen(viewModel, marketRepository)
-                                }
-                                else -> {
-                                    val viewModel: NoticiasViewModel = viewModel(
-                                        key = "noticias",
-                                        factory = NoticiasViewModel.Factory(newsRepository)
-                                    )
-                                    NoticiasScreen(viewModel)
-                                }
+                                0 -> DashboardScreen(dashboardViewModel, marketRepository)
+                                1 -> ScreenerScreen(screenerViewModel, marketRepository)
+                                2 -> SearchScreen(searchViewModel, marketRepository)
+                                else -> NoticiasScreen(noticiasViewModel)
                             }
                         }
 

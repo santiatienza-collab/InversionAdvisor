@@ -250,7 +250,9 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                     Top10Section(
                         state = state,
                         onCalculateClick = viewModel::calculateTop10,
-                        onEntryClick = { symbol -> viewModel.selectStock(symbol) }
+                        onEntryClick = { symbol -> viewModel.selectStock(symbol) },
+                        onShowMore = { viewModel.showMoreTop10(state.top10Entries.size) },
+                        onCollapse = viewModel::collapseTop10
                     )
                 }
                 return@LazyColumn
@@ -1505,7 +1507,9 @@ private fun InterestRatePanelCard(marketRepository: MarketRepository) {
 private fun Top10Section(
     state: ScreenerUiState,
     onCalculateClick: () -> Unit,
-    onEntryClick: (String) -> Unit
+    onEntryClick: (String) -> Unit,
+    onShowMore: () -> Unit,
+    onCollapse: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text("Top 20 - Las acciones más rentables", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
@@ -1549,17 +1553,28 @@ private fun Top10Section(
             )
         }
 
-        // NUEVO — pedido expresamente: un separador visual cada 5 candidatos, para que la
-        // lista más larga (ahora Top 20, antes Top 10) se lea en bloques, no toda seguida.
-        state.top10Entries.forEachIndexed { index, entry ->
+        // CAMBIADO a petición expresa: en vez de un simple separador visual cada 5, ahora se
+        // muestran solo de 5 en 5 de verdad (mismo patrón que "Valores Alcistas") — el resto
+        // queda oculto detrás de "Ver más", no todo el Top 20 de golpe.
+        val visibles = state.top10Entries.take(state.top10VisibleCount)
+        visibles.forEach { entry ->
             Spacer(modifier = Modifier.padding(top = 12.dp))
             Top10EntryCard(entry, onClick = { onEntryClick(entry.symbol) })
-            if ((index + 1) % 5 == 0 && index + 1 < state.top10Entries.size) {
-                HorizontalDivider(
-                    modifier = Modifier.padding(top = 16.dp),
-                    thickness = 1.dp,
-                    color = Color(0xFF3F51B5).copy(alpha = 0.25f)
+        }
+        if (state.top10Entries.size > COLLAPSED_ITEM_COUNT) {
+            val allShown = state.top10VisibleCount >= state.top10Entries.size
+            Spacer(modifier = Modifier.padding(top = 8.dp))
+            TextButton(
+                onClick = if (allShown) onCollapse else onShowMore,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    if (allShown) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
                 )
+                Spacer(modifier = Modifier.padding(start = 4.dp))
+                Text(if (allShown) "Ver menos" else "Ver ${(state.top10Entries.size - state.top10VisibleCount).coerceAtMost(COLLAPSED_ITEM_COUNT)} más (quedan ${state.top10Entries.size - state.top10VisibleCount})")
             }
         }
     }
