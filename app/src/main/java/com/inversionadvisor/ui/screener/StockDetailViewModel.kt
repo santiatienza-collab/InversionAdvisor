@@ -413,6 +413,15 @@ class StockDetailViewModel(
         initialValue = StockDetailUiState(symbol = symbol)
     )
 
+    // NUEVO — puramente de diagnóstico, para encontrar de dónde vienen los 26 segundos
+    // reportados al abrir NVIDIA: mide cuánto tarda cada bloque por separado.
+    private suspend inline fun medirTiempo(etiqueta: String, bloque: suspend () -> Unit) {
+        val inicio = System.currentTimeMillis()
+        bloque()
+        val duracion = System.currentTimeMillis() - inicio
+        android.util.Log.i("TiempoDiagnostic", "$symbol — $etiqueta: ${duracion}ms")
+    }
+
     init {
         loadRange(ChartRange.ONE_YEAR)
         // Las 6 tareas de aquí abajo son independientes entre sí — antes iban todas en la
@@ -430,29 +439,29 @@ class StockDetailViewModel(
             // entrelazados) y podía dejar la caché de velas vacía o a medias — la causa real de
             // que algunos stocks del IBEX 35 (p.ej. Repsol) mostraran "sin datos suficientes" en
             // Busca.
-            runCatching { marketRepository.refreshAaiiSentimentIfStale() }
+            medirTiempo("AAII sentiment") { runCatching { marketRepository.refreshAaiiSentimentIfStale() } }
         }
         viewModelScope.launch {
-            runCatching { marketRepository.refreshCnnFearGreedIfStale() }
+            medirTiempo("CNN Fear&Greed") { runCatching { marketRepository.refreshCnnFearGreedIfStale() } }
         }
         viewModelScope.launch {
             // Velas de 5 años — para el Hombro-Cabeza-Hombro (ventana completa 6 meses-5 años)
             // y el Cruce de la Muerte SMA50/SMA200 de "Momento idóneo para la venta" (ver
             // sellTimingFlow). Si el usuario ya está viendo el gráfico en "5A", comparte caché
             // con esto, sin petición extra.
-            runCatching { marketRepository.refreshYahooCandlesIfStale(symbol, ChartRange.FIVE_YEARS) }
+            medirTiempo("velas 5 años") { runCatching { marketRepository.refreshYahooCandlesIfStale(symbol, ChartRange.FIVE_YEARS) } }
         }
         viewModelScope.launch {
             // Fecha de próximos resultados — para la penalización "resultados en menos de 3
             // semanas" de "Análisis de opciones de compra".
-            runCatching { marketRepository.refreshEarningsDateIfStale(symbol) }
+            medirTiempo("fecha resultados") { runCatching { marketRepository.refreshEarningsDateIfStale(symbol) } }
         }
         viewModelScope.launch {
             // SPY — para "aceleración" (fuerza relativa 1M/3M/6M) en "Análisis de opciones de
             // compra", misma referencia de mercado que ya usa Top10Repository. Suele ser un
             // acierto de caché la mayoría de las veces (SPY se pide en muchos otros sitios de
             // la app), así que esto rara vez añade una petición de red de verdad.
-            runCatching { marketRepository.refreshYahooCandlesIfStale(Symbols.SP500_BENCHMARK, ChartRange.ONE_YEAR) }
+            medirTiempo("SPY 1 año") { runCatching { marketRepository.refreshYahooCandlesIfStale(Symbols.SP500_BENCHMARK, ChartRange.ONE_YEAR) } }
         }
         viewModelScope.launch {
             // Velas DIARIAS para el cruce dorada/muerte SMA20-SMA50 de "Análisis de opciones de
@@ -461,13 +470,13 @@ class StockDetailViewModel(
             // realidad había pasado en mayo — el cálculo usaba velas semanales, mucho más
             // bastas, que puede marcar su propio cruce en una fecha distinta a la real). Si el
             // usuario está viendo el gráfico en 1A, comparte caché con esto, sin petición extra.
-            runCatching { marketRepository.refreshDailyCandlesForSmaIfStale(symbol, ChartRange.ONE_YEAR) }
+            medirTiempo("velas diarias 1 año") { runCatching { marketRepository.refreshDailyCandlesForSmaIfStale(symbol, ChartRange.ONE_YEAR) } }
         }
         viewModelScope.launch {
             // Velas MENSUALES para el patrón de bandera "a largo plazo" — solo se pide aquí
             // (ficha de un stock individual), no en Top10/Futuras Compras por el coste de
             // pedirla para 100-150 candidatos a la vez.
-            runCatching { marketRepository.refreshMonthlyCandlesForFlagIfStale(symbol) }
+            medirTiempo("velas mensuales") { runCatching { marketRepository.refreshMonthlyCandlesForFlagIfStale(symbol) } }
         }
         if (stockUniverseRepository != null) {
             // Las 3 tareas de aquí abajo son independientes entre sí, pero antes iban una
@@ -482,13 +491,13 @@ class StockDetailViewModel(
                 _sectorEtf.value = etf
             }
             viewModelScope.launch {
-                runCatching { marketRepository.refreshStockPeIfStale(symbol) }
+                medirTiempo("PER del stock") { runCatching { marketRepository.refreshStockPeIfStale(symbol) } }
             }
             viewModelScope.launch {
-                runCatching { marketRepository.refreshSectorPeRatiosIfStale() }
+                medirTiempo("PER por sector") { runCatching { marketRepository.refreshSectorPeRatiosIfStale() } }
             }
             viewModelScope.launch {
-                runCatching { marketRepository.refreshCompanyFinancialsIfStale(symbol) }
+                medirTiempo("datos financieros") { runCatching { marketRepository.refreshCompanyFinancialsIfStale(symbol) } }
             }
             viewModelScope.launch {
                 // "Sector en auge" — el MISMO cálculo que usa el escáner (compara los 11
@@ -497,7 +506,9 @@ class StockDetailViewModel(
                 // calculaba aquí (demasiado caro traer los 11 sectores solo para ver un stock,
                 // se decía) y por eso los números no cuadraban — el coste real suele ser bajo
                 // si Panel/Análisis ya se han abierto antes (misma caché de velas compartida).
-                runCatching { marketRepository.computeSectorContext() }.getOrNull()?.let {
+                var _sectorContextResultado: com.inversionadvisor.data.repository.MarketRepository.SectorContext? = null
+                medirTiempo("sector en auge (13 ETFs)") { _sectorContextResultado = runCatching { marketRepository.computeSectorContext() }.getOrNull() }
+                _sectorContextResultado?.let {
                     _sectorFavorability.value = it
                 }
             }
