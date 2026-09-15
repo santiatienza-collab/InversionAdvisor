@@ -227,6 +227,16 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
         // objeto con estado interno propio) sin depender de "recordarla" ni de ningún timing
         // de recomposición ni de flujos intermedios.
         val listState = viewModel.listStateFor(state.selectedMarket)
+        // NUEVO — red de seguridad adicional: aunque el objeto LazyListState ya guarda su
+        // posición internamente (ver arriba), un LazyColumn RECIÉN MONTADO (tras volver de otra
+        // pestaña, donde toda esta pantalla se destruye y se reconstruye de cero) podría no
+        // "saltar" visualmente a esa posición en su primer layout sin que se le pida de forma
+        // explícita — así que se reafirma aquí mismo, nada más entrar, con los valores que el
+        // propio objeto YA tiene guardados (no un valor fijo): si está en 0, no pasa nada; si
+        // está en 15, fuerza que el LazyColumn recién creado se posicione ahí de verdad.
+        LaunchedEffect(listState) {
+            listState.scrollToItem(listState.firstVisibleItemIndex, listState.firstVisibleItemScrollOffset)
+        }
         val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
         // Visible solo tras un scroll largo de verdad (más de 3 elementos), no desde el
         // principio — se pidió "botón transparente para volver arriba tras un scroll largo".
