@@ -372,7 +372,11 @@ class Top10Repository(
          *  fallasen más de la cuenta compitiendo por esa misma red saturada. Top10 tardará algo
          *  más con este cambio, a cambio de ser más fiable. */
         private const val DEEP_PHASE_CONCURRENCY = 12
-        private const val TOP_COUNT = 10
+        // CAMBIADO a petición expresa: de 10 a 20 — el resto de la lógica (combinar los 3
+        // cajones de los 4 mercados guardados, sin filtrar por índice) ya funcionaba igual de
+        // bien para 20 que para 10, no hizo falta tocar nada más para incluir Russell 2000
+        // aquí también, en cuanto tenga datos importados.
+        private const val TOP_COUNT = 20
     }
 }
 

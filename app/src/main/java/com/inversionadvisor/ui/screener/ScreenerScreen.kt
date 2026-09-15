@@ -219,23 +219,14 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
             }
         }
 
-        // key(selectedMarket): un LazyListState distinto por mercado — si no, cambiar de
-        // SP500 a IBEX35 arrastraría el scroll de uno al otro, que no tiene sentido (son
-        // listas de contenido totalmente distinto).
-        val listState = key(state.selectedMarket) { rememberLazyListState() }
-        // CAMBIADO a petición expresa, de forma más contundente que antes: en vez de fiarse
-        // solo de los valores "initial" de rememberLazyListState (que en la práctica no
-        // recuperaban el punto exacto al volver de otra pestaña), aquí se fuerza el scroll
-        // EXPLÍCITAMENTE a la posición guardada nada más entrar — como abrir un libro por el
-        // punto de lectura. LaunchedEffect(listState) se relanza cada vez que "listState" es un
-        // objeto nuevo (cambio de mercado, o esta pantalla entera se recompone de cero al volver
-        // de otra pestaña) — ahí se restaura primero, y solo DESPUÉS se empieza a escuchar
-        // (snapshotFlow) los cambios de scroll para seguir guardándolos en el ViewModel.
-        LaunchedEffect(listState) {
-            listState.scrollToItem(state.scrollIndex, state.scrollOffset)
-            snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
-                .collect { (index, offset) -> viewModel.saveScrollPosition(index, offset) }
-        }
+        // CAMBIADO a petición expresa, de forma definitiva tras varios intentos con
+        // remember/rememberSaveable/LaunchedEffect que no funcionaban del todo bien al volver
+        // de otra pestaña: el propio objeto LazyListState ahora vive en el ViewModel (uno por
+        // mercado, ver listStateFor) — la pantalla ya NO crea uno nuevo cada vez, reutiliza
+        // SIEMPRE el mismo objeto, que conserva su posición de scroll por sí mismo (es un
+        // objeto con estado interno propio) sin depender de "recordarla" ni de ningún timing
+        // de recomposición ni de flujos intermedios.
+        val listState = viewModel.listStateFor(state.selectedMarket)
         val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
         // Visible solo tras un scroll largo de verdad (más de 3 elementos), no desde el
         // principio — se pidió "botón transparente para volver arriba tras un scroll largo".
@@ -1517,7 +1508,7 @@ private fun Top10Section(
     onEntryClick: (String) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text("Top10 - Las acciones más rentables", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Text("Top 20 - Las acciones más rentables", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         // QUITADO a petición expresa: el aviso "hace falta haber pulsado Analizar antes" — ya no
         // aplica, S&P 500/Nasdaq-100/IBEX 35 (y luego Top10) se cargan solos al abrir la app
         // (ver MainActivity), no hace falta pulsar nada a mano para tener datos aquí.
@@ -1552,15 +1543,24 @@ private fun Top10Section(
 
         if (state.top10Entries.isEmpty() && !state.isCalculatingTop10 && state.top10Error == null) {
             Text(
-                "Todavía no hay resultados — se calculará solo en cuanto los 3 mercados terminen de analizarse.",
+                "Todavía no hay resultados — se calculará solo en cuanto los mercados terminen de analizarse.",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 16.dp)
             )
         }
 
-        state.top10Entries.forEach { entry ->
+        // NUEVO — pedido expresamente: un separador visual cada 5 candidatos, para que la
+        // lista más larga (ahora Top 20, antes Top 10) se lea en bloques, no toda seguida.
+        state.top10Entries.forEachIndexed { index, entry ->
             Spacer(modifier = Modifier.padding(top = 12.dp))
             Top10EntryCard(entry, onClick = { onEntryClick(entry.symbol) })
+            if ((index + 1) % 5 == 0 && index + 1 < state.top10Entries.size) {
+                HorizontalDivider(
+                    modifier = Modifier.padding(top = 16.dp),
+                    thickness = 1.dp,
+                    color = Color(0xFF3F51B5).copy(alpha = 0.25f)
+                )
+            }
         }
     }
 }

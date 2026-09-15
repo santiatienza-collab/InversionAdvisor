@@ -1,5 +1,6 @@
 package com.inversionadvisor.ui.screener
 
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -104,6 +105,18 @@ class ScreenerViewModel(
     private val _selectedAnalysisSubTab = MutableStateFlow(AnalysisSubTab.INDICE)
     private val _selectedSymbol = MutableStateFlow<String?>(null)
     private val _isCalculatingTop10 = MutableStateFlow(false)
+
+    // NUEVO — pedido expresamente, tras varios intentos fallidos con remember/rememberSaveable
+    // en la pantalla: el objeto LazyListState en sí se guarda AQUÍ, en el ViewModel (que ya
+    // sobrevive a cambiar de pestaña de la app), uno por mercado — así la pantalla nunca crea
+    // uno nuevo al volver, reutiliza SIEMPRE el mismo objeto, que ya conserva su propia
+    // posición de scroll por sí solo, sin depender de "recordarla" ni de ningún timing de
+    // recomposición. No forma parte de ScreenerUiState/StateFlow a propósito (LazyListState no
+    // es un dato para comparar/observar, es un objeto con estado interno mutable propio).
+    private val listStates = mutableMapOf<String, LazyListState>()
+    fun listStateFor(market: MarketUniverse): LazyListState =
+        listStates.getOrPut(market.indexName) { LazyListState() }
+
     private val _top10Progress = MutableStateFlow(0 to 0)
     private val _top10Error = MutableStateFlow<String?>(null)
     private val _top10LastUpdatedAt = MutableStateFlow<Long?>(null)

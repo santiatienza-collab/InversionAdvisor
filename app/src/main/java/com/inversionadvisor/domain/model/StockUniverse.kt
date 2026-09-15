@@ -22,7 +22,10 @@ enum class MarketUniverse(val indexName: String, val displayName: String) {
     /** Las 10 mejores acciones para invertir combinando SP500+NASDAQ100+IBEX35 — ver
      *  Top10Repository/Top10Calculator. No tiene universo propio que escanear (no cuenta con
      *  "Analizar" tampoco): depende de que esos 3 ya se hayan analizado antes. */
-    TOP10("TOP10", "Top 10")
+    // CAMBIADO a petición expresa: nombre visible "Top 20" (antes "Top 10") — se deja el
+    // identificador interno TOP10/"TOP10" tal cual (indexName, nombre del enum, tablas...) para
+    // no tener que tocar decenas de referencias por todo el proyecto solo por el texto visible.
+    TOP10("TOP10", "Top 20")
 }
 
 /**
