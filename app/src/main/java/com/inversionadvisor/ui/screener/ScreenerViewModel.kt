@@ -1,6 +1,7 @@
 package com.inversionadvisor.ui.screener
 
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -94,13 +95,23 @@ class ScreenerViewModel(
     private val favoritesRepository: FavoritesRepository? = null,
     private val stockUniverseRepository: StockUniverseRepository? = null,
     /** null = pestaña "Top 10" deshabilitada (compatibilidad hacia atrás). */
-    private val top10Repository: Top10Repository? = null
+    private val top10Repository: Top10Repository? = null,
+    /** NUEVO — pedido expresamente tras fallo real confirmado: el mercado elegido se estaba
+     *  perdiendo (volvía a S&P 500) al cambiar de pestaña y volver. SavedStateHandle sobrevive
+     *  no solo a recomposiciones sino también a que Android reconstruya la Activity entera
+     *  (proceso reclamado en segundo plano, etc.) — una MutableStateFlow normal en el
+     *  ViewModel NO sobrevive a eso. null = sin persistencia (compatibilidad hacia atrás). */
+    private val savedStateHandle: SavedStateHandle? = null
 ) : ViewModel() {
 
     private val _isRunning = MutableStateFlow(false)
     private val _progress = MutableStateFlow(0 to 0)
     private val _error = MutableStateFlow<String?>(null)
-    private val _selectedMarket = MutableStateFlow(MarketUniverse.SP500)
+    private val _selectedMarket = MutableStateFlow(
+        savedStateHandle?.get<String>(KEY_SELECTED_MARKET)
+            ?.let { nombre -> MarketUniverse.entries.firstOrNull { it.indexName == nombre } }
+            ?: MarketUniverse.SP500
+    )
     private val _indiceElegidoManualmente = MutableStateFlow(true)
     private val _selectedAnalysisSubTab = MutableStateFlow(AnalysisSubTab.INDICE)
     private val _selectedSymbol = MutableStateFlow<String?>(null)
@@ -255,6 +266,7 @@ class ScreenerViewModel(
 
     fun selectMarket(market: MarketUniverse) {
         _selectedMarket.value = market
+        savedStateHandle?.set(KEY_SELECTED_MARKET, market.indexName)
     }
 
     /** NUEVO — pedido expresamente: se llama al elegir un índice en el desplegable de
@@ -393,15 +405,25 @@ class ScreenerViewModel(
         }
     }
 
+    // NUEVO — pedido expresamente: AbstractSavedStateViewModelFactory (en vez del simple
+    // ViewModelProvider.Factory de antes) para que el ViewModel reciba un SavedStateHandle de
+    // verdad, capaz de sobrevivir a que Android reconstruya la Activity (no solo a
+    // recomposiciones internas de Compose) — ver el comentario junto a _selectedMarket.
+    // "owner" tiene que ser un SavedStateRegistryOwner — en la práctica, la propia Activity.
     class Factory(
+        owner: androidx.savedstate.SavedStateRegistryOwner,
         private val repository: ScreenerRepository,
         private val favoritesRepository: FavoritesRepository? = null,
         private val stockUniverseRepository: StockUniverseRepository? = null,
         private val top10Repository: Top10Repository? = null
-    ) : ViewModelProvider.Factory {
+    ) : androidx.lifecycle.AbstractSavedStateViewModelFactory(owner, null) {
         @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ScreenerViewModel(repository, favoritesRepository, stockUniverseRepository, top10Repository) as T
+        override fun <T : ViewModel> create(key: String, modelClass: Class<T>, handle: SavedStateHandle): T {
+            return ScreenerViewModel(repository, favoritesRepository, stockUniverseRepository, top10Repository, handle) as T
         }
+    }
+
+    private companion object {
+        const val KEY_SELECTED_MARKET = "screener_selected_market"
     }
 }

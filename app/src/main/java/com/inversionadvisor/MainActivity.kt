@@ -125,25 +125,35 @@ class MainActivity : ComponentActivity() {
 
                             when (selectedTab) {
                                 0 -> {
+                                    // NUEVO — pedido expresamente tras fallo real confirmado: el
+                                    // estado del ViewModel (mercado elegido, scroll...) se estaba
+                                    // perdiendo al cambiar de pestaña y volver — señal de que
+                                    // viewModel() sin clave explícita no estaba devolviendo
+                                    // siempre la MISMA instancia. Con "key" a mano, no hay
+                                    // ambigüedad posible: siempre la misma, pase lo que pase.
                                     val viewModel: DashboardViewModel = viewModel(
+                                        key = "dashboard",
                                         factory = DashboardViewModel.Factory(marketRepository, marketMoversRepository)
                                     )
                                     DashboardScreen(viewModel, marketRepository)
                                 }
                                 1 -> {
                                     val viewModel: ScreenerViewModel = viewModel(
-                                        factory = ScreenerViewModel.Factory(screenerRepository, favoritesRepository, stockUniverseRepository, top10Repository)
+                                        key = "screener",
+                                        factory = ScreenerViewModel.Factory(this@MainActivity, screenerRepository, favoritesRepository, stockUniverseRepository, top10Repository)
                                     )
                                     ScreenerScreen(viewModel, marketRepository)
                                 }
                                 2 -> {
                                     val viewModel: SearchViewModel = viewModel(
+                                        key = "search",
                                         factory = SearchViewModel.Factory(stockUniverseRepository, favoritesRepository)
                                     )
                                     SearchScreen(viewModel, marketRepository)
                                 }
                                 else -> {
                                     val viewModel: NoticiasViewModel = viewModel(
+                                        key = "noticias",
                                         factory = NoticiasViewModel.Factory(newsRepository)
                                     )
                                     NoticiasScreen(viewModel)
