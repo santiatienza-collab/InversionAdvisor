@@ -277,9 +277,27 @@ class ScreenerViewModel(
         }
     }
 
+    // NUEVO — pedido expresamente tras fallo real (el botón "Índices" se quedaba sin hacer nada
+    // al venir de Divisas/Bonos/Top10, tras quitar el salto automático a SP500 que sospechábamos
+    // culpable de otro fallo distinto): se recuerda aparte el ÚLTIMO índice elegido (de los 4),
+    // sin que Divisas/Bonos/Top10 lo pisen — así el botón "Índices" puede volver ahí, sin tener
+    // que caer siempre en SP500 a lo tonto. No necesita estar en el combine grande de uiState:
+    // solo se lee de forma puntual, al pulsar el botón, no hace falta que sea reactivo.
+    private val indicesDisponibles = setOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35, MarketUniverse.RUSSELL2000)
+    private val _ultimoIndiceElegido = MutableStateFlow(
+        savedStateHandle?.get<String>(KEY_ULTIMO_INDICE)
+            ?.let { nombre -> indicesDisponibles.firstOrNull { it.indexName == nombre } }
+            ?: MarketUniverse.SP500
+    )
+    val ultimoIndiceElegido: MarketUniverse get() = _ultimoIndiceElegido.value
+
     fun selectMarket(market: MarketUniverse) {
         _selectedMarket.value = market
         savedStateHandle?.set(KEY_SELECTED_MARKET, market.indexName)
+        if (market in indicesDisponibles) {
+            _ultimoIndiceElegido.value = market
+            savedStateHandle?.set(KEY_ULTIMO_INDICE, market.indexName)
+        }
     }
 
     /** NUEVO — pedido expresamente: se llama al elegir un índice en el desplegable de
@@ -449,5 +467,6 @@ class ScreenerViewModel(
 
     private companion object {
         const val KEY_SELECTED_MARKET = "screener_selected_market"
+        const val KEY_ULTIMO_INDICE = "screener_ultimo_indice"
     }
 }

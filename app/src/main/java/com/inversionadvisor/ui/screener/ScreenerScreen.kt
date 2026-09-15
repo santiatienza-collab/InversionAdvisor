@@ -133,13 +133,12 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
     data class PestañaSuperior(val etiqueta: String, val seleccionada: Boolean, val alPulsar: () -> Unit)
     val pestañasSuperiores = listOf(
         PestañaSuperior("Índices", esUnMercadoDeIndices) {
-            // QUITADO a petición expresa (posible causa real del fallo reportado: "elijo
-            // Nasdaq, cambio de pestaña, vuelvo y me muestra SP500"): antes, si al pulsar esta
-            // pestaña el mercado actual no era ya uno de los 4 índices, saltaba a SP500 a
-            // pelo — sospecha razonable de que este salto se disparaba sin que el usuario lo
-            // pidiera. Ahora, si no hay ningún índice elegido todavía, simplemente no se hace
-            // nada — el desplegable de abajo (con indiceElegidoManualmente en false) ya pide
-            // explícitamente elegir uno, sin necesidad de este salto automático.
+            // CORREGIDO — fallo real confirmado: al quitar el salto automático a SP500 (por
+            // sospecha de que causaba otro fallo), este botón se quedó sin hacer NADA al venir
+            // de Divisas/Bonos/Top10 — disculpas por el susto. Ahora, en vez de saltar siempre a
+            // SP500 a lo tonto, vuelve al ÚLTIMO índice que elegiste de verdad (recordado aparte
+            // en el ViewModel, sin que Divisas/Bonos/Top10 lo pisen).
+            if (!esUnMercadoDeIndices) viewModel.selectMarket(viewModel.ultimoIndiceElegido)
         },
         PestañaSuperior(MarketUniverse.DIVISAS.displayName, state.selectedMarket == MarketUniverse.DIVISAS) { viewModel.selectMarket(MarketUniverse.DIVISAS) },
         PestañaSuperior(MarketUniverse.BONOS.displayName, state.selectedMarket == MarketUniverse.BONOS) { viewModel.selectMarket(MarketUniverse.BONOS) },
