@@ -24,7 +24,7 @@ jobs:
       # Los 3 mercados en paralelo, cada uno en su propio runner — más rápido que
       # escanearlos uno detrás de otro, y cada uno escribe su propio JSON.
       matrix:
-        mercado: [SP500, NASDAQ100, IBEX35]
+        mercado: [SP500, NASDAQ100, IBEX35, RUSSELL2000]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4

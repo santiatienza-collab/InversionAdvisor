@@ -63,7 +63,13 @@ class MainActivity : ComponentActivity() {
             // detrás de otro (secuencial) — si SP500 tardaba, daba la sensación de que los
             // otros dos "no cargaban solos" cuando en realidad solo estaban esperando su turno.
             // Ahora los 3 se lanzan A LA VEZ (en paralelo), y Top10 espera a que los 3 terminen.
-            listOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35).map { market ->
+            // NUEVO — pedido expresamente: Russell 2000 añadido ahora que scanner-cli sabe
+            // conseguir su universo (CSV de holdings del ETF IWM, ver
+            // fetchRussell2000Universe en scanner-cli/Main.kt). Si el JSON fallara para este
+            // mercado en concreto, el escaneo en directo de refugio simplemente no encuentra
+            // nada (StockUniverseRepository no tiene lista local para Russell 2000), sin
+            // errores ni caídas — es seguro incluirlo aquí igual que los otros 3.
+            listOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35, MarketUniverse.RUSSELL2000).map { market ->
                 async {
                     val importado = runCatching { screenerRepository.importFromRemoteJson(market.indexName) }.getOrDefault(false)
                     if (!importado) {

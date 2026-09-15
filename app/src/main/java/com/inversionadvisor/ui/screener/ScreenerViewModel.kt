@@ -69,6 +69,12 @@ data class ScreenerUiState(
      *  exactamente donde estaba, sin tener que volver a hacer scroll. */
     val scrollIndex: Int = 0,
     val scrollOffset: Int = 0,
+    /** NUEVO — pedido expresamente: antes vivía como remember{} local de la pantalla, y se
+     *  perdía (volvía a false) al cambiar a otra pestaña de la app (Panel/Busca) y volver —
+     *  así, aunque el scroll ya estaba bien guardado, la sección entera se ocultaba de golpe
+     *  y había que volver a elegir el índice en el desplegable para volver a verla. Vive aquí
+     *  para sobrevivir a eso, igual que scrollIndex/uptrendVisibleCount. */
+    val indiceElegidoManualmente: Boolean = false,
     /** "Top 10" — se calcula solo al pulsar el botón, nunca solo, y solo con lo que ya haya en
      *  Room de haber pulsado "Analizar" antes en los 3 mercados (ver Top10Repository). */
     val top10Entries: List<Top10Entry> = emptyList(),
@@ -96,6 +102,7 @@ class ScreenerViewModel(
     private val _progress = MutableStateFlow(0 to 0)
     private val _error = MutableStateFlow<String?>(null)
     private val _selectedMarket = MutableStateFlow(MarketUniverse.SP500)
+    private val _indiceElegidoManualmente = MutableStateFlow(false)
     private val _selectedAnalysisSubTab = MutableStateFlow(AnalysisSubTab.INDICE)
     private val _selectedSymbol = MutableStateFlow<String?>(null)
     private val _isCalculatingTop10 = MutableStateFlow(false)
@@ -177,7 +184,8 @@ class ScreenerViewModel(
         _scrollPositions,
         top10EntriesState,
         top10StatusFlow,
-        _selectedAnalysisSubTab
+        _selectedAnalysisSubTab,
+        _indiceElegidoManualmente
     ) { values ->
         val market = values[0] as MarketUniverse
         val results = values[1] as MarketResults
@@ -191,10 +199,12 @@ class ScreenerViewModel(
         val top10Entries = values[9] as List<Top10Entry>
         val top10Status = values[10] as Top10Status
         val selectedAnalysisSubTab = values[11] as AnalysisSubTab
+        val indiceElegidoManualmente = values[12] as Boolean
         val scrollPosition = scrollPositions[market.indexName] ?: (0 to 0)
         ScreenerUiState(
             selectedMarket = market,
             selectedAnalysisSubTab = selectedAnalysisSubTab,
+            indiceElegidoManualmente = indiceElegidoManualmente,
             uptrendCandidates = results.uptrends.sortedWith(
                 compareByDescending<UptrendCandidate> { it.trendQuality }.thenByDescending { it.yearChangePercent }
             ),
@@ -234,6 +244,13 @@ class ScreenerViewModel(
 
     fun selectMarket(market: MarketUniverse) {
         _selectedMarket.value = market
+    }
+
+    /** NUEVO — pedido expresamente: se llama al elegir un índice en el desplegable de
+     *  "Índices" — vive en el ViewModel (no remember{} local de la pantalla) para sobrevivir
+     *  a cambiar de pestaña de la app y volver, ver el comentario en ScreenerUiState. */
+    fun marcarIndiceElegido() {
+        _indiceElegidoManualmente.value = true
     }
 
     fun selectAnalysisSubTab(tab: AnalysisSubTab) {

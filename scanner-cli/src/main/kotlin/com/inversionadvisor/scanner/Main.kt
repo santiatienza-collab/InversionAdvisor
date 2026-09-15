@@ -205,20 +205,15 @@ private const val SCAN_CONCURRENCY = 15
 fun main(args: Array<String>) = runBlocking {
     val marketArg = args.getOrNull(0) ?: "SP500"
     val market = MarketUniverse.entries.firstOrNull { it.indexName == marketArg }
-        ?: error("Mercado desconocido: '$marketArg'. Usa SP500, NASDAQ100 o IBEX35.")
-    val universe: List<StockUniverseEntry> = when (market) {
-        MarketUniverse.SP500 -> StockUniverse.SP500
-        MarketUniverse.NASDAQ100 -> StockUniverse.NASDAQ100
-        MarketUniverse.IBEX35 -> StockUniverse.IBEX35
-        else -> error("El mercado '$marketArg' no tiene universo de acciones que escanear.")
-    }
-    println("Escaneando ${universe.size} símbolos de ${market.displayName}...")
+        ?: error("Mercado desconocido: '$marketArg'. Usa SP500, NASDAQ100, IBEX35 o RUSSELL2000.")
 
     // NUEVO — pedido expresamente tras el fallo real "Connection reset by peer": a diferencia
     // de la app (ver NetworkModule.browserHeadersInterceptor), este script no llevaba ninguna
     // cabecera de navegador — sin User-Agent, Yahoo/Finviz pueden tratar la petición como
     // tráfico de bot y cortar la conexión en vez de responder. Mismas cabeceras que ya usa la
     // app, para que el escáner se comporte de cara al servidor igual que un navegador normal.
+    // MOVIDO más arriba (antes vivía después de "universe") para poder usarlo también en la
+    // descarga del CSV de Russell 2000, justo abajo.
     fun cabecerasDeNavegador(referer: String) = okhttp3.Interceptor { chain ->
         val request = chain.request().newBuilder()
             .header(
@@ -236,6 +231,81 @@ fun main(args: Array<String>) = runBlocking {
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
         .build()
+
+    // NUEVO — pedido expresamente: Russell 2000 no tiene una lista de constituyentes fiable
+    // mantenida a mano (a diferencia de SP500/NASDAQ100/IBEX35, en StockUniverse.kt) — en vez de
+    // eso, se descarga y analiza al vuelo el CSV público de holdings del ETF IWM (iShares
+    // Russell 2000 ETF), que replica el índice al céntimo y se actualiza a diario. Fuente:
+    // https://www.ishares.com/us/products/239710/ishares-russell-2000-etf
+    suspend fun fetchRussell2000Universe(): List<StockUniverseEntry> {
+        val url = "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf/latest-holdings.csv"
+        val request = okhttp3.Request.Builder()
+            .url(url)
+            .header(
+                "User-Agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+                    "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            )
+            .build()
+        val texto = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            client.newCall(request).execute().use { respuesta ->
+                if (!respuesta.isSuccessful) throw java.io.IOException("HTTP ${respuesta.code} al pedir el CSV de Russell 2000")
+                respuesta.body?.string() ?: ""
+            }
+        }
+        // Mapeo de los 11 sectores GICS (tal como los da el CSV de iShares) a los ETFs
+        // sectoriales que ya usa el resto de la app (ver Symbols.SECTOR_ETFS) — sin esto no se
+        // podría cruzar cada stock con la rotación sectorial (Macrotendencia).
+        val sectorGicsToEtf = mapOf(
+            "Information Technology" to "XLK",
+            "Health Care" to "XLV",
+            "Financials" to "XLF",
+            "Industrials" to "XLI",
+            "Consumer Discretionary" to "XLY",
+            "Consumer Staples" to "XLP",
+            "Energy" to "XLE",
+            "Real Estate" to "XLRE",
+            "Materials" to "XLB",
+            "Utilities" to "XLU",
+            "Communication" to "XLC"
+        )
+        val lineas = texto.lines()
+        val indiceCabecera = lineas.indexOfFirst { it.startsWith("Ticker,Name,Sector") }
+        if (indiceCabecera < 0) {
+            println("  Russell 2000: no se encontró la cabecera esperada en el CSV — formato distinto al previsto.")
+            return emptyList()
+        }
+        // Cada campo va entre comillas en este CSV (incluidos los numéricos, que llevan comas de
+        // millares dentro) — un split(",") normal los rompería mal, así que se extraen con una
+        // regex que respeta las comillas.
+        val regexCampo = Regex("\"([^\"]*)\"")
+        return lineas.drop(indiceCabecera + 1).mapNotNull { linea ->
+            val campos = regexCampo.findAll(linea).map { it.groupValues[1] }.toList()
+            if (campos.size < 4) return@mapNotNull null
+            val tickerOriginal = campos[0]
+            val nombre = campos[1]
+            val sectorGics = campos[2]
+            val claseActivo = campos[3]
+            // Filtra filas que no son acciones reales (fondos de efectivo internos, "USD CASH",
+            // derivados, etc.) — solo interesa Asset Class == "Equity".
+            if (claseActivo != "Equity" || tickerOriginal.isBlank()) return@mapNotNull null
+            val sectorEtf = sectorGicsToEtf[sectorGics] ?: return@mapNotNull null
+            // El CSV de iShares separa las clases de acción con un espacio ("MOG A"); Yahoo
+            // Finance las espera con un guion ("MOG-A") — se convierte aquí.
+            val tickerYahoo = tickerOriginal.replace(" ", "-")
+            StockUniverseEntry(tickerYahoo, nombre, sectorEtf, indexName = MarketUniverse.RUSSELL2000.indexName)
+        }
+    }
+
+    val universe: List<StockUniverseEntry> = when (market) {
+        MarketUniverse.SP500 -> StockUniverse.SP500
+        MarketUniverse.NASDAQ100 -> StockUniverse.NASDAQ100
+        MarketUniverse.IBEX35 -> StockUniverse.IBEX35
+        MarketUniverse.RUSSELL2000 -> fetchRussell2000Universe()
+        else -> error("El mercado '$marketArg' no tiene universo de acciones que escanear.")
+    }
+    println("Escaneando ${universe.size} símbolos de ${market.displayName}...")
+
     val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     val yahooApi = Retrofit.Builder()
         .baseUrl("https://query1.finance.yahoo.com/")

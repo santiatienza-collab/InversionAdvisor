@@ -33,6 +33,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -142,31 +143,32 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
     // NUEVO — pedido expresamente: declarado aquí (no dentro del "if" del desplegable) para que
     // también sea accesible más abajo, dentro del LazyColumn, donde se decide si se muestra la
     // gráfica y Valores Alcistas o no.
-    var indiceElegidoManualmente by remember { mutableStateOf(false) }
+    // NUEVO — pedido expresamente: ahora vive en el ViewModel (state.indiceElegidoManualmente),
+    // no en un remember{} local — así sobrevive a cambiar de pestaña de la app y volver.
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        // CAMBIADO otra vez a petición expresa: con TabRow fijo, las 4 pestañas se estiraban a
-        // partes iguales ocupando todo el ancho — ahora, con ScrollableTabRow, cada una ocupa
-        // solo el espacio que necesita (sin cambiar el tamaño de la fuente), aunque eso implique
-        // que technically sea "deslizante" si algún día no cupieran las 4 — con 4 palabras cortas
-        // no debería notarse en la práctica.
-        ScrollableTabRow(
-            selectedTabIndex = pestañasSuperiores.indexOfFirst { it.seleccionada }.coerceAtLeast(0),
-            edgePadding = 12.dp
+        // CAMBIADO a petición expresa: ya no debe deslizar NI estirarse a partes iguales —
+        // fila fija (Row normal, no TabRow/ScrollableTabRow) con cada pestaña ocupando solo el
+        // espacio que necesita (padding reducido), repartidas de forma uniforme pero compacta.
+        // El tamaño de la FUENTE no cambia, solo el padding alrededor de cada una.
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             pestañasSuperiores.forEach { pestaña ->
-                Tab(
-                    selected = pestaña.seleccionada,
-                    onClick = pestaña.alPulsar,
-                    text = {
-                        Text(
-                            pestaña.etiqueta,
-                            style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGrisTabs),
-                            color = colorIndigoTabs,
-                            fontWeight = if (pestaña.seleccionada) FontWeight.Bold else FontWeight.Normal
-                        )
-                    }
-                )
+                Surface(
+                    modifier = Modifier.clickable(onClick = pestaña.alPulsar),
+                    shape = RoundedCornerShape(8.dp),
+                    color = if (pestaña.seleccionada) colorIndigoTabs.copy(alpha = 0.12f) else Color.Transparent
+                ) {
+                    Text(
+                        pestaña.etiqueta,
+                        style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGrisTabs),
+                        color = colorIndigoTabs,
+                        fontWeight = if (pestaña.seleccionada) FontWeight.Bold else FontWeight.Normal,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                    )
+                }
             }
         }
 
@@ -187,7 +189,7 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 OutlinedTextField(
-                    value = if (indiceElegidoManualmente) state.selectedMarket.displayName else "",
+                    value = if (state.indiceElegidoManualmente) state.selectedMarket.displayName else "",
                     onValueChange = {},
                     readOnly = true,
                     label = {
@@ -209,7 +211,7 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                             text = { Text(indice.displayName) },
                             onClick = {
                                 viewModel.selectMarket(indice)
-                                indiceElegidoManualmente = true
+                                viewModel.marcarIndiceElegido()
                                 desplegableAbierto = false
                             }
                         )
@@ -286,14 +288,15 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                 item { MoveIndexSemaphoreCard(marketRepository) }
                 val moveEntry = com.inversionadvisor.domain.model.Symbols.US_BOND_CHART_SYMBOLS.last()
                 item { GenericChartCard(marketRepository, moveEntry.second, "${moveEntry.first} (${moveEntry.second})", showVolume = false, priceChartHeightDp = 195) }
-            } else if (indiceElegidoManualmente) {
+            } else if (state.indiceElegidoManualmente) {
                 // QUITADA la comprobación de subpestaña "Índice" — ya no existen subpestañas.
                 // NUEVO — solo se muestra tras elegir un índice en el desplegable de arriba.
                 item { IndexOverviewChartCard(marketRepository, state.selectedMarket) }
-                // VUELTO a petición expresa a su sitio de siempre — justo debajo de la gráfica.
-                if (state.selectedMarket != MarketUniverse.RUSSELL2000) {
-                    item { CompactScreenerHeader(state, onRunClick = viewModel::runScreener) }
-                }
+                // OCULTADO a petición expresa: el botón "Analizar" ya no se muestra en ningún
+                // sitio — S&P 500/Nasdaq-100/IBEX 35/Russell 2000 (y luego Top10) se cargan
+                // solos al abrir la app (ver MainActivity), así que ya no hace falta pulsar
+                // nada a mano. CompactScreenerHeader se deja definida (código sin usar, por si
+                // hiciera falta recuperarla más adelante), pero ya no se llama desde aquí.
             }
 
             state.error?.let { error ->
@@ -308,23 +311,11 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                 }
             }
 
-            if (state.selectedMarket == MarketUniverse.RUSSELL2000) {
-                // Sin lista completa disponible — ver aviso en IndexOverviewChartCard / la
-                // explicación dada al añadir esta pestaña: no hay una fuente fiable con los
-                // ~2000 valores del Russell 2000, así que aquí solo hay gráfica, no escaneo.
-                item {
-                    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
-                        Text(
-                            "El Russell 2000 no tiene por ahora una lista de constituyentes fiable de la que sacar los ~2000 valores " +
-                                "(a diferencia de S&P 500/Nasdaq-100/IBEX 35), así que esta pestaña solo trae la gráfica del índice, " +
-                                "sin \"Valores Alcistas\".",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                    }
-                }
-                return@LazyColumn
-            }
+            // QUITADO a petición expresa: el aviso "Russell 2000 no tiene una lista fiable" ya
+            // no es correcto — scanner-cli ahora descarga y analiza el CSV de holdings del ETF
+            // IWM (ver fetchRussell2000Universe en Main.kt), así que sí tiene candidatos vía
+            // JSON. Se deja caer al mismo flujo de "Valores Alcistas" que S&P 500/Nasdaq-100/
+            // IBEX 35, más abajo.
             if (state.selectedMarket == MarketUniverse.DIVISAS || state.selectedMarket == MarketUniverse.BONOS) {
                 // Divisas/Bonos son solo gráficas, ni tienen universo de acciones que escanear —
                 // no hay "Tendencia alcista" ni "Futuras compras" que mostrar aquí.
@@ -335,7 +326,16 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
             // Divisas/Bonos ya han salido con return@LazyColumn más arriba).
             // QUITADA la comprobación de subpestaña — ya no existen. NUEVO — gateado con
             // indiceElegidoManualmente: sin elegir nada en el desplegable, nada de esto se ve.
-            if (indiceElegidoManualmente) {
+            if (state.indiceElegidoManualmente) {
+                // NUEVO — pedido expresamente: separación visual antes de "Valores Alcistas",
+                // para que quede claro que es una sección aparte de la gráfica de arriba.
+                item {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        thickness = 1.dp,
+                        color = colorIndigoTabs.copy(alpha = 0.25f)
+                    )
+                }
                 item {
                     // NUEVO — pedido expresamente: mismo formato (fuente/tamaño/color índigo con
                     // sombra gris) que ya se usa para el nombre de la empresa en la ficha del stock.
@@ -1523,23 +1523,9 @@ private fun Top10Section(
         // aplica, S&P 500/Nasdaq-100/IBEX 35 (y luego Top10) se cargan solos al abrir la app
         // (ver MainActivity), no hace falta pulsar nada a mano para tener datos aquí.
 
-        Spacer(modifier = Modifier.padding(top = 12.dp))
-        Button(
-            onClick = onCalculateClick,
-            enabled = !state.isCalculatingTop10,
-            modifier = Modifier.fillMaxWidth().height(52.dp),
-            shape = RoundedCornerShape(14.dp)
-        ) {
-            if (state.isCalculatingTop10) {
-                CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.onPrimary)
-                Spacer(modifier = Modifier.padding(start = 10.dp))
-                Text("Calculando…", fontWeight = FontWeight.Bold)
-            } else {
-                Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(20.dp))
-                Spacer(modifier = Modifier.padding(start = 8.dp))
-                Text("Calcular Top 10", fontWeight = FontWeight.Bold)
-            }
-        }
+        // OCULTADO a petición expresa: el botón "Calcular Top 10" — se calcula solo tras
+        // analizar los 3 mercados, ver MainActivity. Se mantiene el indicador de progreso de
+        // abajo, útil mientras corre el cálculo automático al abrir la app.
 
         if (state.isCalculatingTop10) {
             Spacer(modifier = Modifier.padding(top = 12.dp))
@@ -1567,7 +1553,7 @@ private fun Top10Section(
 
         if (state.top10Entries.isEmpty() && !state.isCalculatingTop10 && state.top10Error == null) {
             Text(
-                "Todavía no hay resultados — pulsa \"Calcular Top 10\" (después de haber analizado los 3 mercados).",
+                "Todavía no hay resultados — se calculará solo en cuanto los 3 mercados terminen de analizarse.",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 16.dp)
             )
