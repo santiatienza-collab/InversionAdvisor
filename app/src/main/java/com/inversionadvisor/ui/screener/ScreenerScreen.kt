@@ -90,6 +90,18 @@ import java.util.Locale
 fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketRepository) {
     val state by viewModel.uiState.collectAsState()
 
+    // NUEVO — pedido expresamente (lentitud real detectada): antes cada tarjeta de "Valores
+    // Alcistas" pedía este mismo contexto (benchmark S&P 500 + rotación de los 13 sectores) por
+    // su cuenta — con 20-30 candidatos a la vez, eso eran 20-30 cálculos repetidos del MISMO
+    // resultado. Ahora se calcula UNA sola vez por mercado (no por candidato) y se pasa ya
+    // hecho a cada tarjeta.
+    var sectorContextCompartido by remember(state.selectedMarket) {
+        mutableStateOf<com.inversionadvisor.data.repository.MarketRepository.SectorContext?>(null)
+    }
+    LaunchedEffect(state.selectedMarket) {
+        runCatching { sectorContextCompartido = marketRepository.computeSectorContext() }
+    }
+
     val selectedSymbol = state.selectedSymbol
     if (selectedSymbol != null) {
         // NUEVO — pedido expresamente: mostrar el nombre completo de la acción además del
@@ -232,19 +244,42 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
         // objeto con estado interno propio) sin depender de "recordarla" ni de ningún timing
         // de recomposición ni de flujos intermedios.
         val listState = viewModel.listStateFor(state.selectedMarket)
-        // CAMBIADO a petición expresa tras confirmar el síntoma exacto ("me lleva a la parte de
-        // la gráfica, no al punto de la lista"): el fallo real era de TIMING, no del objeto en
-        // sí — al volver, el mercado se actualiza al instante, pero la lista de candidatos (que
-        // sale de una consulta a Room) tarda un pelín más en llegar. El forzado de scroll se
-        // ejecutaba ANTES de que esos datos estuvieran listos, así que solo había 2-3 elementos
-        // disponibles (la gráfica) y ahí se quedaba clavado. Añadiendo el TAMAÑO de la lista de
-        // candidatos como clave adicional, este efecto se vuelve a disparar en cuanto los datos
-        // reales llegan (el tamaño pasa de 0 a N), reafirmando la posición correcta con la
-        // lista ya completa. Si el usuario está scrolleando activamente y llegan más candidatos
-        // de fondo, esto solo reafirma la posición EN LA QUE YA ESTÁ (no salta a ningún sitio
-        // nuevo), así que es inofensivo en ese caso.
+        // CORREGIDO — causa real encontrada con los logs: el propio forzado de scroll anterior
+        // era el que BORRABA la posición guardada. Secuencia exacta del fallo: al volver a un
+        // mercado, la lista de candidatos llega vacía un instante (candidatos=0, antes de que
+        // Room termine de recargar) — en ese instante, pedir "scrollToItem(9, ...)" con una
+        // lista de solo 2-3 elementos disponibles se RECORTA a lo único que hay (índice 0), y
+        // ese recorte queda grabado PERMANENTEMENTE en el propio objeto listState. Cuando los
+        // candidatos de verdad llegaban un instante después, ya se leía el 0 recién recortado
+        // como si fuera la posición "guardada" — el 9 original se perdía sin remedio.
+        // El arreglo: capturar el objetivo (targetIndex/targetOffset) UNA sola vez, la primera
+        // vez que aparece este listState en esta pantalla — antes de que ningún recorte por
+        // lista vacía pueda tocarlo — y usar SIEMPRE esa copia fija como referencia en los
+        // reintentos, nunca el valor "en vivo" del objeto (que ya puede venir corrompido).
+        val (targetIndex, targetOffset) = remember(listState) {
+            listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset
+        }
         LaunchedEffect(listState, state.uptrendCandidates.size) {
-            listState.scrollToItem(listState.firstVisibleItemIndex, listState.firstVisibleItemScrollOffset)
+            android.util.Log.i(
+                "ScrollDiagnostic",
+                "ANTES de forzar — mercado=${state.selectedMarket.indexName}, candidatos=${state.uptrendCandidates.size}, " +
+                    "objetivo FIJO capturado=$targetIndex/$targetOffset, listState EN VIVO (antes de tocar)=${listState.firstVisibleItemIndex}/${listState.firstVisibleItemScrollOffset}, " +
+                    "objeto=${System.identityHashCode(listState)}"
+            )
+            listState.scrollToItem(targetIndex, targetOffset)
+            android.util.Log.i(
+                "ScrollDiagnostic",
+                "DESPUÉS de forzar — índice real=${listState.firstVisibleItemIndex} offset real=${listState.firstVisibleItemScrollOffset}"
+            )
+        }
+        // NUEVO — puramente de diagnóstico, para ver en el log EN VIVO qué valor tiene el
+        // objeto justo antes de cambiar de pestaña (no guarda nada — el propio objeto ya se
+        // encarga de eso solo).
+        LaunchedEffect(listState) {
+            snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
+                .collect { (index, offset) ->
+                    android.util.Log.i("ScrollDiagnostic", "scroll en vivo — objeto=${System.identityHashCode(listState)} índice=$index offset=$offset")
+                }
         }
         val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
         // Visible solo tras un scroll largo de verdad (más de 3 elementos), no desde el
@@ -380,7 +415,7 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                         onCollapse = viewModel::collapseUptrend,
                         key = { it.symbol }
                     ) { candidate ->
-                        UptrendCard(candidate, marketRepository, onClick = { viewModel.selectStock(candidate.symbol) })
+                        UptrendCard(candidate, marketRepository, sectorContextCompartido, onClick = { viewModel.selectStock(candidate.symbol) })
                     }
                 }
             }
@@ -625,7 +660,7 @@ private fun EmptyScreenerHint(isRunning: Boolean, hasRunBefore: Boolean, emptyMe
 
 @Composable
 @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class) // FlowRow — ver comentario donde se usa
-private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRepository, onClick: () -> Unit) {
+private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRepository, sectorContext: com.inversionadvisor.data.repository.MarketRepository.SectorContext?, onClick: () -> Unit) {
     // REESCRITA POR COMPLETO a petición expresa: "Valores Alcistas" (antes "Tendencia alcista")
     // ahora muestra toda la información en directo y la puntuación con el MISMO formato que
     // "Futuras compras" — mismo patrón exacto que BuyOpportunityCard de más abajo, adaptado a
@@ -651,8 +686,11 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
     var doubleTopBottomResult by remember(candidate.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.DoubleTopBottomResult(com.inversionadvisor.domain.indicators.DoubleTopBottomPattern.NONE)) }
     var tripleTopBottomResult by remember(candidate.symbol) { mutableStateOf(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomPattern.NONE)) }
     var macd by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.TechnicalAnalysis.MacdResult?>(null) }
-    var benchmarkYearChangePercent by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
-    var sectorDeclinePercent by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    // CAMBIADO — ya NO son var+remember con su propio fetch: se derivan directamente del
+    // parámetro "sectorContext" (calculado UNA sola vez para toda la lista, ver ScreenerScreen),
+    // así no hace cada tarjeta su propia petición repetida de lo mismo.
+    val benchmarkYearChangePercent = sectorContext?.benchmarkYearChangePercent
+    val sectorDeclinePercent = sectorContext?.sectorDeclinePercentByEtf?.get(candidate.sectorEtf)
     var hchCandles by remember(candidate.symbol) { mutableStateOf<List<com.inversionadvisor.domain.model.Candle>>(emptyList()) }
     // NUEVO — pedido expresamente (fallo real: HCH no aparecía penalizado porque hchCandles, la
     // vela de 5 años, a veces llegaba DESPUÉS de que ya se hubiera calculado hchResult con la de
@@ -669,6 +707,18 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
     // NUEVO — para que "Giro" (agotamiento/techo) también cuente aquí, igual que en Futuras
     // Compras — un valor alcista también puede mostrar indicios de techo si está sobrecomprado.
     var longTermDecline by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.ExhaustionSignal?>(null) }
+    // NUEVO — fallo real corregido (Repsol/APA con puntuación muy distinta entre esta tarjeta y
+    // la ficha del stock): estos 2 antes se leían siempre del último escaneo guardado
+    // (candidate.isSectorInFavor / candidate.trendQuality-yearChangePercent), en vez de
+    // recalcularse en directo como sí hace la ficha del stock.
+    val isSectorInFavorFresco: Boolean? = sectorContext?.isSectorInFavor?.get(candidate.sectorEtf)
+    var uptrendSignalFresco by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.UptrendDetector.UptrendSignal?>(null) }
+    // NUEVO — mismo fallo encontrado con MTB/Endesa/ArcelorMittal: rsi14/volumeRatio también se
+    // leían del último escaneo guardado, y shortTermPullback (Giro a corto plazo) ni se
+    // calculaba — se pasaba fijo a null.
+    var rsi14Fresco by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    var volumeRatioFresco by remember(candidate.symbol) { mutableStateOf<Double?>(null) }
+    var shortTermPullbackFresco by remember(candidate.symbol) { mutableStateOf<com.inversionadvisor.domain.indicators.ExhaustionSignal?>(null) }
 
     LaunchedEffect(candidate.symbol) {
         runCatching { marketRepository.refreshStockPeIfStale(candidate.symbol) }
@@ -687,18 +737,10 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
                 earningsWithinThreeWeeks = marketRepository.isEarningsWithinThreeWeeks(entity)
             }
         }
-        launch {
-            runCatching {
-                marketRepository.refreshYahooCandlesBulkIfStale(com.inversionadvisor.domain.model.Symbols.SP500_BENCHMARK, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR)
-                val spyCandles = marketRepository.observeCandles(com.inversionadvisor.domain.model.Symbols.SP500_BENCHMARK, com.inversionadvisor.domain.model.ChartRange.ONE_YEAR).first()
-                benchmarkYearChangePercent = spyCandles.takeIf { it.size >= 2 }
-                    ?.let { (it.last().close - it.first().close) / it.first().close * 100 }
-            }
-            runCatching {
-                val sectorContext = marketRepository.computeSectorContext()
-                sectorDeclinePercent = sectorContext.sectorDeclinePercentByEtf[candidate.sectorEtf]
-            }
-        }
+        // QUITADO — el fetch de benchmark/sector que iba aquí (repetido por cada tarjeta) ya no
+        // hace falta: benchmarkYearChangePercent/sectorDeclinePercent/isSectorInFavorFresco se
+        // derivan arriba directamente del parámetro "sectorContext", calculado una sola vez para
+        // toda la lista.
         launch {
             runCatching {
                 marketRepository.refreshYahooCandlesIfStale(candidate.symbol, com.inversionadvisor.domain.model.ChartRange.FIVE_YEARS)
@@ -717,6 +759,17 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
                     percentFromYearHigh = if (yearHigh > 0) (currentPrice - yearHigh) / yearHigh * 100 else null
                     val sma40 = com.inversionadvisor.domain.indicators.TechnicalAnalysis.simpleMovingAverage(candles, 40).lastOrNull()
                     aboveTrendSma = sma40?.let { currentPrice > it }
+                    // NUEVO — mismo cálculo en directo que hace la ficha del stock, en vez de
+                    // fiarse de candidate.trendQuality/yearChangePercent/hasLongTermUptrend
+                    // (guardados del último escaneo, posiblemente de horas atrás).
+                    uptrendSignalFresco = com.inversionadvisor.domain.indicators.UptrendDetector.evaluate(candles)
+                    rsi14Fresco = com.inversionadvisor.domain.indicators.TechnicalAnalysis.calculateRsi(candles).lastOrNull()
+                    volumeRatioFresco = com.inversionadvisor.domain.indicators.TechnicalAnalysis.volumeRatio(candles)
+                    shortTermPullbackFresco = com.inversionadvisor.domain.indicators.ExhaustionDetector.detect(
+                        candles,
+                        minDeclinePercent = com.inversionadvisor.domain.indicators.Top10Calculator.MIN_SHORT_TERM_DECLINE_PERCENT,
+                        lookbackForHigh = com.inversionadvisor.domain.indicators.Top10Calculator.SHORT_TERM_LOOKBACK_WEEKS
+                    )
                     val levels = com.inversionadvisor.domain.indicators.TechnicalAnalysis.detectSupportResistanceLevels(candles)
                     val resistancesAbove = levels.filter { it.type == com.inversionadvisor.domain.indicators.LevelType.RESISTANCE && it.price >= currentPrice }
                     val supportsBelow = levels.filter { it.type == com.inversionadvisor.domain.indicators.LevelType.SUPPORT && it.price <= currentPrice }
@@ -759,7 +812,7 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
     }
     val sectorTypicalPeRange = com.inversionadvisor.domain.model.Symbols.SECTOR_TYPICAL_PE_RANGES[candidate.sectorEtf]
 
-    val scored = remember(candidate, stockPe, sectorAveragePe, stockVolatilityRatio, percentFromYearHigh, nearestSupportPercent, nearestResistancePercent, candlestickPattern, marketTrap, macd, shortTermBullish, declineAccelerating, deathCrossDate, earningsWithinThreeWeeks, momentumPriceDivergence, goldenCrossDate, shortTermFlagPattern, longTermFlagPattern, consolidatedBearishMonthsCount, doubleTopBottomResult, hchResult, tripleTopBottomResult, benchmarkYearChangePercent, sectorDeclinePercent, aboveTrendSma, longTermDecline) {
+    val scored = remember(candidate, stockPe, sectorAveragePe, stockVolatilityRatio, percentFromYearHigh, nearestSupportPercent, nearestResistancePercent, candlestickPattern, marketTrap, macd, shortTermBullish, declineAccelerating, deathCrossDate, earningsWithinThreeWeeks, momentumPriceDivergence, goldenCrossDate, shortTermFlagPattern, longTermFlagPattern, consolidatedBearishMonthsCount, doubleTopBottomResult, hchResult, tripleTopBottomResult, benchmarkYearChangePercent, sectorDeclinePercent, aboveTrendSma, longTermDecline, isSectorInFavorFresco, uptrendSignalFresco, rsi14Fresco, volumeRatioFresco, shortTermPullbackFresco) {
         candidate.unifiedScore(
             aboveTrendSma = aboveTrendSma,
             longTermDecline = longTermDecline,
@@ -786,6 +839,13 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
             hchResult = hchResult,
             tripleTopBottomResult = tripleTopBottomResult,
             benchmarkYearChangePercent = benchmarkYearChangePercent,
+            trendQualityFresco = uptrendSignalFresco?.trendQuality,
+            yearChangePercentFresco = uptrendSignalFresco?.yearChangePercent,
+            isSectorInFavorFresco = isSectorInFavorFresco,
+            hasLongTermUptrendFresco = uptrendSignalFresco != null,
+            rsi14Fresco = rsi14Fresco,
+            volumeRatioFresco = volumeRatioFresco,
+            shortTermPullbackFresco = shortTermPullbackFresco,
             sectorDeclinePercent = sectorDeclinePercent
         )
     }
@@ -873,17 +933,24 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
             Spacer(modifier = Modifier.padding(top = 8.dp))
 
             Text(
-                "${if (candidate.yearChangePercent >= 0) "+" else ""}${"%.1f".format(candidate.yearChangePercent)}% en el último año — calidad de tendencia ${"%.0f".format(candidate.trendQuality * 100)}%",
+                // CORREGIDO — mismo motivo que la puntuación: usa el dato fresco si ya llegó,
+                // el guardado del último escaneo mientras tanto (para no dejar el texto en blanco).
+                run {
+                    val cambioMostrado = uptrendSignalFresco?.yearChangePercent ?: candidate.yearChangePercent
+                    val calidadMostrada = uptrendSignalFresco?.trendQuality ?: candidate.trendQuality
+                    "${if (cambioMostrado >= 0) "+" else ""}${"%.1f".format(cambioMostrado)}% en el último año — calidad de tendencia ${"%.0f".format(calidadMostrada * 100)}%"
+                },
                 style = MaterialTheme.typography.bodyMedium
             )
 
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 6.dp)) {
+                val sectorEnAuge = isSectorInFavorFresco ?: candidate.isSectorInFavor
                 Surface(
                     shape = RoundedCornerShape(6.dp),
-                    color = if (candidate.isSectorInFavor) RiskLevel.LOW.toColor() else Color(0xFF9E9E9E)
+                    color = if (sectorEnAuge) RiskLevel.LOW.toColor() else Color(0xFF9E9E9E)
                 ) {
                     Text(
-                        if (candidate.isSectorInFavor) "${candidate.sectorName} · sector en auge" else candidate.sectorName,
+                        if (sectorEnAuge) "${candidate.sectorName} · sector en auge" else candidate.sectorName,
                         style = MaterialTheme.typography.labelSmall,
                         color = Color.White,
                         maxLines = 1,

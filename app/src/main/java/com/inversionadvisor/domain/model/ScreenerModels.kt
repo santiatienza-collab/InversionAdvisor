@@ -74,17 +74,40 @@ data class UptrendCandidate(
         hchResult: com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersResult = com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersResult(com.inversionadvisor.domain.indicators.UptrendDetector.HeadAndShouldersState.NONE),
         tripleTopBottomResult: com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult = com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomResult(com.inversionadvisor.domain.indicators.UptrendDetector.TripleTopBottomPattern.NONE),
         benchmarkYearChangePercent: Double? = null,
-        sectorDeclinePercent: Double? = null
+        sectorDeclinePercent: Double? = null,
+        /** CORREGIDO — fallo real detectado (Repsol/APA con puntuación muy distinta entre esta
+         *  tarjeta y la ficha del stock): antes se usaban SIEMPRE trendQuality/yearChangePercent/
+         *  isSectorInFavor GUARDADOS del último escaneo (posiblemente de horas atrás), mientras
+         *  que la ficha del stock los recalculaba en directo — y hasLongTermUptrend estaba
+         *  FIJADO a true siempre (venía de cuando la selección de esta lista era por tendencia
+         *  genuina; ahora que es por puntuación, un candidato puede estar aquí sin tener de
+         *  verdad una tendencia alcista confirmada). Estos 4 overrides, si se pasan, sustituyen
+         *  a los valores guardados por unos recién calculados — null (por defecto) mantiene el
+         *  comportamiento de antes, por compatibilidad.
+         */
+        trendQualityFresco: Double? = null,
+        yearChangePercentFresco: Double? = null,
+        isSectorInFavorFresco: Boolean? = null,
+        hasLongTermUptrendFresco: Boolean? = null,
+        /** CORREGIDO — mismo tipo de fallo encontrado con MTB/Endesa/ArcelorMittal tras el
+         *  primer arreglo: rsi14/volumeRatio también se leían SIEMPRE del último escaneo
+         *  guardado (this.rsi14/this.volumeRatio), y shortTermPullback (el "Giro" a corto
+         *  plazo, 12 semanas) ni siquiera se calculaba — se pasaba fijo a null, mientras que la
+         *  ficha del stock SÍ lo calcula (ExhaustionDetector.detect con lookbackForHigh=12).
+         *  Igual que los 4 anteriores: null (por defecto) mantiene el comportamiento de antes. */
+        rsi14Fresco: Double? = null,
+        volumeRatioFresco: Double? = null,
+        shortTermPullbackFresco: ExhaustionSignal? = null
     ): com.inversionadvisor.domain.indicators.Top10Calculator.ScoredCandidate? =
         com.inversionadvisor.domain.indicators.Top10Calculator.score(
-            trendQuality = trendQuality,
-            yearChangePercent = yearChangePercent,
+            trendQuality = trendQualityFresco ?: trendQuality,
+            yearChangePercent = yearChangePercentFresco ?: yearChangePercent,
             aboveTrendSma = aboveTrendSma,
-            isSectorInFavor = isSectorInFavor,
+            isSectorInFavor = isSectorInFavorFresco ?: isSectorInFavor,
             longTermDecline = longTermDecline,
-            shortTermPullback = null,
-            rsi14 = rsi14,
-            volumeRatio = volumeRatio,
+            shortTermPullback = shortTermPullbackFresco,
+            rsi14 = rsi14Fresco ?: rsi14,
+            volumeRatio = volumeRatioFresco ?: volumeRatio,
             stockVolatilityRatio = stockVolatilityRatio,
             stockPe = stockPe,
             sectorAveragePe = sectorAveragePe,
@@ -106,7 +129,7 @@ data class UptrendCandidate(
             consolidatedBearishMonthsCount = consolidatedBearishMonthsCount,
             doubleTopBottomResult = doubleTopBottomResult,
             hchResult = hchResult,
-            hasLongTermUptrend = true, // por definición, este candidato YA es de "tendencia alcista clara"
+            hasLongTermUptrend = hasLongTermUptrendFresco ?: true,
             tripleTopBottomResult = tripleTopBottomResult,
             benchmarkYearChangePercent = benchmarkYearChangePercent,
             sectorDeclinePercent = sectorDeclinePercent,

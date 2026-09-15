@@ -37,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -292,11 +293,29 @@ fun StockDetailScreen(
                             }
                             SectionHeader("Análisis de opciones de compra")
                             Column(modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)) {
-                                BuyOpportunityCard(state.buyOpportunityAnalysis)
+                                // NUEVO — pedido expresamente: antes se pasaba state.buyOpportunityAnalysis
+                                // directo, y como se recalcula varias veces según van llegando los
+                                // datos (velas, PER, patrones, HCH...), el número iba "saltando"
+                                // delante del usuario. Ahora se espera a que la señal deje de
+                                // cambiar durante 400ms antes de mostrarla — mientras tanto, se ve
+                                // "Calculando…" en vez de números intermedios que luego cambian.
+                                val analisisEstable = state.buyOpportunityAnalysis
+                                    .let { actual -> produceState<com.inversionadvisor.domain.indicators.BuyOpportunityAnalyzer.Analysis?>(null, actual) {
+                                        value = null
+                                        kotlinx.coroutines.delay(400)
+                                        value = actual
+                                    } }
+                                BuyOpportunityCard(analisisEstable.value)
                             }
                             SectionHeader("Momento idóneo para la venta")
                             Column(modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)) {
-                                SellTimingCard(state.sellTiming)
+                                val sellTimingEstable = state.sellTiming
+                                    .let { actual -> produceState<SellTimingAssessment?>(null, actual) {
+                                        value = null
+                                        kotlinx.coroutines.delay(400)
+                                        value = actual
+                                    } }
+                                SellTimingCard(sellTimingEstable.value)
                             }
                         }
                     }
