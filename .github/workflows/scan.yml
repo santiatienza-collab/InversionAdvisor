@@ -7,11 +7,25 @@ name: Escaneo de mercados
 
 on:
   schedule:
-    # Cada 6 horas — pedido con el espíritu de "casi inmediato, sin tener que pagar": para
-    # patrones técnicos SEMANALES (doble techo, HCH...) no hace falta más frecuencia que esta.
-    # Ajustar el cron aquí si se quiere otra cadencia (más frecuente gasta más minutos gratis
-    # del plan, aunque para este tamaño de escaneo no debería ser un problema).
-    - cron: '0 */6 * * *'
+    # CAMBIADO a petición expresa: cada 2 horas, pero SOLO en el tramo horario donde hay algo
+    # de actividad real en EE.UU. — premarket (4:00-9:30 ET), mercado (9:30-16:00 ET) y
+    # afterhours (16:00-20:00 ET) — nada de noche cerrada, cuando no cambia nada.
+    # Cubre 4:00, 6:00, 8:00, 10:00, 12:00, 14:00, 16:00, 18:00 y 20:00 hora de Nueva York, de
+    # lunes a viernes (9 ejecuciones al día, en vez de las 4 de antes).
+    #
+    # DOS avisos importantes sobre esto:
+    # 1) GitHub Actions usa SIEMPRE UTC, y el cron no sabe de cambios de hora — estos horarios
+    #    están calculados para horario de VERANO de EE.UU. (EDT, UTC-4, de marzo a noviembre,
+    #    la mayor parte del año). En horario de INVIERNO (EST, UTC-5, noviembre-marzo) todo se
+    #    adelantará una hora de más (p. ej. el de las 4:00 ET sonará en realidad a las 3:00 ET).
+    #    Si quieres que sea exacto todo el año, hay que cambiar estos números dos veces al año.
+    # 2) La última ejecución del día (20:00 ET) cae en 00:00 UTC del día SIGUIENTE — por eso
+    #    tiene su propia línea de cron aparte, con el día de la semana desplazado un día
+    #    (martes a sábado en UTC = lunes a viernes en horario de Nueva York).
+    # 3) Cron no sabe de festivos de mercado (Acción de Gracias, Navidad...) — esos días
+    #    correrá igual, sin más consecuencia que un escaneo de más sin cambios que reflejar.
+    - cron: '0 8,10,12,14,16,18,20,22 * * 1-5'
+    - cron: '0 0 * * 2-6'
   # Permite lanzarlo a mano desde la pestaña "Actions" de GitHub, sin esperar al cron.
   workflow_dispatch: {}
 

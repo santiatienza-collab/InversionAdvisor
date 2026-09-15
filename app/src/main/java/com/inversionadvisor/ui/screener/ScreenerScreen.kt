@@ -221,18 +221,18 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
 
         // key(selectedMarket): un LazyListState distinto por mercado — si no, cambiar de
         // SP500 a IBEX35 arrastraría el scroll de uno al otro, que no tiene sentido (son
-        // listas de contenido totalmente distinto). Se inicializa con la posición guardada en
-        // el ViewModel (0,0 la primera vez), y snapshotFlow reenvía cada cambio de scroll hacia
-        // el ViewModel en tiempo real — así, si se entra en la gráfica de un stock o se cambia
-        // de pestaña (lo que destruye este LazyListState), la última posición ya quedó
-        // guardada de antemano, sin depender de capturar el momento exacto de salida.
-        val listState = key(state.selectedMarket) {
-            rememberLazyListState(
-                initialFirstVisibleItemIndex = state.scrollIndex,
-                initialFirstVisibleItemScrollOffset = state.scrollOffset
-            )
-        }
+        // listas de contenido totalmente distinto).
+        val listState = key(state.selectedMarket) { rememberLazyListState() }
+        // CAMBIADO a petición expresa, de forma más contundente que antes: en vez de fiarse
+        // solo de los valores "initial" de rememberLazyListState (que en la práctica no
+        // recuperaban el punto exacto al volver de otra pestaña), aquí se fuerza el scroll
+        // EXPLÍCITAMENTE a la posición guardada nada más entrar — como abrir un libro por el
+        // punto de lectura. LaunchedEffect(listState) se relanza cada vez que "listState" es un
+        // objeto nuevo (cambio de mercado, o esta pantalla entera se recompone de cero al volver
+        // de otra pestaña) — ahí se restaura primero, y solo DESPUÉS se empieza a escuchar
+        // (snapshotFlow) los cambios de scroll para seguir guardándolos en el ViewModel.
         LaunchedEffect(listState) {
+            listState.scrollToItem(state.scrollIndex, state.scrollOffset)
             snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
                 .collect { (index, offset) -> viewModel.saveScrollPosition(index, offset) }
         }
