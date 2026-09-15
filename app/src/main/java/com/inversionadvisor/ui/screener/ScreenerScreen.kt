@@ -176,12 +176,11 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
         // dentro de S&P 500/Nasdaq-100/IBEX 35 — ahora todo va seguido en la única pestaña
         // "Índices" (desplegable + gráfica + Valores Alcistas, ver más abajo), sin subpestañas.
         if (esUnMercadoDeIndices) {
-            // NUEVO — pedido expresamente: los 3 mercados se siguen cargando solos en segundo
-            // plano desde el arranque (MainActivity), pero aquí NO se muestra nada (ni gráfica
-            // ni Valores Alcistas) hasta que el usuario elige explícitamente un índice en este
-            // desplegable — indiceElegidoManualmente empieza en false cada vez que se entra en
-            // esta pestaña, aunque state.selectedMarket ya tenga un valor por defecto (S&P 500)
-            // por debajo, para otras cosas del ViewModel (declarado arriba, ámbito compartido).
+            // CAMBIADO a petición expresa: ahora se muestra S&P 500 desde el principio (valor
+            // por defecto de state.selectedMarket e indiceElegidoManualmente, ver ViewModel) —
+            // el desplegable ya no sirve para "revelar" el contenido, solo para CAMBIAR de
+            // índice. state.indiceElegidoManualmente se mantiene por si en algún punto hiciera
+            // falta un estado "sin elegir" (queda en true siempre desde el arranque).
             var desplegableAbierto by remember { mutableStateOf(false) }
             ExposedDropdownMenuBox(
                 expanded = desplegableAbierto,
