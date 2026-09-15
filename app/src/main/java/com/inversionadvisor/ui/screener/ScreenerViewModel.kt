@@ -71,10 +71,9 @@ data class ScreenerUiState(
      *  exactamente donde estaba, sin tener que volver a hacer scroll. */
     val scrollIndex: Int = 0,
     val scrollOffset: Int = 0,
-    /** CAMBIADO a petición expresa: por defecto ya es true — "Índices" muestra y elige S&P 500
-     *  (el valor inicial de _selectedMarket) desde el principio, sin tener que elegir nada a
-     *  mano en el desplegable primero. El desplegable sigue sirviendo para CAMBIAR de índice. */
-    val indiceElegidoManualmente: Boolean = true,
+    /** CAMBIADO otra vez a petición expresa (para ayudar a aislar el fallo del scroll): vuelve
+     *  a false — "Índices" ya NO muestra S&P 500 por defecto, hay que elegir en el desplegable. */
+    val indiceElegidoManualmente: Boolean = false,
     /** NUEVO — pedido expresamente: Top 20 ahora se muestra de 5 en 5. */
     val top10VisibleCount: Int = COLLAPSED_ITEM_COUNT,
     /** "Top 10" — se calcula solo al pulsar el botón, nunca solo, y solo con lo que ya haya en
@@ -114,7 +113,7 @@ class ScreenerViewModel(
             ?.let { nombre -> MarketUniverse.entries.firstOrNull { it.indexName == nombre } }
             ?: MarketUniverse.SP500
     )
-    private val _indiceElegidoManualmente = MutableStateFlow(true)
+    private val _indiceElegidoManualmente = MutableStateFlow(false)
     private val _selectedAnalysisSubTab = MutableStateFlow(AnalysisSubTab.INDICE)
     private val _selectedSymbol = MutableStateFlow<String?>(null)
     private val _isCalculatingTop10 = MutableStateFlow(false)

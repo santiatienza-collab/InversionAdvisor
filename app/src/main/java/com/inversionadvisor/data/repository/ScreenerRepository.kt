@@ -434,6 +434,7 @@ class ScreenerRepository(
          */
         private const val GITHUB_REPO_PATH = "santiatienza-collab/InversionAdvisor/main"
 
+
         /** Umbral de puntuación PROVISIONAL (0-100) para entrar en el cajón genérico de Top10
          *  — pedido expresamente "filtrar a los que tengan más puntuación": 55 es un punto
          *  medio razonable (por encima del neutro 50), pensado para no llenar la tabla de
