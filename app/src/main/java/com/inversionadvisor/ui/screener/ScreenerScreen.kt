@@ -232,14 +232,18 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
         // objeto con estado interno propio) sin depender de "recordarla" ni de ningún timing
         // de recomposición ni de flujos intermedios.
         val listState = viewModel.listStateFor(state.selectedMarket)
-        // NUEVO — red de seguridad adicional: aunque el objeto LazyListState ya guarda su
-        // posición internamente (ver arriba), un LazyColumn RECIÉN MONTADO (tras volver de otra
-        // pestaña, donde toda esta pantalla se destruye y se reconstruye de cero) podría no
-        // "saltar" visualmente a esa posición en su primer layout sin que se le pida de forma
-        // explícita — así que se reafirma aquí mismo, nada más entrar, con los valores que el
-        // propio objeto YA tiene guardados (no un valor fijo): si está en 0, no pasa nada; si
-        // está en 15, fuerza que el LazyColumn recién creado se posicione ahí de verdad.
-        LaunchedEffect(listState) {
+        // CAMBIADO a petición expresa tras confirmar el síntoma exacto ("me lleva a la parte de
+        // la gráfica, no al punto de la lista"): el fallo real era de TIMING, no del objeto en
+        // sí — al volver, el mercado se actualiza al instante, pero la lista de candidatos (que
+        // sale de una consulta a Room) tarda un pelín más en llegar. El forzado de scroll se
+        // ejecutaba ANTES de que esos datos estuvieran listos, así que solo había 2-3 elementos
+        // disponibles (la gráfica) y ahí se quedaba clavado. Añadiendo el TAMAÑO de la lista de
+        // candidatos como clave adicional, este efecto se vuelve a disparar en cuanto los datos
+        // reales llegan (el tamaño pasa de 0 a N), reafirmando la posición correcta con la
+        // lista ya completa. Si el usuario está scrolleando activamente y llegan más candidatos
+        // de fondo, esto solo reafirma la posición EN LA QUE YA ESTÁ (no salta a ningún sitio
+        // nuevo), así que es inofensivo en ese caso.
+        LaunchedEffect(listState, state.uptrendCandidates.size) {
             listState.scrollToItem(listState.firstVisibleItemIndex, listState.firstVisibleItemScrollOffset)
         }
         val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
