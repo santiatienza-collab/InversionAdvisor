@@ -50,7 +50,9 @@ class PosiblesComprasRepository(
     private suspend fun refreshInternal(onProgress: suspend (done: Int, total: Int) -> Unit) = coroutineScope {
         // ÚNICO cajón aquí — a diferencia de Top10Repository, que combina tendencia+genérico.
         // "Como era antes Futuras compras": solo cuenta el agotamiento detectado.
-        val opportunities = screenerDao.getAllBuyOpportunitiesOnce().map { it.toOpportunityDomainLocal() }
+        val opportunitiesEntities = screenerDao.getAllBuyOpportunitiesOnce()
+        android.util.Log.i("PosiblesComprasDiagnostic", "Oportunidades guardadas en Room (los 4 mercados): ${opportunitiesEntities.size}")
+        val opportunities = opportunitiesEntities.map { it.toOpportunityDomainLocal() }
 
         data class Candidate(
             val symbol: String,
@@ -85,6 +87,7 @@ class PosiblesComprasRepository(
                 provisionalScore = provisional.combinedScore
             )
         }.sortedByDescending { it.provisionalScore }
+        android.util.Log.i("PosiblesComprasDiagnostic", "Pool final tras puntuación provisional: ${pool.size}")
 
         if (pool.isEmpty()) {
             posiblesComprasDao.clear()
@@ -184,6 +187,7 @@ class PosiblesComprasRepository(
                 }
             }
         }.mapNotNull { runCatching { it.await() }.getOrNull() }
+        android.util.Log.i("PosiblesComprasDiagnostic", "Entradas finales tras la fase profunda: ${finalEntries.size}")
 
         val top20 = finalEntries
             .sortedByDescending { it.combinedScore }

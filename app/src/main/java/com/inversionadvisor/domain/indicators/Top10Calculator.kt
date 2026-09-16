@@ -237,7 +237,13 @@ object Top10Calculator {
         sectorDeclinePercent: Double? = null,
         requireSignal: Boolean = true
     ): ScoredCandidate? {
-        val longTermQualifies = longTermDecline != null && longTermDecline.declinePercentFromRecentHigh >= MIN_DECLINE_PERCENT
+        // CORREGIDO — fallo real encontrado (Posibles Compras siempre vacío: 413 oportunidades
+        // guardadas, 0 pasaban este filtro): declinePercentFromRecentHigh se guarda en NEGATIVO
+        // (ej. -20.0 para una caída del 20%, ver ExhaustionDetector), pero esta comparación lo
+        // trataba como si fuera positivo (">= 15.0" con MIN_DECLINE_PERCENT=15.0) — eso nunca se
+        // cumple para ningún número negativo, así que NINGÚN candidato de caída+agotamiento
+        // pasaba nunca este filtro, por muy grande que fuera la caída real.
+        val longTermQualifies = longTermDecline != null && longTermDecline.declinePercentFromRecentHigh <= -MIN_DECLINE_PERCENT
         val hasTrend = trendQuality != null
         if (requireSignal && !hasTrend && !longTermQualifies) return null
 

@@ -166,28 +166,28 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
     // no en un remember{} local — así sobrevive a cambiar de pestaña de la app y volver.
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        // CAMBIADO a petición expresa: ya no debe deslizar NI estirarse a partes iguales —
-        // fila fija (Row normal, no TabRow/ScrollableTabRow) con cada pestaña ocupando solo el
-        // espacio que necesita (padding reducido), repartidas de forma uniforme pero compacta.
-        // El tamaño de la FUENTE no cambia, solo el padding alrededor de cada una.
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+        // CAMBIADO otra vez a petición expresa: con 5 pestañas ahora ("Posibles Compras" es
+        // bastante larga), la fila fija sin deslizar no tenía sitio para las 5 — se desbordaba o
+        // partía en dos líneas, empujando todo lo de abajo (el desplegable) fuera de sitio. Con
+        // ScrollableTabRow, cada pestaña ocupa solo el espacio que necesita y, si no caben
+        // todas, se desliza lateralmente en vez de romper el diseño.
+        ScrollableTabRow(
+            selectedTabIndex = pestañasSuperiores.indexOfFirst { it.seleccionada }.coerceAtLeast(0),
+            edgePadding = 8.dp
         ) {
             pestañasSuperiores.forEach { pestaña ->
-                Surface(
-                    modifier = Modifier.clickable(onClick = pestaña.alPulsar),
-                    shape = RoundedCornerShape(8.dp),
-                    color = if (pestaña.seleccionada) colorIndigoTabs.copy(alpha = 0.12f) else Color.Transparent
-                ) {
-                    Text(
-                        pestaña.etiqueta,
-                        style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGrisTabs),
-                        color = colorIndigoTabs,
-                        fontWeight = if (pestaña.seleccionada) FontWeight.Bold else FontWeight.Normal,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
-                    )
-                }
+                Tab(
+                    selected = pestaña.seleccionada,
+                    onClick = pestaña.alPulsar,
+                    text = {
+                        Text(
+                            pestaña.etiqueta,
+                            style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGrisTabs),
+                            color = colorIndigoTabs,
+                            fontWeight = if (pestaña.seleccionada) FontWeight.Bold else FontWeight.Normal
+                        )
+                    }
+                )
             }
         }
 

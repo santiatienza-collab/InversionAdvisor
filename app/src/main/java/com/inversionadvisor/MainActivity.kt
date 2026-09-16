@@ -60,6 +60,7 @@ class MainActivity : ComponentActivity() {
         // mercado sin datos por completo. lifecycleScope se cancela solo si la Activity se
         // destruye a media carga, sin dejar corrutinas huérfanas corriendo de fondo.
         lifecycleScope.launch {
+            android.util.Log.i("AutoLoadDiagnostic", "1) Arranca la carga automática")
             // CAMBIADO a petición expresa: antes se cargaban SP500 → NASDAQ100 → IBEX35 uno
             // detrás de otro (secuencial) — si SP500 tardaba, daba la sensación de que los
             // otros dos "no cargaban solos" cuando en realidad solo estaban esperando su turno.
@@ -73,18 +74,35 @@ class MainActivity : ComponentActivity() {
             // errores ni caídas — es seguro incluirlo aquí igual que los otros 3.
             listOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35, MarketUniverse.RUSSELL2000).map { market ->
                 async {
+                    android.util.Log.i("AutoLoadDiagnostic", "  -> empieza ${market.indexName}")
                     val importado = runCatching { screenerRepository.importFromRemoteJson(market.indexName) }.getOrDefault(false)
                     if (!importado) {
                         runCatching { screenerRepository.runFullScreen(market.indexName) { _, _ -> } }
                     }
+                    android.util.Log.i("AutoLoadDiagnostic", "  <- termina ${market.indexName} (importado=$importado)")
                 }
             }.awaitAll()
+            android.util.Log.i("AutoLoadDiagnostic", "2) Los 4 mercados han terminado, empieza Top10/Posibles Compras")
             // NUEVO — Top10 y Posibles Compras en paralelo entre sí también, ya que son
             // independientes (leen los mismos datos ya guardados, pero calculan cada uno lo suyo).
+            // NUEVO — pedido expresamente (fallo real: "Posibles Compras" se quedaba siempre en
+            // "sin resultados" sin ningún error visible): runCatching aquí se tragaba cualquier
+            // excepción en silencio, sin pasarla al estado del ViewModel (eso solo lo hace
+            // calculatePosiblesCompras(), el botón manual, no esta carga automática) — se deja
+            // un registro para poder ver la causa real en el log si vuelve a pasar.
             listOf(
-                async { runCatching { top10Repository.refresh { _, _ -> } } },
-                async { runCatching { posiblesComprasRepository.refresh { _, _ -> } } }
+                async {
+                    runCatching { top10Repository.refresh { _, _ -> } }
+                        .onFailure { android.util.Log.e("AutoLoadDiagnostic", "Top10.refresh() falló", it) }
+                },
+                async {
+                    android.util.Log.i("AutoLoadDiagnostic", "  -> empieza PosiblesCompras.refresh()")
+                    runCatching { posiblesComprasRepository.refresh { _, _ -> } }
+                        .onFailure { android.util.Log.e("AutoLoadDiagnostic", "PosiblesCompras.refresh() falló", it) }
+                    android.util.Log.i("AutoLoadDiagnostic", "  <- termina PosiblesCompras.refresh()")
+                }
             ).awaitAll()
+            android.util.Log.i("AutoLoadDiagnostic", "3) Carga automática completa")
         }
 
         setContent {
