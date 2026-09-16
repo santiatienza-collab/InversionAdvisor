@@ -83,7 +83,16 @@ data class ScreenerUiState(
     val top10ProgressDone: Int = 0,
     val top10ProgressTotal: Int = 0,
     val top10Error: String? = null,
-    val top10LastUpdatedAt: Long? = null
+    val top10LastUpdatedAt: Long? = null,
+    /** NUEVO — pedido expresamente: "Posibles Compras", mismo patrón que Top 20 de arriba, ver
+     *  PosiblesComprasRepository para el criterio de selección exacto. */
+    val posiblesComprasVisibleCount: Int = COLLAPSED_ITEM_COUNT,
+    val posiblesCompras: List<Top10Entry> = emptyList(),
+    val isCalculatingPosiblesCompras: Boolean = false,
+    val posiblesComprasProgressDone: Int = 0,
+    val posiblesComprasProgressTotal: Int = 0,
+    val posiblesComprasError: String? = null,
+    val posiblesComprasLastUpdatedAt: Long? = null
 )
 
 /** Cuántas filas se muestran de entrada en las listas de Análisis, antes de "Ver más". */
@@ -97,6 +106,8 @@ class ScreenerViewModel(
     private val stockUniverseRepository: StockUniverseRepository? = null,
     /** null = pestaña "Top 10" deshabilitada (compatibilidad hacia atrás). */
     private val top10Repository: Top10Repository? = null,
+    /** null = pestaña "Posibles Compras" deshabilitada (compatibilidad hacia atrás). */
+    private val posiblesComprasRepository: com.inversionadvisor.data.repository.PosiblesComprasRepository? = null,
     /** NUEVO — pedido expresamente tras fallo real confirmado: el mercado elegido se estaba
      *  perdiendo (volvía a S&P 500) al cambiar de pestaña y volver. SavedStateHandle sobrevive
      *  no solo a recomposiciones sino también a que Android reconstruya la Activity entera
@@ -132,6 +143,11 @@ class ScreenerViewModel(
     private val _top10Progress = MutableStateFlow(0 to 0)
     private val _top10Error = MutableStateFlow<String?>(null)
     private val _top10LastUpdatedAt = MutableStateFlow<Long?>(null)
+    private val _isCalculatingPosiblesCompras = MutableStateFlow(false)
+    private val _posiblesComprasProgress = MutableStateFlow(0 to 0)
+    private val _posiblesComprasError = MutableStateFlow<String?>(null)
+    private val _posiblesComprasLastUpdatedAt = MutableStateFlow<Long?>(null)
+    private val _posiblesComprasVisibleCount = MutableStateFlow(COLLAPSED_ITEM_COUNT)
     // Un contador por mercado (no uno global) — cada pestaña de mercado mantiene su propio
     // "punto de lectura" independiente de las demás.
     private val _uptrendVisibleCounts = MutableStateFlow<Map<String, Int>>(emptyMap())
@@ -196,6 +212,17 @@ class ScreenerViewModel(
         _isCalculatingTop10, _top10Progress, _top10Error, _top10LastUpdatedAt
     ) { isCalculating, progress, error, lastUpdatedAt -> Top10Status(isCalculating, progress, error, lastUpdatedAt) }
 
+    // NUEVO — mismo patrón exacto que Top 10, ver justo arriba.
+    private val posiblesComprasEntriesState: StateFlow<List<Top10Entry>> =
+        (posiblesComprasRepository?.observePosiblesCompras() ?: flowOf(emptyList()))
+            .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    private data class PosiblesComprasStatus(val isCalculating: Boolean, val progress: Pair<Int, Int>, val error: String?, val lastUpdatedAt: Long?)
+
+    private val posiblesComprasStatusFlow = combine(
+        _isCalculatingPosiblesCompras, _posiblesComprasProgress, _posiblesComprasError, _posiblesComprasLastUpdatedAt
+    ) { isCalculating, progress, error, lastUpdatedAt -> PosiblesComprasStatus(isCalculating, progress, error, lastUpdatedAt) }
+
     val uiState: StateFlow<ScreenerUiState> = combine(
         _selectedMarket,
         marketResultsFlow,
@@ -210,7 +237,10 @@ class ScreenerViewModel(
         top10StatusFlow,
         _selectedAnalysisSubTab,
         _indiceElegidoManualmente,
-        _top10VisibleCount
+        _top10VisibleCount,
+        posiblesComprasEntriesState,
+        posiblesComprasStatusFlow,
+        _posiblesComprasVisibleCount
     ) { values ->
         val market = values[0] as MarketUniverse
         val results = values[1] as MarketResults
@@ -226,6 +256,9 @@ class ScreenerViewModel(
         val selectedAnalysisSubTab = values[11] as AnalysisSubTab
         val indiceElegidoManualmente = values[12] as Boolean
         val top10VisibleCount = values[13] as Int
+        val posiblesComprasEntries = values[14] as List<Top10Entry>
+        val posiblesComprasStatus = values[15] as PosiblesComprasStatus
+        val posiblesComprasVisibleCount = values[16] as Int
         val scrollPosition = scrollPositions[market.indexName] ?: (0 to 0)
         ScreenerUiState(
             selectedMarket = market,
@@ -255,7 +288,14 @@ class ScreenerViewModel(
             top10ProgressDone = top10Status.progress.first,
             top10ProgressTotal = top10Status.progress.second,
             top10Error = top10Status.error,
-            top10LastUpdatedAt = top10Status.lastUpdatedAt
+            top10LastUpdatedAt = top10Status.lastUpdatedAt,
+            posiblesComprasVisibleCount = posiblesComprasVisibleCount,
+            posiblesCompras = posiblesComprasEntries,
+            isCalculatingPosiblesCompras = posiblesComprasStatus.isCalculating,
+            posiblesComprasProgressDone = posiblesComprasStatus.progress.first,
+            posiblesComprasProgressTotal = posiblesComprasStatus.progress.second,
+            posiblesComprasError = posiblesComprasStatus.error,
+            posiblesComprasLastUpdatedAt = posiblesComprasStatus.lastUpdatedAt
         )
     }.stateIn(
         scope = viewModelScope,
@@ -274,6 +314,7 @@ class ScreenerViewModel(
     init {
         viewModelScope.launch {
             _top10LastUpdatedAt.value = top10Repository?.getLastUpdatedAt()
+            _posiblesComprasLastUpdatedAt.value = posiblesComprasRepository?.getLastUpdatedAt()
         }
     }
 
@@ -353,6 +394,15 @@ class ScreenerViewModel(
         _top10VisibleCount.value = COLLAPSED_ITEM_COUNT
     }
 
+    // NUEVO — mismo patrón exacto que Top 20, ver justo arriba.
+    fun showMorePosiblesCompras(totalAvailable: Int) {
+        _posiblesComprasVisibleCount.value = (_posiblesComprasVisibleCount.value + COLLAPSED_ITEM_COUNT).coerceAtMost(totalAvailable)
+    }
+
+    fun collapsePosiblesCompras() {
+        _posiblesComprasVisibleCount.value = COLLAPSED_ITEM_COUNT
+    }
+
     /**
      * Se llama continuamente mientras se hace scroll en la lista de Análisis (ver
      * ScreenerScreen: snapshotFlow sobre el LazyListState) — así, cuando se entra en la
@@ -406,9 +456,13 @@ class ScreenerViewModel(
      * Igual que en Busca, pero resolviendo la ficha completa (nombre, sector,
      * índice) a partir del símbolo — el screener, a diferencia de Busca, no
      * tiene ya cargado el universo completo en memoria, así que se busca en
-     * caché vía stockUniverseRepository.findEntry(). Si el universo nunca se
-     * llegó a cargar (nunca se abrió Busca ni Análisis con datos), no hay
-     * nada que guardar y la estrellita simplemente no hace nada.
+     * caché vía stockUniverseRepository.findEntry().
+     * CORREGIDO — fallo real: los stocks de Russell 2000 nunca están en esa caché local (solo
+     * llegan dinámicamente vía el JSON de scanner-cli, no por el refresco de Wikipedia que
+     * alimenta esa tabla), así que la estrellita no hacía nada para ellos, en silencio. Ahora,
+     * si no se encuentra en la caché, se cae a los datos que YA están cargados en pantalla
+     * (Valores Alcistas/Top20), que sí tienen nombre/sector/índice para cualquier símbolo
+     * visible, sea de donde sea.
      */
     fun toggleFavoriteBySymbol(symbol: String) {
         val favRepo = favoritesRepository ?: return
@@ -417,7 +471,16 @@ class ScreenerViewModel(
             if (isFavorite(symbol)) {
                 favRepo.removeFavorite(symbol)
             } else {
-                val entry = uniRepo.findEntry(symbol) ?: return@launch
+                val entry = uniRepo.findEntry(symbol) ?: run {
+                    val state = uiState.value
+                    val uptrend = state.uptrendCandidates.firstOrNull { it.symbol == symbol }
+                    val top10 = state.top10Entries.firstOrNull { it.symbol == symbol }
+                    when {
+                        uptrend != null -> StockUniverseEntry(uptrend.symbol, uptrend.name, uptrend.sectorEtf, uptrend.indexName)
+                        top10 != null -> StockUniverseEntry(top10.symbol, top10.name, "", top10.indexName)
+                        else -> null
+                    }
+                } ?: return@launch
                 favRepo.addFavorite(entry)
             }
         }
@@ -447,6 +510,25 @@ class ScreenerViewModel(
         }
     }
 
+    /** Mismo patrón exacto que calculateTop10() de arriba, ver ese comentario. */
+    fun calculatePosiblesCompras() {
+        val repo = posiblesComprasRepository ?: return
+        if (_isCalculatingPosiblesCompras.value) return
+        viewModelScope.launch {
+            _isCalculatingPosiblesCompras.value = true
+            _posiblesComprasError.value = null
+            _posiblesComprasProgress.value = 0 to 0
+            try {
+                repo.refresh { done, total -> _posiblesComprasProgress.value = done to total }
+                _posiblesComprasLastUpdatedAt.value = repo.getLastUpdatedAt()
+            } catch (e: Exception) {
+                _posiblesComprasError.value = e.message ?: "Error desconocido al calcular Posibles Compras"
+            } finally {
+                _isCalculatingPosiblesCompras.value = false
+            }
+        }
+    }
+
     // NUEVO — pedido expresamente: AbstractSavedStateViewModelFactory (en vez del simple
     // ViewModelProvider.Factory de antes) para que el ViewModel reciba un SavedStateHandle de
     // verdad, capaz de sobrevivir a que Android reconstruya la Activity (no solo a
@@ -457,11 +539,12 @@ class ScreenerViewModel(
         private val repository: ScreenerRepository,
         private val favoritesRepository: FavoritesRepository? = null,
         private val stockUniverseRepository: StockUniverseRepository? = null,
-        private val top10Repository: Top10Repository? = null
+        private val top10Repository: Top10Repository? = null,
+        private val posiblesComprasRepository: com.inversionadvisor.data.repository.PosiblesComprasRepository? = null
     ) : androidx.lifecycle.AbstractSavedStateViewModelFactory(owner, null) {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(key: String, modelClass: Class<T>, handle: SavedStateHandle): T {
-            return ScreenerViewModel(repository, favoritesRepository, stockUniverseRepository, top10Repository, handle) as T
+            return ScreenerViewModel(repository, favoritesRepository, stockUniverseRepository, top10Repository, posiblesComprasRepository, handle) as T
         }
     }
 

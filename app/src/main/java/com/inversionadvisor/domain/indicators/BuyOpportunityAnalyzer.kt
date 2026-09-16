@@ -74,7 +74,12 @@ object BuyOpportunityAnalyzer {
         val hasNegativeTrailingEarnings: Boolean = false,
         /** Triple techo/suelo detectado (ver UptrendDetector.detectTripleTopOrBottom) — null si
          *  no se ha detectado ninguno. */
-        val tripleTopBottomResult: UptrendDetector.TripleTopBottomResult? = null
+        val tripleTopBottomResult: UptrendDetector.TripleTopBottomResult? = null,
+        /** NUEVO — pedido expresamente: true si UptrendDetector.evaluate() confirma una
+         *  tendencia alcista clara de verdad (regresión de 52 semanas limpia, por encima de su
+         *  media, mínimos ascendentes...) — no solo "tiene buena puntuación". Se usa en Top20
+         *  para exigir tendencia alcista genuina, no solo puntuación alta. */
+        val hasConfirmedUptrend: Boolean = false
     )
 
     /**
@@ -311,7 +316,8 @@ object BuyOpportunityAnalyzer {
             doubleTopBottomResult = scored.doubleTopBottomResult,
             hchResult = scored.hchResult,
             hasNegativeTrailingEarnings = hasNegativeTrailingEarnings,
-            tripleTopBottomResult = scored.tripleTopBottomResult
+            tripleTopBottomResult = scored.tripleTopBottomResult,
+            hasConfirmedUptrend = uptrendSignal != null
         )
     }
 }

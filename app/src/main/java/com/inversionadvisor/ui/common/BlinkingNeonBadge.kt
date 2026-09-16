@@ -25,10 +25,13 @@ import androidx.compose.ui.unit.dp
  * puntos) -> neón ROJO.
  */
 @Composable
-fun BlinkingNeonBadge(text: String, modifier: Modifier = Modifier, positive: Boolean = false) {
+fun BlinkingNeonBadge(text: String, modifier: Modifier = Modifier, positive: Boolean = false, overrideColor: Color? = null) {
     // Rojo/verde neón (más vivos/saturados que los "normales" de la app) — a propósito
     // distintos de RiskColors para que no se confundan visualmente con el semáforo habitual.
-    val neonColor = if (positive) Color(0xFF00E676) else Color(0xFFFF1744)
+    // NUEVO — pedido expresamente: overrideColor permite un tercer color (naranja) para avisos
+    // AMBIGUOS que no son ni claramente positivos ni claramente negativos — si se pasa, gana
+    // sobre el verde/rojo de "positive".
+    val neonColor = overrideColor ?: if (positive) Color(0xFF00E676) else Color(0xFFFF1744)
     Surface(
         shape = RoundedCornerShape(6.dp),
         color = neonColor,

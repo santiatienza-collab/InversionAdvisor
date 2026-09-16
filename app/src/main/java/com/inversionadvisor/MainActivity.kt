@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
         val stockUniverseRepository = ServiceLocator.provideStockUniverseRepository(applicationContext)
         val favoritesRepository = ServiceLocator.provideFavoritesRepository(applicationContext)
         val top10Repository = ServiceLocator.provideTop10Repository(applicationContext)
+        val posiblesComprasRepository = ServiceLocator.providePosiblesComprasRepository(applicationContext)
         val newsRepository = ServiceLocator.provideNewsRepository()
         val connectivityObserver = NetworkConnectivityObserver(applicationContext)
 
@@ -62,7 +63,8 @@ class MainActivity : ComponentActivity() {
             // CAMBIADO a petición expresa: antes se cargaban SP500 → NASDAQ100 → IBEX35 uno
             // detrás de otro (secuencial) — si SP500 tardaba, daba la sensación de que los
             // otros dos "no cargaban solos" cuando en realidad solo estaban esperando su turno.
-            // Ahora los 3 se lanzan A LA VEZ (en paralelo), y Top10 espera a que los 3 terminen.
+            // Ahora los 3 se lanzan A LA VEZ (en paralelo), y Top10/Posibles Compras esperan a
+            // que los 4 mercados terminen.
             // NUEVO — pedido expresamente: Russell 2000 añadido ahora que scanner-cli sabe
             // conseguir su universo (CSV de holdings del ETF IWM, ver
             // fetchRussell2000Universe en scanner-cli/Main.kt). Si el JSON fallara para este
@@ -77,7 +79,12 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }.awaitAll()
-            runCatching { top10Repository.refresh { _, _ -> } }
+            // NUEVO — Top10 y Posibles Compras en paralelo entre sí también, ya que son
+            // independientes (leen los mismos datos ya guardados, pero calculan cada uno lo suyo).
+            listOf(
+                async { runCatching { top10Repository.refresh { _, _ -> } } },
+                async { runCatching { posiblesComprasRepository.refresh { _, _ -> } } }
+            ).awaitAll()
         }
 
         setContent {
@@ -98,7 +105,7 @@ class MainActivity : ComponentActivity() {
                         factory = DashboardViewModel.Factory(marketRepository, marketMoversRepository)
                     )
                     val screenerViewModel: ScreenerViewModel = viewModel(
-                        factory = ScreenerViewModel.Factory(this@MainActivity, screenerRepository, favoritesRepository, stockUniverseRepository, top10Repository)
+                        factory = ScreenerViewModel.Factory(this@MainActivity, screenerRepository, favoritesRepository, stockUniverseRepository, top10Repository, posiblesComprasRepository)
                     )
                     val searchViewModel: SearchViewModel = viewModel(
                         factory = SearchViewModel.Factory(stockUniverseRepository, favoritesRepository)

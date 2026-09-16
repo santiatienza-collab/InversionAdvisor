@@ -70,12 +70,15 @@ class Top10Repository(
 
     private suspend fun refreshInternal(onProgress: suspend (done: Int, total: Int) -> Unit) = coroutineScope {
         val uptrends = screenerDao.getAllUptrendCandidatesOnce().map { it.toUptrendDomain() }
-        val opportunities = screenerDao.getAllBuyOpportunitiesOnce().map { it.toOpportunityDomain() }
-        // TERCER CAJÓN, NUEVO — candidatos que no tienen ni tendencia alcista clara ni caída con
-        // agotamiento, pero sí una puntuación provisional decente (ver Top10GenericCandidateEntity
-        // y ScreenerRepository.scanSymbol) — pedido expresamente para que un stock como SanDisk
+        // QUITADO a petición expresa: el cajón "Futuras compras" (caída + agotamiento) ya no
+        // cuenta para Top20 — el criterio ahora es puntuación + tendencia alcista confirmada,
+        // y ese cajón podía meter candidatos sin ninguna de las dos cosas.
+        // TERCER CAJÓN — candidatos que no tienen tendencia alcista clara, pero sí una
+        // puntuación provisional decente (ver Top10GenericCandidateEntity y
+        // ScreenerRepository.scanSymbol) — pedido expresamente para que un stock como SanDisk
         // (85 puntos en la fórmula completa) no se quede fuera de Top10 solo por no encajar en
-        // ninguna de las otras dos formas.
+        // la otra forma. A partir de aquí, además, se exige tendencia alcista CONFIRMADA para
+        // entrar en el Top20 final (ver el filtro más abajo, tras el pool).
         val genericCandidates = screenerDao.getAllTop10GenericCandidatesOnce()
 
         data class Candidate(
@@ -100,23 +103,25 @@ class Top10Repository(
             val riskBreakdownText: String? = null
         )
 
-        // Agrupado por símbolo — un mismo símbolo puede venir de más de uno de los tres cajones
+        // Agrupado por símbolo — un mismo símbolo puede venir de más de uno de los dos cajones
         // a la vez (p. ej. tendencia alcista Y además puntuación genérica alta); se combina toda
         // la información disponible en una sola entrada por símbolo antes de puntuar.
         data class Agrupado(
             var uptrend: UptrendCandidate? = null,
-            var opportunity: BuyOpportunity? = null,
             var generic: com.inversionadvisor.data.local.entities.Top10GenericCandidateEntity? = null
         )
         val porSimbolo = mutableMapOf<String, Agrupado>()
         uptrends.forEach { porSimbolo.getOrPut(it.symbol) { Agrupado() }.uptrend = it }
-        opportunities.forEach { porSimbolo.getOrPut(it.symbol) { Agrupado() }.opportunity = it }
         genericCandidates.forEach { porSimbolo.getOrPut(it.symbol) { Agrupado() }.generic = it }
 
         val pool = porSimbolo.mapNotNull { (symbol, grupo) ->
             val uptrend = grupo.uptrend
-            val opportunity = grupo.opportunity
             val generic = grupo.generic
+            // NUEVO — pedido expresamente: "siempre que sean alcistas" — tendencia alcista
+            // CONFIRMADA (no solo puntuación alta), tanto si viene del cajón de tendencia como
+            // si el cajón genérico ya la trae marcada.
+            val esAlcista = uptrend != null || generic?.hasClearUptrend == true
+            if (!esAlcista) return@mapNotNull null
 
             // NUEVO — pedido expresamente: si el cajón genérico ya trae la puntuación COMPLETA
             // (importada del JSON de scanner-cli), se usa tal cual para este candidato — ni
@@ -142,34 +147,30 @@ class Top10Repository(
                 )
             }
 
-            val rsi = uptrend?.rsi14 ?: opportunity?.rsi14 ?: generic?.rsi14
-            val volumeRatio = uptrend?.volumeRatio ?: opportunity?.volumeRatio ?: generic?.volumeRatio
+            val rsi = uptrend?.rsi14 ?: generic?.rsi14
+            val volumeRatio = uptrend?.volumeRatio ?: generic?.volumeRatio
             // Puntuación provisional (con los datos GUARDADOS del último "Analizar") —
             // solo para decidir el orden de la fase profunda, no el resultado final.
-            // requireSignal SOLO se exige cuando el candidato viene de tendencia u
-            // oportunidad — un candidato que llega ÚNICAMENTE del cajón genérico ya pasó su
-            // propio umbral de puntuación en el escaneo, no hace falta exigirle además tendencia
-            // o caída aquí (eso es justo lo que se pidió invertir).
             val provisional = Top10Calculator.score(
                 trendQuality = uptrend?.trendQuality,
                 yearChangePercent = uptrend?.yearChangePercent,
                 aboveTrendSma = null,
-                isSectorInFavor = uptrend?.isSectorInFavor ?: opportunity?.isSectorInFavor ?: generic?.isSectorInFavor,
-                longTermDecline = opportunity?.exhaustionSignal,
+                isSectorInFavor = uptrend?.isSectorInFavor ?: generic?.isSectorInFavor,
+                longTermDecline = null,
                 shortTermPullback = null,
                 rsi14 = rsi, volumeRatio = volumeRatio, stockVolatilityRatio = null,
                 stockPe = null, sectorAveragePe = null, sectorTypicalPeRange = null,
                 percentFromYearHigh = null, nearestSupportPercent = null, nearestResistancePercent = null,
                 candlestickPattern = null, marketTrap = null, macd = null,
-                hasLongTermUptrend = uptrend != null || generic?.hasClearUptrend == true,
-                requireSignal = uptrend != null || opportunity != null
+                hasLongTermUptrend = true, // ya se filtró arriba: llegar aquí implica esAlcista=true
+                requireSignal = false
             ) ?: return@mapNotNull null
             Candidate(
                 symbol = symbol,
-                name = uptrend?.name ?: opportunity?.name ?: generic?.name ?: symbol,
-                indexName = uptrend?.indexName ?: opportunity?.indexName ?: generic?.indexName ?: "",
-                sectorEtf = uptrend?.sectorEtf ?: opportunity?.sectorEtf ?: generic?.sectorEtf,
-                sectorName = uptrend?.sectorName ?: opportunity?.sectorName ?: generic?.sectorName,
+                name = uptrend?.name ?: generic?.name ?: symbol,
+                indexName = uptrend?.indexName ?: generic?.indexName ?: "",
+                sectorEtf = uptrend?.sectorEtf ?: generic?.sectorEtf,
+                sectorName = uptrend?.sectorName ?: generic?.sectorName,
                 provisionalScore = provisional.combinedScore
             )
         }

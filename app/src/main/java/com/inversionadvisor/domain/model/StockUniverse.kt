@@ -25,7 +25,12 @@ enum class MarketUniverse(val indexName: String, val displayName: String) {
     // CAMBIADO a petición expresa: nombre visible "Top 20" (antes "Top 10") — se deja el
     // identificador interno TOP10/"TOP10" tal cual (indexName, nombre del enum, tablas...) para
     // no tener que tocar decenas de referencias por todo el proyecto solo por el texto visible.
-    TOP10("TOP10", "Top 20")
+    TOP10("TOP10", "Top 20"),
+    /** NUEVO — pedido expresamente: las 20 mejores oportunidades de compra combinando los 4
+     *  mercados — ver PosiblesComprasRepository para el criterio exacto (agotamiento + giro al
+     *  alza, no tendencia alcista). Igual que TOP10: no tiene universo propio ni "Analizar",
+     *  depende de que los 4 mercados ya se hayan analizado antes. */
+    POSIBLES_COMPRAS("POSIBLES_COMPRAS", "Posibles Compras")
 }
 
 /**

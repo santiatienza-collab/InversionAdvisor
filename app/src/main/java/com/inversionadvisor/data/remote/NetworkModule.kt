@@ -190,7 +190,13 @@ object NetworkModule {
             // un margen de seguridad demasiado conservador para lo que ahora pide
             // el panel (rotación sectorial + VIX + oro, ~16 peticiones de golpe en
             // cada refresco) más lo que pida a la vez la ficha de un stock.
-            .addInterceptor(RateLimitInterceptor(maxRequests = 90, windowMillis = 60_000L))
+            // CAMBIADO otra vez a petición expresa — fallo real confirmado con logs (NVIDIA
+            // tardando 26s en abrir): "Valores Alcistas" ahora hace bastante más trabajo en
+            // directo por candidato (RSI, volumen, patrones, HCH a 5 años, sector...) que
+            // antes, agotando el límite de 90/min con solo hacer scroll por la lista — dejando
+            // las peticiones de "abrir un stock" en cola varios segundos detrás. Subido a
+            // 200/min, con el mismo respaldo de arriba: Yahoo tolera bien las ráfagas.
+            .addInterceptor(RateLimitInterceptor(maxRequests = 200, windowMillis = 60_000L))
             .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)

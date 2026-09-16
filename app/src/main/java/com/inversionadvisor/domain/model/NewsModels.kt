@@ -24,7 +24,10 @@ data class FuenteNoticias(
  * Noticias, lo primero a revisar es si esta URL sigue siendo la correcta.
  */
 val FUENTES_NOTICIAS = listOf(
-    FuenteNoticias("WSJ Markets", "https://feeds.a.dj.com/rss/RSSMarketsMain.xml"),
+    // CORREGIDO — pedido expresamente tras detectar que salía desactualizado: WSJ movió su feed
+    // de "feeds.a.dj.com" a "feeds.content.dowjones.io" — verificado en directo (15 sep 2026),
+    // la URL antigua ya no se actualiza, la nueva sí trae noticias de las últimas horas.
+    FuenteNoticias("WSJ Markets", "https://feeds.content.dowjones.io/public/rss/RSSMarketsMain"),
     FuenteNoticias("Financial Times", "https://www.ft.com/markets?format=rss"),
     FuenteNoticias("NYT Business", "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml"),
     FuenteNoticias("Bloomberg Markets", "https://feeds.bloomberg.com/markets/news.rss")

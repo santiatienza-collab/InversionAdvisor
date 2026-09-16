@@ -1061,7 +1061,14 @@ private fun BuyOpportunityCard(analysis: com.inversionadvisor.domain.indicators.
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     analysis.bonusWarnings.forEach { warning ->
-                        com.inversionadvisor.ui.common.BlinkingNeonBadge(warning, positive = true)
+                        com.inversionadvisor.ui.common.BlinkingNeonBadge(
+                            warning,
+                            positive = true,
+                            // NUEVO — pedido expresamente: este aviso concreto es AMBIGUO (fortaleza
+                            // relativa, pero riesgo de "recolocarse" a la baja con el sector) — naranja
+                            // en vez de verde, para no darlo como una señal puramente positiva.
+                            overrideColor = if (warning.startsWith("Ha caído bastante menos que su propio sector")) Color(0xFFFFA000) else null
+                        )
                     }
                     analysis.penaltyWarnings.forEach { warning ->
                         com.inversionadvisor.ui.common.BlinkingNeonBadge(warning)

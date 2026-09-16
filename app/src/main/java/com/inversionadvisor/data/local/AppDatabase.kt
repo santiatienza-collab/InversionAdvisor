@@ -29,6 +29,8 @@ import com.inversionadvisor.data.local.entities.QuoteEntity
 import com.inversionadvisor.data.local.entities.ScreenerRunMetaEntity
 import com.inversionadvisor.data.local.entities.Top10EntryEntity
 import com.inversionadvisor.data.local.entities.Top10GenericCandidateEntity
+import com.inversionadvisor.data.local.entities.PosiblesComprasEntryEntity
+import com.inversionadvisor.data.local.dao.PosiblesComprasDao
 import com.inversionadvisor.data.local.entities.UptrendCandidateEntity
 
 @Database(
@@ -52,9 +54,13 @@ import com.inversionadvisor.data.local.entities.UptrendCandidateEntity
         CompanyFinancialsEntity::class,
         Top10EntryEntity::class,
         EarningsDateEntity::class,
-        Top10GenericCandidateEntity::class
+        Top10GenericCandidateEntity::class,
+        PosiblesComprasEntryEntity::class
     ],
-    version = 31, // AÑADIDOS factorsCsv/rewardBreakdownText/riskBreakdownText a Top10GenericCandidateEntity — fallbackToDestructiveMigration se encarga, sin migración manual.
+    // NUEVO — pedido expresamente: tabla nueva para "Posibles Compras" (recupera el espíritu de
+    // "Futuras compras" como su propio Top20) — fallbackToDestructiveMigration se encarga, sin
+    // migración manual.
+    version = 32,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -65,6 +71,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun marketMoversDao(): MarketMoversDao
     abstract fun favoritesDao(): FavoritesDao
     abstract fun top10Dao(): Top10Dao
+    abstract fun posiblesComprasDao(): PosiblesComprasDao
 
     companion object {
         @Volatile

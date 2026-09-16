@@ -152,9 +152,11 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
             // en el ViewModel, sin que Divisas/Bonos/Top10 lo pisen).
             if (!esUnMercadoDeIndices) viewModel.selectMarket(viewModel.ultimoIndiceElegido)
         },
+        // REORDENADO a petición expresa: Índices, Top10, Posibles Compras, Divisas, Bonos.
+        PestañaSuperior(MarketUniverse.TOP10.displayName, state.selectedMarket == MarketUniverse.TOP10) { viewModel.selectMarket(MarketUniverse.TOP10) },
+        PestañaSuperior(MarketUniverse.POSIBLES_COMPRAS.displayName, state.selectedMarket == MarketUniverse.POSIBLES_COMPRAS) { viewModel.selectMarket(MarketUniverse.POSIBLES_COMPRAS) },
         PestañaSuperior(MarketUniverse.DIVISAS.displayName, state.selectedMarket == MarketUniverse.DIVISAS) { viewModel.selectMarket(MarketUniverse.DIVISAS) },
-        PestañaSuperior(MarketUniverse.BONOS.displayName, state.selectedMarket == MarketUniverse.BONOS) { viewModel.selectMarket(MarketUniverse.BONOS) },
-        PestañaSuperior(MarketUniverse.TOP10.displayName, state.selectedMarket == MarketUniverse.TOP10) { viewModel.selectMarket(MarketUniverse.TOP10) }
+        PestañaSuperior(MarketUniverse.BONOS.displayName, state.selectedMarket == MarketUniverse.BONOS) { viewModel.selectMarket(MarketUniverse.BONOS) }
     )
 
     // NUEVO — pedido expresamente: declarado aquí (no dentro del "if" del desplegable) para que
@@ -307,6 +309,19 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
                         onEntryClick = { symbol -> viewModel.selectStock(symbol) },
                         onShowMore = { viewModel.showMoreTop10(state.top10Entries.size) },
                         onCollapse = viewModel::collapseTop10
+                    )
+                }
+                return@LazyColumn
+            }
+            // NUEVO — pedido expresamente: "Posibles Compras", mismo patrón exacto que Top20 de
+            // arriba, ver PosiblesComprasSection más abajo.
+            if (state.selectedMarket == MarketUniverse.POSIBLES_COMPRAS) {
+                item {
+                    PosiblesComprasSection(
+                        state = state,
+                        onEntryClick = { symbol -> viewModel.selectStock(symbol) },
+                        onShowMore = { viewModel.showMorePosiblesCompras(state.posiblesCompras.size) },
+                        onCollapse = viewModel::collapsePosiblesCompras
                     )
                 }
                 return@LazyColumn
@@ -922,7 +937,14 @@ private fun UptrendCard(candidate: UptrendCandidate, marketRepository: MarketRep
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     scored.bonusWarnings.forEach { warning ->
-                        com.inversionadvisor.ui.common.BlinkingNeonBadge(warning, positive = true)
+                        com.inversionadvisor.ui.common.BlinkingNeonBadge(
+                            warning,
+                            positive = true,
+                            // NUEVO — pedido expresamente: este aviso concreto es AMBIGUO (fortaleza
+                            // relativa, pero riesgo de "recolocarse" a la baja con el sector) — naranja
+                            // en vez de verde, para no darlo como una señal puramente positiva.
+                            overrideColor = if (warning.startsWith("Ha caído bastante menos que su propio sector")) Color(0xFFFFA000) else null
+                        )
                     }
                     scored.penaltyWarnings.forEach { warning ->
                         com.inversionadvisor.ui.common.BlinkingNeonBadge(warning)
@@ -1236,7 +1258,14 @@ private fun BuyOpportunityCard(opportunity: BuyOpportunity, marketRepository: Ma
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     scored.bonusWarnings.forEach { warning ->
-                        com.inversionadvisor.ui.common.BlinkingNeonBadge(warning, positive = true)
+                        com.inversionadvisor.ui.common.BlinkingNeonBadge(
+                            warning,
+                            positive = true,
+                            // NUEVO — pedido expresamente: este aviso concreto es AMBIGUO (fortaleza
+                            // relativa, pero riesgo de "recolocarse" a la baja con el sector) — naranja
+                            // en vez de verde, para no darlo como una señal puramente positiva.
+                            overrideColor = if (warning.startsWith("Ha caído bastante menos que su propio sector")) Color(0xFFFFA000) else null
+                        )
                     }
                     scored.penaltyWarnings.forEach { warning ->
                         com.inversionadvisor.ui.common.BlinkingNeonBadge(warning)
@@ -1666,6 +1695,82 @@ private fun Top10Section(
     }
 }
 
+/** NUEVO — pedido expresamente: "Posibles Compras", espejo exacto de Top10Section de arriba —
+ *  ver ese composable para el razonamiento de cada pieza, aquí solo cambian los campos leídos
+ *  (posiblesCompras* en vez de top10*) y no hay botón "Calcular" tampoco (se carga sola desde
+ *  MainActivity, igual que Top20). */
+@Composable
+private fun PosiblesComprasSection(
+    state: ScreenerUiState,
+    onEntryClick: (String) -> Unit,
+    onShowMore: () -> Unit,
+    onCollapse: () -> Unit
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text("Posibles Compras - Las 20 mejores oportunidades", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Text(
+            "Valores en tendencia bajista que se agota, con giro al alza en marcha",
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.Gray,
+            modifier = Modifier.padding(top = 2.dp)
+        )
+
+        if (state.isCalculatingPosiblesCompras) {
+            Spacer(modifier = Modifier.padding(top = 12.dp))
+            val fraction = if (state.posiblesComprasProgressTotal > 0) state.posiblesComprasProgressDone.toFloat() / state.posiblesComprasProgressTotal else 0f
+            LinearProgressIndicator(progress = { fraction }, modifier = Modifier.fillMaxWidth().height(6.dp))
+            Text(
+                if (state.posiblesComprasProgressTotal > 0) "Analizando candidatos: ${state.posiblesComprasProgressDone}/${state.posiblesComprasProgressTotal}" else "Preparando…",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(top = 6.dp)
+            )
+        }
+
+        state.posiblesComprasError?.let {
+            Text("No se pudo calcular: $it", color = Color(0xFFC62828), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 10.dp))
+        }
+
+        state.posiblesComprasLastUpdatedAt?.let { updatedAt ->
+            val formatter = remember(updatedAt) { java.text.SimpleDateFormat("d MMM HH:mm", java.util.Locale("es", "ES")) }
+            Text(
+                "Último cálculo: ${formatter.format(java.util.Date(updatedAt))}",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(top = 10.dp)
+            )
+        }
+
+        if (state.posiblesCompras.isEmpty() && !state.isCalculatingPosiblesCompras && state.posiblesComprasError == null) {
+            Text(
+                "Todavía no hay resultados — se calculará solo en cuanto los mercados terminen de analizarse.",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+        }
+
+        val visibles = state.posiblesCompras.take(state.posiblesComprasVisibleCount)
+        visibles.forEach { entry ->
+            Spacer(modifier = Modifier.padding(top = 12.dp))
+            Top10EntryCard(entry, onClick = { onEntryClick(entry.symbol) })
+        }
+        if (state.posiblesCompras.size > COLLAPSED_ITEM_COUNT) {
+            val allShown = state.posiblesComprasVisibleCount >= state.posiblesCompras.size
+            Spacer(modifier = Modifier.padding(top = 8.dp))
+            TextButton(
+                onClick = if (allShown) onCollapse else onShowMore,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    if (allShown) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.padding(start = 4.dp))
+                Text(if (allShown) "Ver menos" else "Ver ${(state.posiblesCompras.size - state.posiblesComprasVisibleCount).coerceAtMost(COLLAPSED_ITEM_COUNT)} más (quedan ${state.posiblesCompras.size - state.posiblesComprasVisibleCount})")
+            }
+        }
+    }
+}
+
 private fun com.inversionadvisor.domain.indicators.FactorGrade.toColor(): Color = when (this) {
     com.inversionadvisor.domain.indicators.FactorGrade.GOOD -> Color(0xFF2E7D32)
     com.inversionadvisor.domain.indicators.FactorGrade.NEUTRAL -> Color(0xFFEF6C00)
@@ -1760,7 +1865,14 @@ private fun Top10EntryCard(entry: com.inversionadvisor.domain.model.Top10Entry, 
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     entry.bonusWarnings.forEach { warning ->
-                        com.inversionadvisor.ui.common.BlinkingNeonBadge(warning, positive = true)
+                        com.inversionadvisor.ui.common.BlinkingNeonBadge(
+                            warning,
+                            positive = true,
+                            // NUEVO — pedido expresamente: este aviso concreto es AMBIGUO (fortaleza
+                            // relativa, pero riesgo de "recolocarse" a la baja con el sector) — naranja
+                            // en vez de verde, para no darlo como una señal puramente positiva.
+                            overrideColor = if (warning.startsWith("Ha caído bastante menos que su propio sector")) Color(0xFFFFA000) else null
+                        )
                     }
                     entry.penaltyWarnings.forEach { warning ->
                         com.inversionadvisor.ui.common.BlinkingNeonBadge(warning)

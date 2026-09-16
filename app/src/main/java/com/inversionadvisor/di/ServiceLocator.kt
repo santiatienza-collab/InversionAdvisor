@@ -92,6 +92,19 @@ object ServiceLocator {
     }
 
     @Volatile
+    private var posiblesComprasRepository: com.inversionadvisor.data.repository.PosiblesComprasRepository? = null
+
+    fun providePosiblesComprasRepository(context: Context): com.inversionadvisor.data.repository.PosiblesComprasRepository {
+        return posiblesComprasRepository ?: synchronized(this) {
+            posiblesComprasRepository ?: com.inversionadvisor.data.repository.PosiblesComprasRepository(
+                screenerDao = AppDatabase.getInstance(context).screenerDao(),
+                posiblesComprasDao = AppDatabase.getInstance(context).posiblesComprasDao(),
+                marketRepository = provideMarketRepository(context)
+            ).also { posiblesComprasRepository = it }
+        }
+    }
+
+    @Volatile
     private var newsRepository: com.inversionadvisor.data.repository.NewsRepository? = null
 
     /** Sin dependencia de Context/Room a propósito (ver NewsRepository): los titulares no se cachean. */
