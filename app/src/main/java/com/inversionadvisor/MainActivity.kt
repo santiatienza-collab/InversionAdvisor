@@ -177,6 +177,13 @@ class MainActivity : ComponentActivity() {
                             data class SeccionAnalisis(val etiqueta: String, val seleccionada: Boolean, val alPulsar: () -> Unit)
                             val seccionesAnalisis = listOf(
                                 SeccionAnalisis("Índices", screenerState.selectedMarket in gruposDeIndicesAnalisis) {
+                                    // CORREGIDO — fallo real encontrado: si ya estabas en un índice
+                                    // (SP500/NASDAQ100/IBEX35/RUSSELL2000) con una ficha de stock
+                                    // abierta y pulsabas "Índices" en el desplegable, selectMarket()
+                                    // nunca se llamaba (mismo mercado ya seleccionado), así que la
+                                    // ficha abierta nunca se cerraba. Se cierra aquí explícitamente
+                                    // en todos los casos, se llame o no a selectMarket().
+                                    screenerViewModel.clearStockSelection()
                                     if (screenerState.selectedMarket !in gruposDeIndicesAnalisis) screenerViewModel.selectMarket(screenerViewModel.ultimoIndiceElegido)
                                 },
                                 SeccionAnalisis(MarketUniverse.TOP10.displayName, screenerState.selectedMarket == MarketUniverse.TOP10) { screenerViewModel.selectMarket(MarketUniverse.TOP10) },

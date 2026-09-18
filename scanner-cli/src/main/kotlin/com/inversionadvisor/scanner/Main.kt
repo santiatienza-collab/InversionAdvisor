@@ -657,10 +657,13 @@ fun main(args: Array<String>) = runBlocking {
             // que llevaron a bajar volumen a 1,0 y confianza a 70, y a quitar el progreso de
             // recuperación como filtro obligatorio aparte (se queda como ya estaba: parte de
             // confidenceScore, informativo, no imprescindible por sí solo).
+            // NUEVO — pedido expresamente: "solo candidatos con MACD alcista, descarta los MACD
+            // bajistas, como criterio añadido a los que ya teníamos" — histograma MACD > 0.
             isBuyOpportunity = exhaustion != null && exhaustion.detected && p.uptrend == null &&
                 (p.volumeRatio ?: 0.0) >= MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY &&
                 exhaustion.declinePercentFromRecentHigh <= -MIN_DECLINE_PERCENT_FOR_BUY_OPPORTUNITY &&
-                exhaustion.confidenceScore >= MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY,
+                exhaustion.confidenceScore >= MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY &&
+                (p.macd?.histogram ?: 0.0) > 0.0,
             exhaustionConfidence = p.exhaustion?.confidenceScore,
             exhaustionReasons = p.exhaustion?.reasons,
             declinePercentFromRecentHigh = p.exhaustion?.declinePercentFromRecentHigh,

@@ -78,6 +78,10 @@ data class BuyOpportunityEntity(
     /** TechnicalAnalysis.detectSupportResistanceLevels — % de distancia al soporte más cercano
      *  por debajo del precio; null = no se detectó ningún soporte relevante cerca. */
     val nearestSupportPercent: Double? = null,
+    // NUEVO — pedido expresamente: "solo candidatos con MACD alcista, descarta los MACD
+    // bajistas, como criterio añadido a los que ya teníamos" — histograma MACD (línea MACD menos
+    // línea de señal, ver TechnicalAnalysis.calculateMacd): positivo = alcista, negativo = bajista.
+    val macdHistogram: Double? = null,
     val updatedAtEpochMillis: Long
 )
 

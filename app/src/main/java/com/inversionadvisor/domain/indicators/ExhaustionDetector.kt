@@ -24,6 +24,10 @@ data class ExhaustionSignal(
 
 object ExhaustionDetector {
 
+    /** % mínimo que el precio actual debe haberse alejado por encima del suelo reciente para
+     *  considerar que hay una recuperación sólida (no solo una vela suelta cerrando algo mejor). */
+    private const val MIN_REBOTE_DESDE_SUELO_PERCENT = 5.0
+
     /**
      * @param candles histórico ordenado ascendente (recomendado: velas semanales de 1-2 años,
      *                o diarias de varios meses).
@@ -88,10 +92,12 @@ object ExhaustionDetector {
         // Mínimos ascendentes tras el suelo => pérdida de momentum bajista
         val lowIndex = candles.indexOf(recentLowCandle)
         val afterLow = candles.subList(lowIndex, candles.size)
+        var hayMinimosAscendentes = false
         if (afterLow.size >= 3) {
             val lows = afterLow.map { it.low }
             val higherLowSteps = (1 until lows.size).count { lows[it] >= lows[it - 1] }
             if (higherLowSteps >= (lows.size - 1) * 0.6) {
+                hayMinimosAscendentes = true
                 reasons += "Mínimos ascendentes tras el suelo del ${recentLowCandle.datetime} (la presión vendedora se agota)"
                 recoveryScore += 20
             }
@@ -149,16 +155,53 @@ object ExhaustionDetector {
             recoveryScore += 25
         }
 
+        // CORREGIDO — fallo real reportado: candidatos cuya última vela ES el mínimo reciente
+        // (precio todavía haciendo mínimos ahora mismo, sin ninguna vela de reacción posterior)
+        // podían marcar detected=true igualmente, con el "progreso de recuperación" calculado
+        // contra el cierre de esa MISMA vela (currentPrice = candles.last().close, que es la vela
+        // del propio suelo) — no es un giro real, es solo que esa vela cerró algo por encima de
+        // su mínimo intra-semana, cosa que pasa casi siempre y no indica ningún cambio de
+        // tendencia. Un giro de verdad necesita, como mínimo, una vela POSTERIOR al suelo que
+        // confirme que el precio ha dejado de hacer mínimos — si no hay ninguna todavía, se
+        // descarta aquí explícitamente, sin importar lo que sumen los demás indicios.
+        val hayVelaPosteriorAlSuelo = lowIndex < candles.lastIndex
+        if (!hayVelaPosteriorAlSuelo && debugSymbol != null) {
+            android.util.Log.i(
+                "ExhaustionDiagnostic",
+                "$debugSymbol: forzado detected=false — la última vela ES el mínimo reciente, sin ninguna vela de reacción posterior todavía"
+            )
+        }
+
+        // NUEVO — pedido expresamente: "además del giro tiene que haber una recuperación de la
+        // tendencia alcista sólida". Antes, cualquier combinación de indicios que sumara ≥40
+        // bastaba (p. ej. RSI en sobreventa + progreso hacia resistencia, SIN que hubiera mínimos
+        // ascendentes de verdad) — eso podía dar detected=true con una sola vela de rebote que
+        // luego no se sostiene. Ahora se exigen, ADEMÁS del recoveryScore≥40 y de que haya vela
+        // posterior al suelo, dos condiciones que sí representan una recuperación sólida y no un
+        // simple rebote puntual:
+        //  1) Mínimos ascendentes tras el suelo (hayMinimosAscendentes) — la propia serie de
+        //     precios, no un indicador derivado, confirma que la presión vendedora se agota de
+        //     forma sostenida en el tiempo, no en una sola vela.
+        //  2) Rebote mínimo real desde el suelo (≥5%) — el precio actual tiene que haberse
+        //     alejado de verdad del mínimo, no solo haber cerrado por encima de su propio mínimo
+        //     intra-vela (ver el arreglo de "hayVelaPosteriorAlSuelo" más arriba, que ya cubría el
+        //     caso de una sola vela; esto cubre el caso de varias velas con un rebote insignificante).
+        val reboteDesdeElSueloPercent = if (recentLowCandle.low > 0) (currentPrice - recentLowCandle.low) / recentLowCandle.low * 100 else 0.0
+        val hayReboteSolido = reboteDesdeElSueloPercent >= MIN_REBOTE_DESDE_SUELO_PERCENT
+        val hayRecuperacionSolida = hayMinimosAscendentes && hayReboteSolido
+
         if (debugSymbol != null) {
             android.util.Log.i(
                 "ExhaustionDiagnostic",
                 "$debugSymbol: caída=${"%.1f".format(declinePercent)}%% (desde ${recentHighCandle.datetime.take(10)} hasta el suelo ${recentLowCandle.datetime.take(10)}) — " +
-                    "recoveryScore=$recoveryScore/75 (hace falta ≥40) — detected=${recoveryScore >= 40} — razones: ${reasons.joinToString(" | ")}"
+                    "recoveryScore=$recoveryScore/75 (hace falta ≥40) — mínimosAscendentes=$hayMinimosAscendentes — " +
+                    "rebote=${"%.1f".format(reboteDesdeElSueloPercent)}%% (hace falta ≥$MIN_REBOTE_DESDE_SUELO_PERCENT%%) — " +
+                    "detected=${recoveryScore >= 40 && hayVelaPosteriorAlSuelo && hayRecuperacionSolida} — razones: ${reasons.joinToString(" | ")}"
             )
         }
 
         return ExhaustionSignal(
-            detected = recoveryScore >= 40,
+            detected = recoveryScore >= 40 && hayVelaPosteriorAlSuelo && hayRecuperacionSolida,
             confidenceScore = (declineScore + recoveryScore).coerceIn(0, 100),
             reasons = reasons,
             recentHigh = recentHighCandle.high,

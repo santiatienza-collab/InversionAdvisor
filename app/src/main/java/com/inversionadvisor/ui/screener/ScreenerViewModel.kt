@@ -333,6 +333,12 @@ class ScreenerViewModel(
     val ultimoIndiceElegido: MarketUniverse get() = _ultimoIndiceElegido.value
 
     fun selectMarket(market: MarketUniverse) {
+        // CORREGIDO — fallo reportado: al abrir la ficha de un stock (candidato de Top10 o
+        // Futuras Compras) y luego cambiar de sección desde el desplegable de "Análisis", la
+        // pantalla se quedaba atascada en la ficha abierta. Causa: la ficha se muestra solo en
+        // función de _selectedSymbol (en ScreenerScreen), y selectMarket no lo limpiaba al
+        // cambiar de mercado/sección. Se cierra aquí la ficha abierta al cambiar de sección.
+        _selectedSymbol.value = null
         _selectedMarket.value = market
         savedStateHandle?.set(KEY_SELECTED_MARKET, market.indexName)
         if (market in indicesDisponibles) {

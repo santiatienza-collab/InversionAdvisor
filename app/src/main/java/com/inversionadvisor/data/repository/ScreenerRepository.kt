@@ -156,6 +156,7 @@ class ScreenerRepository(
                     doubleTopBottomPattern = c.doubleTopBottomPattern,
                     momentumPriceDivergence = c.momentumPriceDivergence,
                     nearestSupportPercent = c.nearestSupportPercent,
+                    macdHistogram = c.macdHistogram,
                     updatedAtEpochMillis = ahora
                 )
             }
@@ -322,11 +323,15 @@ class ScreenerRepository(
         } catch (e: Exception) {
             null
         }
+        // NUEVO — pedido expresamente: "solo candidatos con MACD alcista, descarta los MACD
+        // bajistas, como criterio añadido a los que ya teníamos" — histograma > 0 = alcista.
+        val macdProvisional = TechnicalAnalysis.calculateMacd(candles)
 
         val opportunity = if (exhaustion != null && exhaustion.detected && uptrendSignal == null &&
             (volumeRatio ?: 0.0) >= MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY &&
             exhaustion.declinePercentFromRecentHigh <= -com.inversionadvisor.domain.indicators.Top10Calculator.MIN_DECLINE_PERCENT &&
-            exhaustion.confidenceScore >= MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY) {
+            exhaustion.confidenceScore >= MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY &&
+            (macdProvisional?.histogram ?: 0.0) > 0.0) {
             val athInfo = TechnicalAnalysis.analyzeAllTimeHigh(candles)
             BuyOpportunityEntity(
                 indexName = entry.indexName,
@@ -353,6 +358,7 @@ class ScreenerRepository(
                 doubleTopBottomPattern = doubleTopBottomResultProvisional.pattern.name,
                 momentumPriceDivergence = momentumPriceDivergenceProvisional.name,
                 nearestSupportPercent = nearestSupportPercentProvisional,
+                macdHistogram = macdProvisional?.histogram,
                 updatedAtEpochMillis = now
             )
         } else null

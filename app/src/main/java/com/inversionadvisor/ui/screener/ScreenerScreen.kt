@@ -1693,10 +1693,10 @@ private fun PosiblesComprasSection(
         // contarConfirmaciones() en PosiblesComprasRepository) — antes solo decía "tendencia
         // bajista que se agota, con giro al alza", sin explicar qué se comprueba de verdad.
         Text(
-            "Caída ≥15% + agotamiento bajista con al menos 4 señales alineadas: patrón de giro " +
-                "(vela/doble suelo/mínimos ascendentes), volumen diario ≥1,5x su media, " +
-                "divergencia RSI/momentum y un soporte relevante cerca. La vela y el volumen " +
-                "solos no bastan.",
+            "Caída ≥15% + agotamiento bajista. Imprescindibles: patrón de giro " +
+                "(vela/doble suelo/mínimos ascendentes), volumen diario ≥1,5x su media y " +
+                "MACD alcista. Además, al menos una confirmación adicional: divergencia " +
+                "RSI/momentum o soporte relevante cerca.",
             style = MaterialTheme.typography.bodySmall,
             color = Color.Gray,
             modifier = Modifier.padding(top = 2.dp)

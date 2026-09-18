@@ -62,7 +62,9 @@ import com.inversionadvisor.data.local.entities.UptrendCandidateEntity
     // migración manual.
     // SUBIDO a 33 — pedido expresamente: BuyOpportunityEntity gana 5 campos nuevos (confluencia
     // técnica: volumen diario, patrón de vela, doble suelo, divergencia, soporte cercano).
-    version = 33,
+    // SUBIDO a 34 — pedido expresamente: BuyOpportunityEntity gana macdHistogram (filtro nuevo:
+    // solo candidatos con MACD alcista).
+    version = 34,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

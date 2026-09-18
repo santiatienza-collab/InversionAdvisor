@@ -134,6 +134,11 @@ class PosiblesComprasRepository(
             // Confianza global algo más alta que el mínimo bruto (65) que exige "detected" por
             // sí solo — sin llegar a exigir 3 de 4 indicios a la vez (ver comentario de arriba).
             if (entity.confidenceScore < ScreenerRepository.MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY) return@mapNotNull null
+            // NUEVO — pedido expresamente: "solo candidatos con MACD alcista, descarta los MACD
+            // bajistas, como criterio añadido a los que ya teníamos" — histograma MACD > 0. Con
+            // entidades de escaneos anteriores a este cambio (macdHistogram = null), se descarta
+            // por precaución (null no se puede asumir alcista) hasta el próximo escaneo.
+            if ((entity.macdHistogram ?: -1.0) <= 0.0) return@mapNotNull null
 
             // NUEVO — pedido expresamente: criterio profesional de confluencia técnica (no basta
             // "vela + volumen" por sí solos) — ver contarConfirmaciones() al final del fichero
@@ -149,8 +154,13 @@ class PosiblesComprasRepository(
                 momentumPriceDivergence = entity.momentumPriceDivergence,
                 nearestSupportPercent = entity.nearestSupportPercent
             )
-            android.util.Log.i("PosiblesComprasDiagnostic", "${entity.symbol}: confirmaciones=$confirmaciones/4")
-            if (confirmaciones < MIN_CONFIRMACIONES_REQUERIDAS) return@mapNotNull null
+            android.util.Log.i(
+                "PosiblesComprasDiagnostic",
+                "${entity.symbol}: confirmaciones=${confirmaciones.total}/4 (giro=${confirmaciones.patronDeGiro} " +
+                    "volumen=${confirmaciones.volumenAlto} divergencia=${confirmaciones.divergenciaOSobreventa} " +
+                    "soporte=${confirmaciones.soporteRelevante}) válida=${confirmaciones.esCombinacionValida}"
+            )
+            if (!confirmaciones.esCombinacionValida) return@mapNotNull null
 
             if (generic?.isCompleteFromRemoteScan == true) {
                 return@mapNotNull Candidate(
@@ -323,6 +333,9 @@ class PosiblesComprasRepository(
                     // ExhaustionDetector sobre las MISMAS velas ya descargadas arriba (candles),
                     // sin ninguna petición de red extra.
                     val exhaustionFresco = com.inversionadvisor.domain.indicators.ExhaustionDetector.detect(candles)
+                    // NUEVO — pedido expresamente: MACD alcista con datos FRESCOS, sobre las
+                    // MISMAS velas ya descargadas arriba, sin petición extra.
+                    val macdFresco = com.inversionadvisor.domain.indicators.TechnicalAnalysis.calculateMacd(candles)
                     // Confluencia técnica (ver contarConfirmaciones()) con datos FRESCOS —
                     // volumen diario sobre dailyCandlesForCross, ya descargadas arriba para el
                     // cruce SMA20/50, sin petición extra.
@@ -335,7 +348,7 @@ class PosiblesComprasRepository(
                             momentumPriceDivergence = com.inversionadvisor.domain.indicators.UptrendDetector.detectMomentumPriceDivergence(candles).name,
                             nearestSupportPercent = it.nearestSupportPercent
                         )
-                    } ?: 0
+                    }
 
                     val pasaFiltroFresco = analysis != null &&
                         !analysis.hasConfirmedUptrend &&
@@ -343,7 +356,8 @@ class PosiblesComprasRepository(
                         exhaustionFresco != null &&
                         exhaustionFresco.declinePercentFromRecentHigh <= -com.inversionadvisor.domain.indicators.Top10Calculator.MIN_DECLINE_PERCENT &&
                         exhaustionFresco.confidenceScore >= ScreenerRepository.MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY &&
-                        confirmacionesFrescas >= MIN_CONFIRMACIONES_REQUERIDAS
+                        (macdFresco?.histogram ?: 0.0) > 0.0 &&
+                        confirmacionesFrescas?.esCombinacionValida == true
 
                     analysis?.takeIf { pasaFiltroFresco }?.let {
                         PosiblesComprasEntryEntity(
@@ -393,8 +407,7 @@ class PosiblesComprasRepository(
 // confirmado, volumen alto en el giro, divergencia en RSI o MACD y soporte relevante. Con eso la
 // señal es razonable. Con solo la vela y el volumen, es una apuesta." — se implementan las 4
 // categorías EXACTAS pedidas, cada una con lo que ya calcula el resto de la app (sin duplicar
-// detectores), exigiendo las 4 a la vez (MIN_CONFIRMACIONES_REQUERIDAS = 4, no una nota rebajada
-// tipo "3 de 4"):
+// detectores).
 //  1) Patrón de giro: vela HAMMER/BULLISH_ENGULFING, o doble suelo, o mínimos ascendentes ya
 //     detectados por ExhaustionDetector (su razón "Mínimos ascendentes..." en reasonsCsv).
 //  2) Volumen alto en el giro: volumen DIARIO ≥1,5x su media de 20 sesiones — la cifra exacta
@@ -407,12 +420,47 @@ class PosiblesComprasRepository(
 //     MAX_DISTANCIA_SOPORTE_PERCENT o menos por debajo del precio actual — el giro ocurre SOBRE
 //     un soporte de verdad, no en el aire.
 //
+// RECALIBRADO a petición expresa tras comprobar con datos reales (escaneo completo de SP500) que
+// exigir las 4 a la vez sobre el pool ya reducido por los filtros previos (caída ≥15% +
+// exhaustion) deja el resultado en 0 casi siempre — de 501 símbolos, solo 5 pasaban esos filtros
+// previos, y ninguno llegaba a 4/4 (3 llegaban a 3/4). Se baja a exigir 3 de las 4, pero NO las 4
+// tratadas como intercambiables: en mi opinión, dentro de las 4, dos son imprescindibles y dos son
+// confirmación adicional —
+//  - IMPRESCINDIBLES (si falta cualquiera de estas dos, no hay señal, por muchas otras que haya):
+//    el PATRÓN DE GIRO (sin él no hay tesis de reversión, solo una caída que podría seguir cayendo)
+//    y el VOLUMEN ALTO (sin él no hay forma de distinguir un giro real de ruido de precio — es
+//    justo la distinción que hace el usuario: "con solo la vela y el volumen, es una apuesta",
+//    o sea ni siquiera el volumen solo basta, pero SIN volumen la apuesta es aún peor).
+//  - CONFIRMACIÓN ADICIONAL (con que se cumpla una de las dos ya vale, no hacen falta las dos):
+//    la DIVERGENCIA RSI/MOMENTUM y el SOPORTE RELEVANTE — ambas añaden contexto y reducen falsos
+//    positivos, pero son más "ruidosas"/casuales que las dos de arriba (un soporte relevante a
+//    veces es simplemente estructura del gráfico, no señal de giro; una divergencia técnica no
+//    siempre está presente incluso en giros reales) — exigir las DOS a la vez, además de las
+//    imprescindibles, sería de nuevo demasiado restrictivo (equivaldría a las 4 obligatorias).
+// Resultado práctico: patrón de giro Y volumen alto obligatorios, más al menos una de
+// (divergencia, soporte) — es decir, 3 de 4 pero con las dos más importantes fijas, no
+// intercambiables por cualquier combinación de 3.
+//
 // Gestión del riesgo (stop bajo el mínimo del giro, ratio ≥2:1, tamaño de posición 1-2%, entrada
 // escalonada) queda fuera de este filtro a propósito: es una decisión de EJECUCIÓN de quien
 // invierte, no un criterio de qué candidatos mostrar en la lista.
-private const val MIN_CONFIRMACIONES_REQUERIDAS = 4
 private const val MIN_DAILY_VOLUME_RATIO_CONFIRMACION = 1.5
 private const val MAX_DISTANCIA_SOPORTE_PERCENT = 8.0
+
+/** Las 4 señales de confluencia por separado — ver comentario de arriba sobre cuáles son
+ *  imprescindibles (patronDeGiro, volumenAlto) y cuáles son confirmación adicional (con que se
+ *  cumpla una de las dos alcanza: divergenciaOSobreventa, soporteRelevante). */
+private data class Confirmaciones(
+    val patronDeGiro: Boolean,
+    val volumenAlto: Boolean,
+    val divergenciaOSobreventa: Boolean,
+    val soporteRelevante: Boolean
+) {
+    val total: Int get() = listOf(patronDeGiro, volumenAlto, divergenciaOSobreventa, soporteRelevante).count { it }
+
+    /** Patrón de giro y volumen alto obligatorios, más al menos una de (divergencia, soporte). */
+    val esCombinacionValida: Boolean get() = patronDeGiro && volumenAlto && (divergenciaOSobreventa || soporteRelevante)
+}
 
 private fun contarConfirmaciones(
     candlestickPattern: String?,
@@ -421,22 +469,18 @@ private fun contarConfirmaciones(
     dailyVolumeRatio: Double?,
     momentumPriceDivergence: String?,
     nearestSupportPercent: Double?
-): Int {
-    var confirmaciones = 0
-
+): Confirmaciones {
     val patronDeGiro = candlestickPattern == "HAMMER" || candlestickPattern == "BULLISH_ENGULFING" ||
         doubleTopBottomPattern == "DOUBLE_BOTTOM" ||
         reasonsCsv.contains("ascendentes", ignoreCase = true)
-    if (patronDeGiro) confirmaciones++
 
-    if (dailyVolumeRatio != null && dailyVolumeRatio >= MIN_DAILY_VOLUME_RATIO_CONFIRMACION) confirmaciones++
+    val volumenAlto = dailyVolumeRatio != null && dailyVolumeRatio >= MIN_DAILY_VOLUME_RATIO_CONFIRMACION
 
     val divergenciaOSobreventa = momentumPriceDivergence == "BULLISH" || reasonsCsv.contains("sobreventa", ignoreCase = true)
-    if (divergenciaOSobreventa) confirmaciones++
 
-    if (nearestSupportPercent != null && nearestSupportPercent <= MAX_DISTANCIA_SOPORTE_PERCENT) confirmaciones++
+    val soporteRelevante = nearestSupportPercent != null && nearestSupportPercent <= MAX_DISTANCIA_SOPORTE_PERCENT
 
-    return confirmaciones
+    return Confirmaciones(patronDeGiro, volumenAlto, divergenciaOSobreventa, soporteRelevante)
 }
 
 private fun com.inversionadvisor.data.local.entities.BuyOpportunityEntity.toOpportunityDomainLocal(): com.inversionadvisor.domain.model.BuyOpportunity {

@@ -342,7 +342,7 @@ internal fun PriceAndVolumeChart(candles: List<Candle>, sma20: List<Double?>, ra
 
     val priceColor = MaterialTheme.colorScheme.primary.toArgb()
     val smaColor = AndroidColor.parseColor("#FF6D00")
-    val sma50Color = AndroidColor.parseColor("#00BCD4") // azul cian, distinto de la SMA20 (naranja), del precio y de las velas alcistas/bajistas (verde/rojo)
+    val sma50Color = AndroidColor.parseColor("#FFEB3B") // CAMBIADO a petición expresa (se veía poco) — amarillo, distinto de la SMA20 (naranja), del precio y de las velas alcistas/bajistas (verde/rojo)
     val upColor = AndroidColor.parseColor("#2E7D32")
     val downColor = AndroidColor.parseColor("#C62828")
     val gridColor = AndroidColor.parseColor("#E0E0E0")
