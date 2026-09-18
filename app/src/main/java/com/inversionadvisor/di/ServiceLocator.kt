@@ -45,7 +45,8 @@ object ServiceLocator {
         return stockUniverseRepository ?: synchronized(this) {
             stockUniverseRepository ?: StockUniverseRepository(
                 wikipediaIndexApi = NetworkModule.wikipediaIndexApi,
-                dao = AppDatabase.getInstance(context).stockUniverseDao()
+                dao = AppDatabase.getInstance(context).stockUniverseDao(),
+                screenerDao = AppDatabase.getInstance(context).screenerDao()
             ).also { stockUniverseRepository = it }
         }
     }

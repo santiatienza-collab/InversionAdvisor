@@ -5,7 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
@@ -15,12 +23,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.lifecycleScope
 import com.inversionadvisor.domain.model.MarketUniverse
@@ -106,7 +116,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            MaterialTheme {
+            com.inversionadvisor.ui.theme.InversionAdvisorTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     var selectedTab by remember { mutableStateOf(0) }
                     val tabTitles = listOf("Panel", "Análisis", "Busca", "Noticias")
@@ -147,25 +157,97 @@ class MainActivity : ComponentActivity() {
                             // haría falta volver a ScrollableTabRow aquí (no confundir con el
                             // ScrollableTabRow interno de NoticiasScreen, que es un nivel distinto:
                             // las 4 fuentes DENTRO de la pestaña Noticias, no las pestañas principales).
-                            // NUEVO — pedido expresamente: mismo azul índigo + sombra gris que
-                            // el resto de pestañas de la app (nombre del stock, pestañas de
-                            // mercado y subpestañas de Análisis).
-                            val colorIndigo = Color(0xFF3F51B5)
-                            val sombraGris = Shadow(color = Color.Gray, offset = Offset(1.5f, 1.5f), blurRadius = 3f)
+                            // CAMBIADO a petición expresa (tema oscuro "Grafito + Verde-azulado
+                            // neón"): mismo acento turquesa + sombra gris que el resto de
+                            // pestañas de la app (nombre del stock, pestañas de mercado y
+                            // subpestañas de Análisis) — antes era azul índigo, pensado para
+                            // fondo claro.
+                            val colorIndigo = com.inversionadvisor.ui.theme.NeonTeal
+                            val sombraGris = Shadow(color = Color.Black.copy(alpha = 0.6f), offset = Offset(1.5f, 1.5f), blurRadius = 3f)
+
+                            // NUEVO — pedido expresamente: el desplegable de secciones de Análisis
+                            // (Índices/Top10/Posibles Compras/Divisas/Bonos, antes una cabecera
+                            // aparte dentro de ScreenerScreen) ahora CUELGA de la propia pestaña
+                            // "Análisis" de este TabRow — mismo patrón que el desplegable "Elige un
+                            // índice bursátil" (DropdownMenu anclado a un Box que envuelve el
+                            // elemento que lo dispara), para que se lea de verdad como si emergiera
+                            // de la pestaña, no de un control aparte debajo de ella.
+                            val screenerState by screenerViewModel.uiState.collectAsState()
+                            val gruposDeIndicesAnalisis = setOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35, MarketUniverse.RUSSELL2000)
+                            data class SeccionAnalisis(val etiqueta: String, val seleccionada: Boolean, val alPulsar: () -> Unit)
+                            val seccionesAnalisis = listOf(
+                                SeccionAnalisis("Índices", screenerState.selectedMarket in gruposDeIndicesAnalisis) {
+                                    if (screenerState.selectedMarket !in gruposDeIndicesAnalisis) screenerViewModel.selectMarket(screenerViewModel.ultimoIndiceElegido)
+                                },
+                                SeccionAnalisis(MarketUniverse.TOP10.displayName, screenerState.selectedMarket == MarketUniverse.TOP10) { screenerViewModel.selectMarket(MarketUniverse.TOP10) },
+                                SeccionAnalisis(MarketUniverse.POSIBLES_COMPRAS.displayName, screenerState.selectedMarket == MarketUniverse.POSIBLES_COMPRAS) { screenerViewModel.selectMarket(MarketUniverse.POSIBLES_COMPRAS) },
+                                SeccionAnalisis(MarketUniverse.DIVISAS.displayName, screenerState.selectedMarket == MarketUniverse.DIVISAS) { screenerViewModel.selectMarket(MarketUniverse.DIVISAS) },
+                                SeccionAnalisis(MarketUniverse.BONOS.displayName, screenerState.selectedMarket == MarketUniverse.BONOS) { screenerViewModel.selectMarket(MarketUniverse.BONOS) }
+                            )
+                            var menuAnalisisAbierto by remember { mutableStateOf(false) }
+
                             TabRow(selectedTabIndex = selectedTab) {
                                 tabTitles.forEachIndexed { index, title ->
-                                    Tab(
-                                        selected = selectedTab == index,
-                                        onClick = { selectedTab = index },
-                                        text = {
-                                            Text(
-                                                title,
-                                                style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGris),
-                                                color = colorIndigo,
-                                                fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal
+                                    if (index == 1) {
+                                        Box {
+                                            Tab(
+                                                selected = selectedTab == index,
+                                                onClick = {
+                                                    selectedTab = index
+                                                    menuAnalisisAbierto = true
+                                                },
+                                                text = {
+                                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                                        Text(
+                                                            title,
+                                                            style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGris),
+                                                            color = colorIndigo,
+                                                            fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal
+                                                        )
+                                                        Icon(
+                                                            Icons.Default.KeyboardArrowDown,
+                                                            contentDescription = null,
+                                                            tint = colorIndigo,
+                                                            modifier = Modifier.padding(start = 2.dp).size(16.dp)
+                                                        )
+                                                    }
+                                                }
                                             )
+                                            DropdownMenu(
+                                                expanded = menuAnalisisAbierto,
+                                                onDismissRequest = { menuAnalisisAbierto = false }
+                                            ) {
+                                                seccionesAnalisis.forEach { seccion ->
+                                                    DropdownMenuItem(
+                                                        text = {
+                                                            Text(
+                                                                seccion.etiqueta,
+                                                                color = colorIndigo,
+                                                                fontWeight = if (seccion.seleccionada) FontWeight.Bold else FontWeight.Normal
+                                                            )
+                                                        },
+                                                        onClick = {
+                                                            seccion.alPulsar()
+                                                            menuAnalisisAbierto = false
+                                                        }
+                                                    )
+                                                }
+                                            }
                                         }
-                                    )
+                                    } else {
+                                        Tab(
+                                            selected = selectedTab == index,
+                                            onClick = { selectedTab = index },
+                                            text = {
+                                                Text(
+                                                    title,
+                                                    style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGris),
+                                                    color = colorIndigo,
+                                                    fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal
+                                                )
+                                            }
+                                        )
+                                    }
                                 }
                             }
 

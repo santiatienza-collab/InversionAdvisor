@@ -814,11 +814,13 @@ private fun DashboardContent(
 
         state.refreshError?.let { error ->
             item {
-                Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFEBEE))) {
+                // CAMBIADO a petición expresa (tema oscuro): antes rosa clarito con texto rojo
+                // oscuro, pensado para fondo claro.
+                Card(colors = CardDefaults.cardColors(containerColor = com.inversionadvisor.ui.theme.DarkErrorContainer)) {
                     Text(
                         "No se pudo actualizar: $error",
                         modifier = Modifier.padding(12.dp),
-                        color = Color(0xFFC62828)
+                        color = com.inversionadvisor.ui.theme.DarkErrorLight
                     )
                 }
             }

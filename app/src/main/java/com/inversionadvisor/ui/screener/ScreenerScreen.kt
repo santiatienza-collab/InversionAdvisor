@@ -39,9 +39,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -105,14 +102,19 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
     val selectedSymbol = state.selectedSymbol
     if (selectedSymbol != null) {
         // NUEVO — pedido expresamente: mostrar el nombre completo de la acción además del
-        // ticker al entrar en la ficha. Se busca en las 3 listas ya cargadas en pantalla
-        // (candidatos de tendencia, oportunidades de compra, Top10), todas tienen el nombre.
+        // ticker al entrar en la ficha. Se busca en las 4 listas ya cargadas en pantalla
+        // (candidatos de tendencia, oportunidades de compra, Top10, Posibles Compras), todas
+        // tienen el nombre. CORREGIDO — fallo real: faltaba state.posiblesCompras aquí, así que
+        // un candidato de Posibles Compras (que combina los 4 mercados, no solo el de
+        // buyOpportunities de la pestaña "Índices" activa) se abría sin nombre ni índice.
         val nombreCompleto = state.uptrendCandidates.firstOrNull { it.symbol == selectedSymbol }?.name
             ?: state.buyOpportunities.firstOrNull { it.symbol == selectedSymbol }?.name
             ?: state.top10Entries.firstOrNull { it.symbol == selectedSymbol }?.name
+            ?: state.posiblesCompras.firstOrNull { it.symbol == selectedSymbol }?.name
         val indexNameCruda = state.uptrendCandidates.firstOrNull { it.symbol == selectedSymbol }?.indexName
             ?: state.buyOpportunities.firstOrNull { it.symbol == selectedSymbol }?.indexName
             ?: state.top10Entries.firstOrNull { it.symbol == selectedSymbol }?.indexName
+            ?: state.posiblesCompras.firstOrNull { it.symbol == selectedSymbol }?.indexName
         val indexDisplayName = com.inversionadvisor.domain.model.MarketUniverse.values()
             .firstOrNull { it.indexName == indexNameCruda }?.displayName
         StockDetailScreen(
@@ -131,10 +133,12 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
         return
     }
 
-    // NUEVO — pedido expresamente: mismo color índigo con sombra gris que el nombre del stock,
-    // reutilizado aquí para las pestañas superiores y para el desplegable de índices de abajo.
-    val colorIndigoTabs = Color(0xFF3F51B5)
-    val sombraGrisTabs = Shadow(color = Color.Gray, offset = Offset(1.5f, 1.5f), blurRadius = 3f)
+    // CAMBIADO a petición expresa (tema oscuro "Grafito + Verde-azulado neón"): mismo acento
+    // turquesa con sombra que el nombre del stock, reutilizado aquí para las pestañas
+    // superiores y para el desplegable de índices de abajo — antes era azul índigo, pensado
+    // para fondo claro.
+    val colorIndigoTabs = com.inversionadvisor.ui.theme.NeonTeal
+    val sombraGrisTabs = Shadow(color = Color.Black.copy(alpha = 0.6f), offset = Offset(1.5f, 1.5f), blurRadius = 3f)
 
     // NUEVO — pedido expresamente: las 4 pestañas de mercados de acciones (S&P 500/Nasdaq-100/
     // IBEX 35/Russell 2000) se sustituyen por UNA sola pestaña "Índices" — dentro de ella, un
@@ -142,22 +146,6 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
     // como pestañas propias, sin cambios.
     val gruposDeIndices = setOf(MarketUniverse.SP500, MarketUniverse.NASDAQ100, MarketUniverse.IBEX35, MarketUniverse.RUSSELL2000)
     val esUnMercadoDeIndices = state.selectedMarket in gruposDeIndices
-    data class PestañaSuperior(val etiqueta: String, val seleccionada: Boolean, val alPulsar: () -> Unit)
-    val pestañasSuperiores = listOf(
-        PestañaSuperior("Índices", esUnMercadoDeIndices) {
-            // CORREGIDO — fallo real confirmado: al quitar el salto automático a SP500 (por
-            // sospecha de que causaba otro fallo), este botón se quedó sin hacer NADA al venir
-            // de Divisas/Bonos/Top10 — disculpas por el susto. Ahora, en vez de saltar siempre a
-            // SP500 a lo tonto, vuelve al ÚLTIMO índice que elegiste de verdad (recordado aparte
-            // en el ViewModel, sin que Divisas/Bonos/Top10 lo pisen).
-            if (!esUnMercadoDeIndices) viewModel.selectMarket(viewModel.ultimoIndiceElegido)
-        },
-        // REORDENADO a petición expresa: Índices, Top10, Posibles Compras, Divisas, Bonos.
-        PestañaSuperior(MarketUniverse.TOP10.displayName, state.selectedMarket == MarketUniverse.TOP10) { viewModel.selectMarket(MarketUniverse.TOP10) },
-        PestañaSuperior(MarketUniverse.POSIBLES_COMPRAS.displayName, state.selectedMarket == MarketUniverse.POSIBLES_COMPRAS) { viewModel.selectMarket(MarketUniverse.POSIBLES_COMPRAS) },
-        PestañaSuperior(MarketUniverse.DIVISAS.displayName, state.selectedMarket == MarketUniverse.DIVISAS) { viewModel.selectMarket(MarketUniverse.DIVISAS) },
-        PestañaSuperior(MarketUniverse.BONOS.displayName, state.selectedMarket == MarketUniverse.BONOS) { viewModel.selectMarket(MarketUniverse.BONOS) }
-    )
 
     // NUEVO — pedido expresamente: declarado aquí (no dentro del "if" del desplegable) para que
     // también sea accesible más abajo, dentro del LazyColumn, donde se decide si se muestra la
@@ -166,31 +154,10 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
     // no en un remember{} local — así sobrevive a cambiar de pestaña de la app y volver.
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        // CAMBIADO otra vez a petición expresa: con 5 pestañas ahora ("Posibles Compras" es
-        // bastante larga), la fila fija sin deslizar no tenía sitio para las 5 — se desbordaba o
-        // partía en dos líneas, empujando todo lo de abajo (el desplegable) fuera de sitio. Con
-        // ScrollableTabRow, cada pestaña ocupa solo el espacio que necesita y, si no caben
-        // todas, se desliza lateralmente en vez de romper el diseño.
-        ScrollableTabRow(
-            selectedTabIndex = pestañasSuperiores.indexOfFirst { it.seleccionada }.coerceAtLeast(0),
-            edgePadding = 8.dp
-        ) {
-            pestañasSuperiores.forEach { pestaña ->
-                Tab(
-                    selected = pestaña.seleccionada,
-                    onClick = pestaña.alPulsar,
-                    text = {
-                        Text(
-                            pestaña.etiqueta,
-                            style = MaterialTheme.typography.bodyMedium.copy(shadow = sombraGrisTabs),
-                            color = colorIndigoTabs,
-                            fontWeight = if (pestaña.seleccionada) FontWeight.Bold else FontWeight.Normal
-                        )
-                    }
-                )
-            }
-        }
-
+        // QUITADO a petición expresa: la cabecera con el desplegable de secciones (Índices/
+        // Top10/Posibles Compras/Divisas/Bonos) que vivía AQUÍ se ha movido a MainActivity.kt,
+        // colgando directamente de la propia pestaña "Análisis" del TabRow principal (para que
+        // "nazca de la pestaña", no de un control aparte debajo de ella) — ver ese fichero.
         // QUITADAS a petición expresa: las subpestañas "Índice"/"Valores Alcistas" que había
         // dentro de S&P 500/Nasdaq-100/IBEX 35 — ahora todo va seguido en la única pestaña
         // "Índices" (desplegable + gráfica + Valores Alcistas, ver más abajo), sin subpestañas.
@@ -362,11 +329,14 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
 
             state.error?.let { error ->
                 item {
-                    Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFEBEE))) {
+                    // CAMBIADO a petición expresa (tema oscuro): antes rosa clarito con texto
+                    // rojo oscuro, pensado para fondo claro — ahora rojo oscuro con texto rojo
+                    // claro, mismo par de la paleta que ya usa el resto del tema oscuro.
+                    Card(colors = CardDefaults.cardColors(containerColor = com.inversionadvisor.ui.theme.DarkErrorContainer)) {
                         Text(
                             "No se pudo completar el análisis: $error",
                             modifier = Modifier.padding(12.dp),
-                            color = Color(0xFFC62828)
+                            color = com.inversionadvisor.ui.theme.DarkErrorLight
                         )
                     }
                 }
@@ -516,15 +486,17 @@ private fun CompactScreenerHeader(state: ScreenerUiState, onRunClick: () -> Unit
                 modifier = Modifier.fillMaxWidth().height(40.dp),
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
-                    // NUEVO — pedido expresamente: azul índigo, mismo tono que el resto de la UI.
-                    containerColor = Color(0xFF3F51B5),
-                    contentColor = Color.White,
-                    disabledContainerColor = Color(0xFF3F51B5).copy(alpha = 0.5f),
-                    disabledContentColor = Color.White
+                    // CAMBIADO a petición expresa (tema oscuro): mismo acento turquesa que el
+                    // resto de la UI — antes azul índigo. Texto OSCURO (no blanco): el turquesa
+                    // es un color claro/brillante, blanco sobre él apenas se leería.
+                    containerColor = com.inversionadvisor.ui.theme.NeonTeal,
+                    contentColor = com.inversionadvisor.ui.theme.OnNeonTeal,
+                    disabledContainerColor = com.inversionadvisor.ui.theme.NeonTeal.copy(alpha = 0.5f),
+                    disabledContentColor = com.inversionadvisor.ui.theme.OnNeonTeal
                 )
             ) {
                 if (state.isRunning) {
-                    CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = Color.White)
+                    CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = com.inversionadvisor.ui.theme.OnNeonTeal)
                     Spacer(modifier = Modifier.padding(start = 8.dp))
                     Text("Analizando ${state.selectedMarket.displayName}…", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
                 } else {
@@ -1648,7 +1620,7 @@ private fun Top10Section(
         }
 
         state.top10Error?.let {
-            Text("No se pudo calcular: $it", color = Color(0xFFC62828), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 10.dp))
+            Text("No se pudo calcular: $it", color = com.inversionadvisor.ui.theme.DarkErrorLight, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 10.dp))
         }
 
         state.top10LastUpdatedAt?.let { updatedAt ->
@@ -1707,9 +1679,24 @@ private fun PosiblesComprasSection(
     onCollapse: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text("Posibles Compras - Las 20 mejores oportunidades", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        // CAMBIADO a petición expresa: si hay menos de 20 candidatos que de verdad cumplan el
+        // criterio de entrada (ver PosiblesComprasRepository — el backend ya solo muestra los
+        // que cumplen, nunca rellena con candidatos flojos para llegar a 20), el título debe
+        // reflejar el número real en vez de prometer "20" cuando hay menos.
+        val tituloPosiblesCompras = if (state.posiblesCompras.size < 20) {
+            "Posibles Compras - ${state.posiblesCompras.size} oportunidades que cumplen el criterio"
+        } else {
+            "Posibles Compras - Las 20 mejores oportunidades"
+        }
+        Text(tituloPosiblesCompras, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        // CAMBIADO a petición expresa: resumen de los 4 factores de confluencia exigidos (ver
+        // contarConfirmaciones() en PosiblesComprasRepository) — antes solo decía "tendencia
+        // bajista que se agota, con giro al alza", sin explicar qué se comprueba de verdad.
         Text(
-            "Valores en tendencia bajista que se agota, con giro al alza en marcha",
+            "Caída ≥15% + agotamiento bajista con al menos 4 señales alineadas: patrón de giro " +
+                "(vela/doble suelo/mínimos ascendentes), volumen diario ≥1,5x su media, " +
+                "divergencia RSI/momentum y un soporte relevante cerca. La vela y el volumen " +
+                "solos no bastan.",
             style = MaterialTheme.typography.bodySmall,
             color = Color.Gray,
             modifier = Modifier.padding(top = 2.dp)
@@ -1727,7 +1714,7 @@ private fun PosiblesComprasSection(
         }
 
         state.posiblesComprasError?.let {
-            Text("No se pudo calcular: $it", color = Color(0xFFC62828), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 10.dp))
+            Text("No se pudo calcular: $it", color = com.inversionadvisor.ui.theme.DarkErrorLight, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 10.dp))
         }
 
         state.posiblesComprasLastUpdatedAt?.let { updatedAt ->

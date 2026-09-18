@@ -149,6 +149,13 @@ class ScreenerRepository(
                     percentFromAth = null,
                     rsi14 = c.rsi14,
                     volumeRatio = c.volumeRatio,
+                    // NUEVO — confluencia técnica para Posibles Compras (ver comentario en
+                    // BuyOpportunityEntity y PosiblesComprasRepository).
+                    dailyVolumeRatio = c.dailyVolumeRatio,
+                    candlestickPattern = c.candlestickPattern,
+                    doubleTopBottomPattern = c.doubleTopBottomPattern,
+                    momentumPriceDivergence = c.momentumPriceDivergence,
+                    nearestSupportPercent = c.nearestSupportPercent,
                     updatedAtEpochMillis = ahora
                 )
             }
@@ -286,7 +293,40 @@ class ScreenerRepository(
         val uptrendSignal = UptrendDetector.evaluate(candles)
 
         val exhaustion = ExhaustionDetector.detect(candles)
-        val opportunity = if (exhaustion != null && exhaustion.detected) {
+        // CORREGIDO — fallo real (CPRI/SHOE/NVDA colándose en Posibles Compras, ver
+        // PosiblesComprasRepository): detected==true por sí solo no basta — se exige además
+        // que NO haya a la vez tendencia alcista confirmada (un parón dentro de una tendencia
+        // alcista no es "una bajista que se agota") y que el volumen esté de verdad muy por
+        // encima de la media. ENDURECIDO Y LUEGO RECALIBRADO a petición expresa ("quiero que el
+        // agotamiento, el volumen y sobre todo el giro al alza sean más pronunciados" — y tras
+        // comprobar con datos reales que la primera versión dejaba el pool en 0 candidatos, ver
+        // comentario junto a las constantes en el companion object para el razonamiento exacto
+        // de cada cifra). Mismas cifras en scanner-cli/Main.kt y PosiblesComprasRepository.
+        // NUEVO — confluencia técnica para Posibles Compras (ver PosiblesComprasRepository):
+        // patrón de giro, doble suelo, divergencia y soporte cercano ya salían gratis de estas
+        // MISMAS velas semanales (candlestickPatternProvisional/doubleTopBottomResultProvisional
+        // se reutilizan más abajo para el cajón genérico, sin recalcularlos dos veces). El
+        // volumen DIARIO es la única pieza que necesita una petición nueva (no se pedían velas
+        // diarias en el escaneo en directo hasta ahora) — solo en este camino de respaldo (el
+        // JSON remoto, la vía normal, no la necesita: ya viene calculada por scanner-cli).
+        val candlestickPatternProvisional = TechnicalAnalysis.detectCandlestickPattern(candles)
+        val doubleTopBottomResultProvisional = UptrendDetector.detectDoubleTopOrBottom(candles)
+        val momentumPriceDivergenceProvisional = UptrendDetector.detectMomentumPriceDivergence(candles)
+        val levelsProvisional = TechnicalAnalysis.detectSupportResistanceLevels(candles)
+        val nearestSupportPercentProvisional = levelsProvisional
+            .filter { it.type == com.inversionadvisor.domain.indicators.LevelType.SUPPORT && it.price <= candles.last().close }
+            .maxByOrNull { it.price }?.let { (candles.last().close - it.price) / candles.last().close * 100 }
+        val dailyVolumeRatioProvisional = try {
+            marketRepository.refreshDailyCandlesForSmaIfStale(entry.symbol, ChartRange.ONE_YEAR)
+            TechnicalAnalysis.volumeRatio(marketRepository.observeDailyCandlesForSma(entry.symbol, ChartRange.ONE_YEAR).first())
+        } catch (e: Exception) {
+            null
+        }
+
+        val opportunity = if (exhaustion != null && exhaustion.detected && uptrendSignal == null &&
+            (volumeRatio ?: 0.0) >= MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY &&
+            exhaustion.declinePercentFromRecentHigh <= -com.inversionadvisor.domain.indicators.Top10Calculator.MIN_DECLINE_PERCENT &&
+            exhaustion.confidenceScore >= MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY) {
             val athInfo = TechnicalAnalysis.analyzeAllTimeHigh(candles)
             BuyOpportunityEntity(
                 indexName = entry.indexName,
@@ -308,6 +348,11 @@ class ScreenerRepository(
                 percentFromAth = athInfo?.percentFromAth,
                 rsi14 = rsi14,
                 volumeRatio = volumeRatio,
+                dailyVolumeRatio = dailyVolumeRatioProvisional,
+                candlestickPattern = candlestickPatternProvisional?.name,
+                doubleTopBottomPattern = doubleTopBottomResultProvisional.pattern.name,
+                momentumPriceDivergence = momentumPriceDivergenceProvisional.name,
+                nearestSupportPercent = nearestSupportPercentProvisional,
                 updatedAtEpochMillis = now
             )
         } else null
@@ -330,7 +375,8 @@ class ScreenerRepository(
         // es una aproximación más pobre, aceptada a propósito para esta puntuación PROVISIONAL
         // (la tarjeta, al mostrarse, recalcula todo en directo con los 5 años completos).
         val hchResultProvisional = UptrendDetector.detectHeadAndShoulders(candles)
-        val doubleTopBottomResultProvisional = UptrendDetector.detectDoubleTopOrBottom(candles)
+        // doubleTopBottomResultProvisional ya se calculó más arriba (se reutiliza aquí, ver
+        // comentario junto a la entrada de Posibles Compras).
         val tripleTopBottomResultProvisional = UptrendDetector.detectTripleTopOrBottom(candles)
         val provisionalTop10Score = com.inversionadvisor.domain.indicators.Top10Calculator.score(
             trendQuality = uptrendSignal?.trendQuality,
@@ -440,6 +486,26 @@ class ScreenerRepository(
          *  candidatos mediocres que de todas formas nunca entrarían en el Top 10 final, sin
          *  ser tan alto como para volver a excluir candidatos fuertes por poco. */
         private const val UMBRAL_ENTRADA_TOP10_GENERICO = 55.0
+
+        // Criterio de entrada de "Posibles Compras" — ver comentario en scanSymbol() para el
+        // razonamiento completo. Mismas cifras en scanner-cli/Main.kt y
+        // PosiblesComprasRepository.kt.
+        /** "aumenta el volumen de operaciones" — RECALIBRADO con datos reales tras dejar el pool
+         *  en 0/389 candidatos con 1,5 (el mismo umbral que "fuera de lo normal" en otros sitios
+         *  de la app, pero ESE se calcula sobre velas del rango que se esté viendo, no siempre
+         *  semanales). Aquí volumeRatio compara la ÚLTIMA SEMANA contra su propia media de 20
+         *  semanas — con datos reales, de 358 candidatos con agotamiento ya detectado, solo 6
+         *  llegaban a 1,3 y apenas 4 a 1,5 (mediana real: 0,37). 1,0 (la semana actual iguala o
+         *  supera su propia media reciente) sigue siendo un cambio de comportamiento real, sin
+         *  vaciar el pool. */
+        const val MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY = 1.0
+
+        /** confidenceScore = 25 (caída) + recoveryScore (0-75). RECALIBRADO de 75 a 70 (mismo
+         *  motivo que el volumen: 75 exigía recoveryScore ≥50, es decir 3 de los 4 indicios a la
+         *  vez, demasiado poco frecuente combinado con el resto de filtros) — 70 (recoveryScore
+         *  ≥45) sigue siendo más exigente que el mínimo bruto (≥40) que ya exige detected==true
+         *  por sí solo, sin ser tan raro como para vaciar el pool. */
+        const val MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY = 70
     }
 }
 

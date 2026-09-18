@@ -121,12 +121,12 @@ fun StockDetailScreen(
     )
     val state by viewModel.uiState.collectAsState()
 
-    // NUEVO — pedido expresamente: mismo azul índigo + sombra gris en toda la ficha (nombre del
-    // stock Y las pestañas de rango del gráfico) — antes estaba definido solo dentro del bloque
-    // del título, sin alcance para la pestaña de rango de más abajo.
-    val colorIndigo = Color(0xFF3F51B5)
+    // CAMBIADO a petición expresa (tema oscuro "Grafito + Verde-azulado neón"): mismo acento
+    // turquesa + sombra en toda la ficha (nombre del stock Y las pestañas de rango del gráfico)
+    // — antes era azul índigo, pensado para fondo claro.
+    val colorIndigo = com.inversionadvisor.ui.theme.NeonTeal
     val sombraGris = androidx.compose.ui.graphics.Shadow(
-        color = Color.Gray,
+        color = Color.Black.copy(alpha = 0.6f),
         offset = androidx.compose.ui.geometry.Offset(1.5f, 1.5f),
         blurRadius = 3f
     )
@@ -237,7 +237,7 @@ fun StockDetailScreen(
             // (nuevos o antiguos) que enseñar debajo.
             Text(
                 "No se ha podido actualizar: $error",
-                color = Color(0xFFC62828),
+                color = com.inversionadvisor.ui.theme.DarkErrorLight,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp)
             )

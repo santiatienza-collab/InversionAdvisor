@@ -25,12 +25,31 @@ import kotlinx.coroutines.sync.withPermit
  *
  * CRITERIO DE ENTRADA (pedido expresamente, textual): "valores que están en tendencia bajista,
  * pero dicha tendencia se agota, se produce un giro al alza, se ha separado del suelo un 10% y
- * aumenta el volumen de operaciones drásticamente" — esto es EXACTAMENTE lo que ya comprueba
- * ExhaustionDetector.detect() (ver ese fichero): caída ≥7,5%/10% según plazo (tendencia
- * bajista), + al menos 2 de estos 4 indicios de agotamiento con el giro ya en marcha (mínimos
- * ascendentes, RSI en sobreventa, volumen creciendo, y recuperado >10% hacia la próxima
- * resistencia — el "separado un 10% del suelo" pedido). No se combina con Valores Alcistas ni
- * con el cajón genérico — solo entra aquí quien tenga esta señal de agotamiento detectada.
+ * aumenta el volumen de operaciones drásticamente". ExhaustionDetector.detect() (ver ese
+ * fichero) comprueba la caída + el giro (mínimos ascendentes, RSI en sobreventa, volumen
+ * creciendo RELATIVO al tramo previo, recuperado >10% hacia resistencia) con un umbral bajo por
+ * diseño (basta con 2 de 4 indicios sumando 40/75) — bueno para uso informativo en la ficha de
+ * un stock suelto, pero DEMASIADO PERMISIVO como filtro de entrada aquí, dejando pasar
+ * candidatos que no encajaban de verdad (casos reales: CPRI/SHOE muy bajistas sin giro real,
+ * NVDA en plena tendencia alcista, AMI lateral). CORREGIDO Y ENDURECIDO (tres rondas — la
+ * segunda a petición expresa: "quiero que el agotamiento, el volumen y sobre todo el giro al
+ * alza sean más pronunciados"; la tercera, RECALIBRADA con datos reales tras comprobar que la
+ * segunda dejaba el pool en 0/389 candidatos — ver el porqué exacto en el comentario junto al
+ * primer filtro más abajo) aquí y en el origen (ScreenerRepository.scanSymbol,
+ * scanner-cli/Main.kt), con 3 comprobaciones EXTRA obligatorias, no solo de puntuación:
+ *  1) Se excluye cualquier candidato con tendencia alcista de fondo CONFIRMADA — un parón
+ *     dentro de una tendencia alcista no es "una bajista que se agota", pertenece a Valores
+ *     Alcistas, no aquí.
+ *  2) Volumen (TechnicalAnalysis.volumeRatio: última semana vs media de 20 semanas) ≥1,0 — la
+ *     semana actual ya iguala o supera su propia media reciente, un cambio real de
+ *     comportamiento (sobre velas SEMANALES, exigir más de 1,0-1,3 deja el pool casi vacío,
+ *     comprobado con datos reales).
+ *  3) Caída ≥15% (Top10Calculator.MIN_DECLINE_PERCENT), no el 10% mínimo interno del detector —
+ *     "tendencia bajista" de verdad, no un vaivén cualquiera.
+ *  4) confidenceScore ≥70 (recoveryScore ≥45 de 75, frente al ≥40 mínimo bruto que ya exige
+ *     "detected" por sí solo) — algo más exigente sin llegar a pedir 3 de 4 indicios a la vez.
+ * No se combina con Valores Alcistas ni con el cajón genérico — solo entra aquí quien tenga la
+ * señal de agotamiento detectada Y pase las 4 comprobaciones.
  */
 class PosiblesComprasRepository(
     private val screenerDao: ScreenerDao,
@@ -52,7 +71,16 @@ class PosiblesComprasRepository(
         // "Como era antes Futuras compras": solo cuenta el agotamiento detectado.
         val opportunitiesEntities = screenerDao.getAllBuyOpportunitiesOnce()
         android.util.Log.i("PosiblesComprasDiagnostic", "Oportunidades guardadas en Room (los 4 mercados): ${opportunitiesEntities.size}")
-        val opportunities = opportunitiesEntities.map { it.toOpportunityDomainLocal() }
+        // NUEVO — mismo cajón que ya usa Top10Repository (ver ese fichero) para el atajo rápido:
+        // cuando el escaneo viene del JSON remoto de scanner-cli, este cajón ya trae la
+        // puntuación COMPLETA de cada candidato calculada de fondo (fórmula de 7 categorías con
+        // PER, velas diarias/mensuales, etc.) — así que, si un símbolo de "Posibles Compras"
+        // también está aquí con isCompleteFromRemoteScan=true, NO hace falta repetir esa fase
+        // profunda en directo (candles+PER+diarias+mensuales, una petición de red detrás de
+        // otra por candidato) — es el motivo real de la lentitud reportada: Posibles Compras
+        // hacía SIEMPRE la fase profunda en directo para los 60 candidatos, Top10 dejó de
+        // hacerlo hace tiempo con este mismo atajo.
+        val genericCandidates = screenerDao.getAllTop10GenericCandidatesOnce().associateBy { it.symbol }
 
         data class Candidate(
             val symbol: String,
@@ -60,10 +88,91 @@ class PosiblesComprasRepository(
             val indexName: String,
             val sectorEtf: String?,
             val sectorName: String?,
-            val provisionalScore: Double
+            val provisionalScore: Double,
+            val isCompleteFromRemoteScan: Boolean = false,
+            val rewardScore: Double? = null,
+            val riskScore: Double? = null,
+            val analystSummary: String? = null,
+            val penaltyWarningsCsv: String? = null,
+            val bonusWarningsCsv: String? = null,
+            val factorsCsv: String? = null,
+            val rewardBreakdownText: String? = null,
+            val riskBreakdownText: String? = null
         )
 
-        val pool = opportunities.mapNotNull { opportunity ->
+        val pool = opportunitiesEntities.mapNotNull { entity ->
+            val generic = genericCandidates[entity.symbol]
+
+            // CORREGIDO — fallo real detectado (CPRI/SHOE muy bajistas sin giro real, AMI
+            // lateral, NVDA directamente alcista, todos colándose aquí): el criterio textual de
+            // esta pantalla ("tendencia bajista que se agota... aumenta el volumen
+            // drásticamente") nunca se comprobaba de verdad en varios puntos — se corrige aquí,
+            // reforzado además en el propio origen (ScreenerRepository.scanSymbol y
+            // scanner-cli/Main.kt), para que el efecto sea inmediato incluso con datos ya
+            // guardados de antes de este arreglo, sin esperar al próximo escaneo automático.
+            // ENDURECIDO a petición expresa ("quiero que el agotamiento, el volumen y sobre todo
+            // el giro al alza sean más pronunciados") — CORREGIDO tras comprobar con datos
+            // reales del último escaneo (389 oportunidades → 0 pasaban): la primera versión de
+            // este endurecimiento exigía volumeRatio ≥1,5 Y confidenceScore ≥75 Y
+            // recoveryProgress ≥20 A LA VEZ — sobre velas SEMANALES, volumeRatio (última semana
+            // vs media de 20 semanas) rara vez pasa de 1,0 incluso en recuperaciones reales (de
+            // 358 candidatos con agotamiento detectado, solo 6 llegaban a 1,3) y exigir además
+            // el progreso de recuperación como obligatorio descartaba candidatos fuertes que
+            // simplemente no tenían una resistencia detectada 6% por encima del suelo (dato
+            // estructural, no señal de que no haya giro). Recalibrado con los datos reales del
+            // escaneo: volumen ≥1,0 (la semana actual ya iguala o supera su propia media de 20
+            // semanas — sigue siendo un cambio real de comportamiento, no ruido) + confianza
+            // ≥70 (sube el mínimo bruto de 65 sin exigir 3 de 4 indicios a la vez) + caída
+            // ≥15%; el progreso de recuperación se queda como lo que ya era antes (parte del
+            // confidenceScore, informativo) en vez de filtro aparte obligatorio.
+            val volumeRatio = entity.volumeRatio ?: generic?.volumeRatio
+            if (volumeRatio == null || volumeRatio < ScreenerRepository.MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY) return@mapNotNull null
+            if (generic?.hasClearUptrend == true) return@mapNotNull null
+            // Caída de verdad significativa (15%, Top10Calculator.MIN_DECLINE_PERCENT) — no el
+            // 10% mínimo interno por defecto con el que ExhaustionDetector ya considera "candidato".
+            if (entity.declinePercentFromRecentHigh > -com.inversionadvisor.domain.indicators.Top10Calculator.MIN_DECLINE_PERCENT) return@mapNotNull null
+            // Confianza global algo más alta que el mínimo bruto (65) que exige "detected" por
+            // sí solo — sin llegar a exigir 3 de 4 indicios a la vez (ver comentario de arriba).
+            if (entity.confidenceScore < ScreenerRepository.MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY) return@mapNotNull null
+
+            // NUEVO — pedido expresamente: criterio profesional de confluencia técnica (no basta
+            // "vela + volumen" por sí solos) — ver contarConfirmaciones() al final del fichero
+            // para el detalle de cada una de las 4. Con datos de scans anteriores a este cambio
+            // (candlestickPattern/dailyVolumeRatio/etc. = null), esto descarta al candidato —
+            // hace falta el PRÓXIMO escaneo (automático o en directo) para que vuelva a evaluarse
+            // con los campos nuevos ya calculados.
+            val confirmaciones = contarConfirmaciones(
+                candlestickPattern = entity.candlestickPattern,
+                doubleTopBottomPattern = entity.doubleTopBottomPattern,
+                reasonsCsv = entity.reasonsCsv,
+                dailyVolumeRatio = entity.dailyVolumeRatio,
+                momentumPriceDivergence = entity.momentumPriceDivergence,
+                nearestSupportPercent = entity.nearestSupportPercent
+            )
+            android.util.Log.i("PosiblesComprasDiagnostic", "${entity.symbol}: confirmaciones=$confirmaciones/4")
+            if (confirmaciones < MIN_CONFIRMACIONES_REQUERIDAS) return@mapNotNull null
+
+            if (generic?.isCompleteFromRemoteScan == true) {
+                return@mapNotNull Candidate(
+                    symbol = entity.symbol,
+                    name = generic.name,
+                    indexName = generic.indexName,
+                    sectorEtf = generic.sectorEtf,
+                    sectorName = generic.sectorName,
+                    provisionalScore = generic.provisionalScore,
+                    isCompleteFromRemoteScan = true,
+                    rewardScore = generic.rewardScore,
+                    riskScore = generic.riskScore,
+                    analystSummary = generic.analystSummary,
+                    penaltyWarningsCsv = generic.penaltyWarningsCsv,
+                    bonusWarningsCsv = generic.bonusWarningsCsv,
+                    factorsCsv = generic.factorsCsv,
+                    rewardBreakdownText = generic.rewardBreakdownText,
+                    riskBreakdownText = generic.riskBreakdownText
+                )
+            }
+
+            val opportunity = entity.toOpportunityDomainLocal()
             val provisional = Top10Calculator.score(
                 trendQuality = null,
                 yearChangePercent = null,
@@ -86,10 +195,27 @@ class PosiblesComprasRepository(
                 sectorName = opportunity.sectorName,
                 provisionalScore = provisional.combinedScore
             )
-        }.sortedByDescending { it.provisionalScore }
-        android.util.Log.i("PosiblesComprasDiagnostic", "Pool final tras puntuación provisional: ${pool.size}")
+        }
 
-        if (pool.isEmpty()) {
+        // Los que ya vienen completos del JSON remoto no cuestan nada (sin red) — solo se
+        // recorta el subconjunto que SÍ necesita la fase profunda en directo (candidatos de un
+        // escaneo en directo sin pasar por importFromRemoteJson todavía).
+        val readyEntries = pool.filter { it.isCompleteFromRemoteScan }
+        val toAnalyzeLive = pool.filter { !it.isCompleteFromRemoteScan }
+            .sortedByDescending { it.provisionalScore }
+            // NUEVO — pedido expresamente tras detectar el problema real de escala: sin límite,
+            // este subconjunto podía tener cientos de candidatos y analizarlos TODOS en directo
+            // (velas, PER, velas diarias/mensuales por cada uno) tardaba varios minutos y
+            // competía con el límite de peticiones por minuto de Yahoo. Se limita a mano: los 60
+            // mejores por puntuación PROVISIONAL (barata, sin red) van al análisis completo.
+            .take(DEEP_PHASE_POOL_LIMIT)
+        val finalPool = readyEntries + toAnalyzeLive
+        android.util.Log.i(
+            "PosiblesComprasDiagnostic",
+            "Pool final: ${readyEntries.size} listos del JSON remoto (sin red) + ${toAnalyzeLive.size} necesitan análisis en directo"
+        )
+
+        if (finalPool.isEmpty()) {
             posiblesComprasDao.clear()
             return@coroutineScope
         }
@@ -109,11 +235,34 @@ class PosiblesComprasRepository(
         val sectorPeMap = runCatching { marketRepository.observeSectorPeRatios().first() }.getOrDefault(emptyMap())
 
         val doneCount = java.util.concurrent.atomic.AtomicInteger(0)
-        onProgress(0, pool.size)
+        onProgress(0, finalPool.size)
         val semaphore = Semaphore(DEEP_PHASE_CONCURRENCY)
 
-        val finalEntries = pool.map { candidate ->
+        val finalEntries = finalPool.map { candidate ->
             async {
+                // Atajo rápido (ver comentario de genericCandidates más arriba) — sin esto NI
+                // UN candidato del JSON remoto se libraba de las 4 peticiones de red por
+                // símbolo, aunque ya tuviera la puntuación completa calculada de fondo.
+                if (candidate.isCompleteFromRemoteScan) {
+                    onProgress(doneCount.incrementAndGet(), finalPool.size)
+                    return@async PosiblesComprasEntryEntity(
+                        symbol = candidate.symbol,
+                        name = candidate.name,
+                        indexName = candidate.indexName,
+                        sectorName = candidate.sectorName,
+                        rewardScore = candidate.rewardScore ?: 0.0,
+                        riskScore = candidate.riskScore ?: 0.0,
+                        combinedScore = candidate.provisionalScore,
+                        analystSummary = candidate.analystSummary ?: "",
+                        factorsCsv = candidate.factorsCsv ?: emptyList<Top10Factor>().toCsvLocal(),
+                        rewardBreakdownText = candidate.rewardBreakdownText ?: "",
+                        riskBreakdownText = candidate.riskBreakdownText ?: "",
+                        penaltyWarningsText = (candidate.penaltyWarningsCsv?.split("||")?.filter { it.isNotBlank() } ?: emptyList()).joinToString("\n"),
+                        bonusWarningsText = (candidate.bonusWarningsCsv?.split("||")?.filter { it.isNotBlank() } ?: emptyList()).joinToString("\n"),
+                        rank = 0,
+                        updatedAtEpochMillis = System.currentTimeMillis()
+                    )
+                }
                 semaphore.withPermit {
                     val candlesDeferred = async {
                         try {
@@ -163,9 +312,40 @@ class PosiblesComprasRepository(
                         sectorDeclinePercent = candidate.sectorEtf?.let { sectorContext.sectorDeclinePercentByEtf[it] }
                     )
 
-                    onProgress(doneCount.incrementAndGet(), pool.size)
+                    onProgress(doneCount.incrementAndGet(), finalPool.size)
 
-                    analysis?.let {
+                    // Repite aquí las mismas comprobaciones de la entrada al pool (ver más
+                    // arriba) con datos FRESCOS recién descargados — el filtro de arriba usaba lo
+                    // guardado del último escaneo, que puede haber quedado desactualizado desde
+                    // entonces (p. ej. un giro que se veía hace días y ya no se ve ahora).
+                    // BuyOpportunityAnalyzer.Analysis no expone declinePercentFromRecentHigh ni
+                    // recoveryProgressToResistancePercent directamente, así que se recalcula
+                    // ExhaustionDetector sobre las MISMAS velas ya descargadas arriba (candles),
+                    // sin ninguna petición de red extra.
+                    val exhaustionFresco = com.inversionadvisor.domain.indicators.ExhaustionDetector.detect(candles)
+                    // Confluencia técnica (ver contarConfirmaciones()) con datos FRESCOS —
+                    // volumen diario sobre dailyCandlesForCross, ya descargadas arriba para el
+                    // cruce SMA20/50, sin petición extra.
+                    val confirmacionesFrescas = analysis?.let {
+                        contarConfirmaciones(
+                            candlestickPattern = it.candlestickPattern?.name,
+                            doubleTopBottomPattern = it.doubleTopBottomResult?.pattern?.name,
+                            reasonsCsv = exhaustionFresco?.reasons?.joinToString("||") ?: "",
+                            dailyVolumeRatio = dailyCandlesForCross?.let { daily -> com.inversionadvisor.domain.indicators.TechnicalAnalysis.volumeRatio(daily) },
+                            momentumPriceDivergence = com.inversionadvisor.domain.indicators.UptrendDetector.detectMomentumPriceDivergence(candles).name,
+                            nearestSupportPercent = it.nearestSupportPercent
+                        )
+                    } ?: 0
+
+                    val pasaFiltroFresco = analysis != null &&
+                        !analysis.hasConfirmedUptrend &&
+                        (analysis.volumeRatio ?: 0.0) >= ScreenerRepository.MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY &&
+                        exhaustionFresco != null &&
+                        exhaustionFresco.declinePercentFromRecentHigh <= -com.inversionadvisor.domain.indicators.Top10Calculator.MIN_DECLINE_PERCENT &&
+                        exhaustionFresco.confidenceScore >= ScreenerRepository.MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY &&
+                        confirmacionesFrescas >= MIN_CONFIRMACIONES_REQUERIDAS
+
+                    analysis?.takeIf { pasaFiltroFresco }?.let {
                         PosiblesComprasEntryEntity(
                             symbol = candidate.symbol,
                             name = candidate.name,
@@ -201,7 +381,62 @@ class PosiblesComprasRepository(
     companion object {
         private const val DEEP_PHASE_CONCURRENCY = 12
         private const val TOP_COUNT = 20
+        private const val DEEP_PHASE_POOL_LIMIT = 60
     }
+}
+
+// ---- Confluencia técnica (pedido expresamente, criterio profesional de análisis técnico) ----
+//
+// "Una vela o figura de agotamiento bajista con giro al alza y mucho volumen es una señal, no
+// una razón suficiente para comprar. Lo que la convierte en una buena oportunidad es que otras
+// cosas la confirmen [...] Yo exigiría al menos cuatro puntos alineados: patrón de giro
+// confirmado, volumen alto en el giro, divergencia en RSI o MACD y soporte relevante. Con eso la
+// señal es razonable. Con solo la vela y el volumen, es una apuesta." — se implementan las 4
+// categorías EXACTAS pedidas, cada una con lo que ya calcula el resto de la app (sin duplicar
+// detectores), exigiendo las 4 a la vez (MIN_CONFIRMACIONES_REQUERIDAS = 4, no una nota rebajada
+// tipo "3 de 4"):
+//  1) Patrón de giro: vela HAMMER/BULLISH_ENGULFING, o doble suelo, o mínimos ascendentes ya
+//     detectados por ExhaustionDetector (su razón "Mínimos ascendentes..." en reasonsCsv).
+//  2) Volumen alto en el giro: volumen DIARIO ≥1,5x su media de 20 sesiones — la cifra exacta
+//     pedida ("1,5 veces la de 20 periodos"), sobre velas diarias (no semanales: ver
+//     dailyVolumeRatio en BuyOpportunityEntity y el porqué en su comentario).
+//  3) Divergencia en RSI/momentum: UptrendDetector.detectMomentumPriceDivergence == BULLISH, o
+//     RSI en sobreventa en el mínimo (razón "RSI llegó a sobreventa" ya detectada por
+//     ExhaustionDetector).
+//  4) Soporte relevante: TechnicalAnalysis.detectSupportResistanceLevels encontró un soporte a
+//     MAX_DISTANCIA_SOPORTE_PERCENT o menos por debajo del precio actual — el giro ocurre SOBRE
+//     un soporte de verdad, no en el aire.
+//
+// Gestión del riesgo (stop bajo el mínimo del giro, ratio ≥2:1, tamaño de posición 1-2%, entrada
+// escalonada) queda fuera de este filtro a propósito: es una decisión de EJECUCIÓN de quien
+// invierte, no un criterio de qué candidatos mostrar en la lista.
+private const val MIN_CONFIRMACIONES_REQUERIDAS = 4
+private const val MIN_DAILY_VOLUME_RATIO_CONFIRMACION = 1.5
+private const val MAX_DISTANCIA_SOPORTE_PERCENT = 8.0
+
+private fun contarConfirmaciones(
+    candlestickPattern: String?,
+    doubleTopBottomPattern: String?,
+    reasonsCsv: String,
+    dailyVolumeRatio: Double?,
+    momentumPriceDivergence: String?,
+    nearestSupportPercent: Double?
+): Int {
+    var confirmaciones = 0
+
+    val patronDeGiro = candlestickPattern == "HAMMER" || candlestickPattern == "BULLISH_ENGULFING" ||
+        doubleTopBottomPattern == "DOUBLE_BOTTOM" ||
+        reasonsCsv.contains("ascendentes", ignoreCase = true)
+    if (patronDeGiro) confirmaciones++
+
+    if (dailyVolumeRatio != null && dailyVolumeRatio >= MIN_DAILY_VOLUME_RATIO_CONFIRMACION) confirmaciones++
+
+    val divergenciaOSobreventa = momentumPriceDivergence == "BULLISH" || reasonsCsv.contains("sobreventa", ignoreCase = true)
+    if (divergenciaOSobreventa) confirmaciones++
+
+    if (nearestSupportPercent != null && nearestSupportPercent <= MAX_DISTANCIA_SOPORTE_PERCENT) confirmaciones++
+
+    return confirmaciones
 }
 
 private fun com.inversionadvisor.data.local.entities.BuyOpportunityEntity.toOpportunityDomainLocal(): com.inversionadvisor.domain.model.BuyOpportunity {

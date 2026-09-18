@@ -59,6 +59,25 @@ data class BuyOpportunityEntity(
     /** Igual que en UptrendCandidateEntity — gratis, misma fuente. */
     val rsi14: Double?,
     val volumeRatio: Double?,
+    // NUEVO — pedido expresamente: criterio profesional de confluencia técnica para "Posibles
+    // Compras" (patrón de giro confirmado + volumen alto en el giro + divergencia RSI/momentum +
+    // soporte relevante) — ver PosiblesComprasRepository, que exige las 4 confirmaciones a la
+    // vez, no solo el agotamiento detectado por sí solo.
+    /** Volumen del último día vs su propia media de 20 sesiones — a diferencia de [volumeRatio]
+     *  (semanal), este es el que de verdad se usa en TA profesional para "1,5x la media de 20
+     *  periodos" (velas semanales rara vez llegan a eso; velas diarias sí, con más frecuencia). */
+    val dailyVolumeRatio: Double? = null,
+    /** TechnicalAnalysis.detectCandlestickPattern — HAMMER/BULLISH_ENGULFING cuentan como
+     *  "patrón de giro" en la confluencia. */
+    val candlestickPattern: String? = null,
+    /** UptrendDetector.detectDoubleTopOrBottom — DOUBLE_BOTTOM cuenta como "patrón de giro". */
+    val doubleTopBottomPattern: String? = null,
+    /** UptrendDetector.detectMomentumPriceDivergence — BULLISH cuenta como "divergencia RSI/
+     *  momentum". */
+    val momentumPriceDivergence: String? = null,
+    /** TechnicalAnalysis.detectSupportResistanceLevels — % de distancia al soporte más cercano
+     *  por debajo del precio; null = no se detectó ningún soporte relevante cerca. */
+    val nearestSupportPercent: Double? = null,
     val updatedAtEpochMillis: Long
 )
 

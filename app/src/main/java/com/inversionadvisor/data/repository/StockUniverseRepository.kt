@@ -1,6 +1,7 @@
 package com.inversionadvisor.data.repository
 
 import com.inversionadvisor.data.local.CacheConfig
+import com.inversionadvisor.data.local.dao.ScreenerDao
 import com.inversionadvisor.data.local.dao.StockUniverseDao
 import com.inversionadvisor.data.local.entities.IndexUniverseEntryEntity
 import com.inversionadvisor.data.local.entities.IndexUniverseMetaEntity
@@ -40,7 +41,11 @@ import kotlinx.coroutines.flow.map
 class StockUniverseRepository(
     private val wikipediaIndexApi: WikipediaIndexApi,
     private val dao: StockUniverseDao,
-    private val yahooSearchApi: YahooSearchApi = com.inversionadvisor.data.remote.NetworkModule.yahooSearchApi
+    private val yahooSearchApi: YahooSearchApi = com.inversionadvisor.data.remote.NetworkModule.yahooSearchApi,
+    /** null solo en tests/usos aislados sin base de datos completa — en la app real siempre se
+     *  pasa (ver ServiceLocator). Respaldo de findSectorEtf() para símbolos que esta tabla
+     *  (scrapeada de Wikipedia/slickcharts, solo S&P 500/Nasdaq-100/IBEX 35) no tiene. */
+    private val screenerDao: ScreenerDao? = null
 ) {
 
     fun observeIndexMeta(): Flow<List<StockIndexMeta>> =
@@ -161,7 +166,13 @@ class StockUniverseRepository(
      * universo aún no se ha cargado nunca, devuelve null y el llamador
      * simplemente no muestra la comparación de PER sectorial.
      */
-    suspend fun findSectorEtf(symbol: String): String? = dao.getBySymbolOnce(symbol)?.sectorEtf
+    suspend fun findSectorEtf(symbol: String): String? =
+        dao.getBySymbolOnce(symbol)?.sectorEtf
+            ?: screenerDao?.let { sd ->
+                sd.findGenericSectorOnce(symbol)?.sectorEtf
+                    ?: sd.findBuyOpportunitySectorOnce(symbol)?.sectorEtf
+                    ?: sd.findUptrendSectorOnce(symbol)?.sectorEtf
+            }
 
     /**
      * Ficha completa (symbol/name/sectorEtf/indexName) de un stock por su

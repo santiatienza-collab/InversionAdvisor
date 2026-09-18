@@ -140,6 +140,8 @@ data class ScanCandidateJson(
     val indexName: String,
     val rsi14: Double?,
     val volumeRatio: Double?,
+    /** Volumen del último DÍA vs su media de 20 sesiones — ver comentario en Parcial más abajo. */
+    val dailyVolumeRatio: Double?,
     val isUptrend: Boolean,
     val trendQuality: Double?,
     val yearChangePercent: Double?,
@@ -201,6 +203,28 @@ data class ScanResultJson(
 )
 
 private const val SCAN_CONCURRENCY = 15
+
+// Criterio de entrada de "Posibles Compras" (mismas cifras en ScreenerRepository.kt y
+// PosiblesComprasRepository.kt en la app) — ENDURECIDO a petición expresa y luego RECALIBRADO
+// con datos reales del propio escaneo, tras comprobar que la primera versión dejaba el pool en
+// 0 candidatos de 389 oportunidades guardadas.
+/** "aumenta el volumen de operaciones" — volumeRatio compara la ÚLTIMA SEMANA contra su propia
+ *  media de 20 semanas. Con datos reales del último escaneo, de 358 candidatos con agotamiento
+ *  ya detectado, solo 6 llegaban a 1,3 y apenas 4 a 1,5 (mediana real: 0,37) — exigir eso vacía
+ *  el pool casi por completo. 1,0 (la semana actual iguala o supera su propia media reciente)
+ *  sigue siendo un cambio de comportamiento real sin vaciarlo. */
+private const val MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY = 1.0
+
+/** "tendencia bajista" de verdad, no un simple vaivén — misma cifra que Top10Calculator.
+ *  MIN_DECLINE_PERCENT (caída "significativa" en toda la app), más exigente que el 10% mínimo
+ *  interno por defecto de ExhaustionDetector.detect(). */
+private const val MIN_DECLINE_PERCENT_FOR_BUY_OPPORTUNITY = 15.0
+
+/** confidenceScore = 25 (caída) + recoveryScore (0-75). RECALIBRADO de 75 a 70 (mismo motivo que
+ *  el volumen: 75 exigía recoveryScore ≥50, es decir 3 de los 4 indicios de giro a la vez,
+ *  demasiado poco frecuente combinado con el resto de filtros) — 70 (recoveryScore ≥45) sigue
+ *  siendo más exigente que el mínimo bruto (≥40) que ya exige detected==true por sí solo. */
+private const val MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY = 70
 
 fun main(args: Array<String>) = runBlocking {
     val marketArg = args.getOrNull(0) ?: "SP500"
@@ -456,7 +480,11 @@ fun main(args: Array<String>) = runBlocking {
         val deathCrossDate: String?,
         val goldenCrossDate: String?,
         val momentumPriceDivergence: com.inversionadvisor.domain.indicators.MomentumPriceDivergence,
-        val hasLongTermDowntrend: Boolean
+        val hasLongTermDowntrend: Boolean,
+        // NUEVO — pedido expresamente (criterio profesional de confluencia técnica para
+        // "Posibles Compras"): volumen del último DÍA vs su propia media de 20 sesiones — sobre
+        // las velas diarias que ya se piden aquí arriba (dailyCandles), sin petición nueva.
+        val dailyVolumeRatio: Double?
     )
 
     val parciales = universe.map { entry ->
@@ -515,7 +543,8 @@ fun main(args: Array<String>) = runBlocking {
                     deathCrossDate = UptrendDetector.findSma20CrossedBelowSma50Date(crossSourceCandles, lookbackPeriods = if (usingDailyPrecision) 10 else 2),
                     goldenCrossDate = UptrendDetector.findSma20CrossedAboveSma50Date(crossSourceCandles, lookbackPeriods = if (usingDailyPrecision) 10 else 2),
                     momentumPriceDivergence = UptrendDetector.detectMomentumPriceDivergence(candles),
-                    hasLongTermDowntrend = UptrendDetector.evaluateDowntrend(candles)
+                    hasLongTermDowntrend = UptrendDetector.evaluateDowntrend(candles),
+                    dailyVolumeRatio = TechnicalAnalysis.volumeRatio(dailyCandles)
                 )
             }
             val hechos = done.incrementAndGet()
@@ -552,6 +581,7 @@ fun main(args: Array<String>) = runBlocking {
 
     println("Calculando puntuación (Top10Calculator)...")
     val candidatos = parciales.map { p ->
+        val exhaustion = p.exhaustion
         val stockPe = stockPeBySymbol[p.entry.symbol]
         val sectorPe = sectorAveragePe[p.entry.sectorEtf]
         val sectorRange = Symbols.SECTOR_TYPICAL_PE_RANGES[p.entry.sectorEtf]
@@ -602,11 +632,35 @@ fun main(args: Array<String>) = runBlocking {
             indexName = market.indexName,
             rsi14 = p.rsi14,
             volumeRatio = p.volumeRatio,
+            dailyVolumeRatio = p.dailyVolumeRatio,
             isUptrend = p.uptrend != null,
             trendQuality = p.uptrend?.trendQuality,
             yearChangePercent = p.uptrend?.yearChangePercent,
             aboveTrendSma = p.uptrend?.aboveTrendSma,
-            isBuyOpportunity = p.exhaustion?.detected == true,
+            // CORREGIDO — fallo real detectado (CPRI/SHOE/NVDA colándose en "Posibles Compras"
+            // sin encajar en su propio criterio, ver PosiblesComprasRepository en la app):
+            // detected==true solo mira una ventana relativa de 26 semanas, sin comprobar (a) si
+            // el stock está a la vez en tendencia alcista de fondo confirmada (p.uptrend, caso
+            // NVDA: un simple parón dentro de una tendencia alcista no es "una bajista que se
+            // agota") ni (b) si el volumen realmente "aumenta drásticamente" como pide el
+            // criterio textual. ENDURECIDO OTRA VEZ a petición expresa ("quiero que el
+            // agotamiento, el volumen y sobre todo el giro al alza sean más pronunciados, más
+            // evidentes"): detected==true por sí solo bastaba con CUALQUIER combinación de 2 de
+            // los 4 indicios de ExhaustionDetector sumando 40/75 — ahora, ADEMÁS, se exige de
+            // forma explícita e independiente: caída de verdad significativa
+            // (MIN_DECLINE_PERCENT_FOR_BUY_OPPORTUNITY, no el 10% mínimo interno del detector) y
+            // una confianza global algo más alta (MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY).
+            // RECALIBRADO tras comprobar con datos reales que una primera versión más estricta
+            // (que exigía además volumen ≥1,5, confianza ≥75 Y progreso de recuperación ≥20
+            // OBLIGATORIO, los tres a la vez) dejaba el pool en 0 candidatos de 389 oportunidades
+            // guardadas — ver comentario junto a las constantes más arriba para las cifras reales
+            // que llevaron a bajar volumen a 1,0 y confianza a 70, y a quitar el progreso de
+            // recuperación como filtro obligatorio aparte (se queda como ya estaba: parte de
+            // confidenceScore, informativo, no imprescindible por sí solo).
+            isBuyOpportunity = exhaustion != null && exhaustion.detected && p.uptrend == null &&
+                (p.volumeRatio ?: 0.0) >= MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY &&
+                exhaustion.declinePercentFromRecentHigh <= -MIN_DECLINE_PERCENT_FOR_BUY_OPPORTUNITY &&
+                exhaustion.confidenceScore >= MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY,
             exhaustionConfidence = p.exhaustion?.confidenceScore,
             exhaustionReasons = p.exhaustion?.reasons,
             declinePercentFromRecentHigh = p.exhaustion?.declinePercentFromRecentHigh,

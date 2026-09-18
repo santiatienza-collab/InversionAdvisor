@@ -95,7 +95,7 @@ fun SearchScreen(viewModel: SearchViewModel, marketRepository: MarketRepository)
         state.error?.let { error ->
             Text(
                 "No se pudo cargar el universo de mercados: $error",
-                color = Color(0xFFC62828),
+                color = com.inversionadvisor.ui.theme.DarkErrorLight,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(top = 8.dp)
             )
@@ -159,7 +159,7 @@ fun SearchScreen(viewModel: SearchViewModel, marketRepository: MarketRepository)
                     item {
                         Text(
                             "No se pudo buscar: $error",
-                            color = Color(0xFFC62828),
+                            color = com.inversionadvisor.ui.theme.DarkErrorLight,
                             style = MaterialTheme.typography.bodySmall
                         )
                     }

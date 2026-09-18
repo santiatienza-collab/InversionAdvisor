@@ -50,6 +50,7 @@ data class ScanCandidateDto(
     val indexName: String,
     val rsi14: Double? = null,
     val volumeRatio: Double? = null,
+    val dailyVolumeRatio: Double? = null,
     val isUptrend: Boolean = false,
     val trendQuality: Double? = null,
     val yearChangePercent: Double? = null,

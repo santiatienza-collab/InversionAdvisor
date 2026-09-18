@@ -59,11 +59,16 @@ private enum class FiltroSentimiento(val etiqueta: String) {
 }
 
 private val VerdePositivo = Color(0xFF2E7D32)
-private val VerdePositivoClaro = Color(0xFFE8F5E9)
+// CAMBIADO a petición expresa (tema oscuro "Grafito + Verde-azulado neón"): las variantes
+// "Claro" (pensadas para fondo claro, pastel casi blanco) pasan a ser variantes OSCURAS del
+// mismo tono — mismo papel (fondo de chip sin seleccionar, arranque del degradado tras cada
+// titular, pista de la barra de sentimiento), pero coherentes con el resto del tema oscuro en
+// vez de un parche claro sobre fondo oscuro.
+private val VerdePositivoFondo = Color(0xFF1B3A22)
 private val RojoNegativo = Color(0xFFC62828)
-private val RojoNegativoClaro = Color(0xFFFFEBEE)
+private val RojoNegativoFondo = Color(0xFF3A1B1E)
 private val GrisNeutro = Color(0xFF616161)
-private val GrisNeutroClaro = Color(0xFFF0F0F0)
+private val GrisNeutroFondo = Color(0xFF2A2D33)
 
 /**
  * Identidad visual de cada medio — pedido expresamente para que la sección de Noticias sea
@@ -201,9 +206,14 @@ private fun PaginaFuente(nombreFuente: String, titulares: List<Titular>) {
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    containerColor = VerdePositivoClaro,
+                    containerColor = VerdePositivoFondo,
                     selectedContainerColor = VerdePositivo,
-                    labelColor = VerdePositivo,
+                    // CAMBIADO a petición expresa (tema oscuro): el fondo sin seleccionar pasó a
+                    // ser un verde OSCURO (VerdePositivoFondo) — el mismo verde oscuro de acento
+                    // como color de texto encima ya no se leería (oscuro sobre oscuro), así que
+                    // el texto sin seleccionar pasa a un verde CLARO (mismo tono que ya usa el
+                    // Panel para "sube", Color(0xFF69F0AE)).
+                    labelColor = Color(0xFF69F0AE),
                     selectedLabelColor = Color.White
                 )
             )
@@ -221,9 +231,11 @@ private fun PaginaFuente(nombreFuente: String, titulares: List<Titular>) {
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    containerColor = RojoNegativoClaro,
+                    containerColor = RojoNegativoFondo,
                     selectedContainerColor = RojoNegativo,
-                    labelColor = RojoNegativo,
+                    // Mismo motivo que arriba — rojo claro (mismo tono que ya usa el Panel para
+                    // "baja", Color(0xFFFF8A80)) en vez del rojo oscuro de acento.
+                    labelColor = Color(0xFFFF8A80),
                     selectedLabelColor = Color.White
                 )
             )
@@ -288,7 +300,7 @@ private fun BannerResumenSentimiento(estiloFuente: EstiloFuente, positivas: Int,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
-                    .background(GrisNeutroClaro, shape = RoundedCornerShape(4.dp))
+                    .background(GrisNeutroFondo, shape = RoundedCornerShape(4.dp))
             ) {
                 if (positivas > 0) {
                     Box(modifier = Modifier.weight(positivas.toFloat()).fillMaxSize().background(VerdePositivo))
@@ -307,9 +319,9 @@ private fun BannerResumenSentimiento(estiloFuente: EstiloFuente, positivas: Int,
 private data class EstiloSentimiento(val acento: Color, val fondo: Color, val emoji: String, val etiqueta: String)
 
 private fun estiloParaSentimiento(sentimiento: Sentimiento): EstiloSentimiento = when (sentimiento) {
-    Sentimiento.POSITIVO -> EstiloSentimiento(VerdePositivo, VerdePositivoClaro, "\uD83D\uDCC8", "Positiva")
-    Sentimiento.NEGATIVO -> EstiloSentimiento(RojoNegativo, RojoNegativoClaro, "\uD83D\uDCC9", "Negativa")
-    Sentimiento.NEUTRO -> EstiloSentimiento(GrisNeutro, GrisNeutroClaro, "\u2796", "Neutra")
+    Sentimiento.POSITIVO -> EstiloSentimiento(VerdePositivo, VerdePositivoFondo, "\uD83D\uDCC8", "Positiva")
+    Sentimiento.NEGATIVO -> EstiloSentimiento(RojoNegativo, RojoNegativoFondo, "\uD83D\uDCC9", "Negativa")
+    Sentimiento.NEUTRO -> EstiloSentimiento(GrisNeutro, GrisNeutroFondo, "\u2796", "Neutra")
 }
 
 @Composable

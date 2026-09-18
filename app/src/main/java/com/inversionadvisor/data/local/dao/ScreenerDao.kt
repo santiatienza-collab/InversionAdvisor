@@ -55,4 +55,24 @@ interface ScreenerDao {
     /** Los 3 mercados juntos — mismo patrón que getAllUptrendCandidatesOnce/getAllBuyOpportunitiesOnce, para que Top10Repository los combine. */
     @Query("SELECT * FROM screener_top10_generic")
     suspend fun getAllTop10GenericCandidatesOnce(): List<com.inversionadvisor.data.local.entities.Top10GenericCandidateEntity>
+
+    // ---- Respaldo de sector por símbolo (ver StockUniverseRepository.findSectorEtf) ----
+    // NUEVO — pedido expresamente (fallo real: sector en blanco en la ficha de "Posibles
+    // Compras", casi todos símbolos de Russell 2000): StockUniverseDao (la tabla "oficial" de
+    // sectores, scrapeada de Wikipedia/slickcharts) SOLO cubre S&P 500/Nasdaq-100/IBEX 35 —
+    // Russell 2000 nunca se guarda ahí (su universo llega por un camino totalmente distinto, el
+    // CSV de holdings del ETF IWM en scanner-cli). Estas 3 tablas del escáner, en cambio, sí
+    // tienen sectorEtf/sectorName de CUALQUIER símbolo ya escaneado de los 4 mercados — se usan
+    // como respaldo cuando la tabla oficial no tiene el símbolo.
+    @Query("SELECT sectorEtf, sectorName FROM screener_top10_generic WHERE symbol = :symbol LIMIT 1")
+    suspend fun findGenericSectorOnce(symbol: String): SymbolSectorInfo?
+
+    @Query("SELECT sectorEtf, sectorName FROM screener_buy_opportunity WHERE symbol = :symbol LIMIT 1")
+    suspend fun findBuyOpportunitySectorOnce(symbol: String): SymbolSectorInfo?
+
+    @Query("SELECT sectorEtf, sectorName FROM screener_uptrend WHERE symbol = :symbol LIMIT 1")
+    suspend fun findUptrendSectorOnce(symbol: String): SymbolSectorInfo?
 }
+
+/** Proyección parcial (solo sectorEtf/sectorName) para el respaldo de sector por símbolo. */
+data class SymbolSectorInfo(val sectorEtf: String?, val sectorName: String?)

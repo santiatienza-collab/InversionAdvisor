@@ -60,7 +60,9 @@ import com.inversionadvisor.data.local.entities.UptrendCandidateEntity
     // NUEVO — pedido expresamente: tabla nueva para "Posibles Compras" (recupera el espíritu de
     // "Futuras compras" como su propio Top20) — fallbackToDestructiveMigration se encarga, sin
     // migración manual.
-    version = 32,
+    // SUBIDO a 33 — pedido expresamente: BuyOpportunityEntity gana 5 campos nuevos (confluencia
+    // técnica: volumen diario, patrón de vela, doble suelo, divergencia, soporte cercano).
+    version = 33,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
