@@ -243,9 +243,13 @@ object ExhaustionDetector {
         // giro, no si ese giro SIGUE vivo ahora mismo). Se añaden dos condiciones más, decididas
         // con el usuario probando cifras reales contra los candidatos de un escaneo real:
         //  1) Retroceso desde el pico de la propia recuperación (el máximo cierre alcanzado
-        //     DESPUÉS del suelo, no el máximo original) ≤5% — si ya ha cedido más de un 5% desde
-        //     ese pico, el rebote se está agotando o revirtiendo, no sirve como "recuperación
-        //     sólida en marcha".
+        //     DESPUÉS del suelo, no el máximo original) >5% sostenido durante ≥2 semanas
+        //     SEGUIDAS (no basta una sola semana mala) — si lleva 2+ semanas cediendo más de un
+        //     5% desde ese pico, el rebote se está agotando o revirtiendo de verdad, no sirve
+        //     como "recuperación sólida en marcha". El requisito de 2 semanas (en vez de
+        //     descartar con la primera semana que supere el 5%) es a propósito, para no
+        //     descartar un shake-out sano de una sola vela (sube, corrige fuerte una semana,
+        //     sigue subiendo) — ese caso se resuelve solo en 1 semana y nunca llega a acumular 2.
         //  2) La ÚLTIMA vela no puede ser una bajada (cierre < cierre anterior) — ni siquiera
         //     una sola semana en rojo justo antes de ahora: el giro tiene que verse activo AHORA,
         //     no solo haber ocurrido en el pasado reciente. Este fue el criterio decisivo que de
@@ -255,7 +259,20 @@ object ExhaustionDetector {
         val afterLowCloses = afterLow.map { it.close }
         val recoveryPeakClose = afterLowCloses.maxOrNull() ?: currentPrice
         val retrocesoDesdePicoPercent = if (recoveryPeakClose > 0) (recoveryPeakClose - currentPrice) / recoveryPeakClose * 100 else 0.0
-        val sinRetrocesoExcesivo = retrocesoDesdePicoPercent <= MAX_RETROCESO_DESDE_PICO_PERCENT
+        // CAMBIADO a petición expresa tras un caso hipotético planteado por el usuario: subida
+        // 10% desde el suelo, corrección/"shake-out" del 8% en una sola semana, y acto seguido
+        // vuelta a subir rompiendo máximos — con el chequeo original (retroceso >5% = descartar
+        // en el acto), ese shake-out sano se descartaba justo en su única semana mala, aunque
+        // fuera a resolverse de inmediato. Ahora NO basta con superar el umbral una semana: tiene
+        // que llevar hacerlo durante ≥2 semanas SEGUIDAS (contando desde la más reciente hacia
+        // atrás) para considerarlo un retroceso persistente de verdad, no un shake-out de una
+        // sola vela. Un shake-out típico se resuelve en 1 semana y nunca llega a acumular 2.
+        val retrocesosPorSemana = afterLowCloses.map { c -> if (recoveryPeakClose > 0) (recoveryPeakClose - c) / recoveryPeakClose * 100 else 0.0 }
+        var semanasConRetrocesoExcesivo = 0
+        for (i in retrocesosPorSemana.indices.reversed()) {
+            if (retrocesosPorSemana[i] > MAX_RETROCESO_DESDE_PICO_PERCENT) semanasConRetrocesoExcesivo++ else break
+        }
+        val sinRetrocesoExcesivo = semanasConRetrocesoExcesivo < 2
         val ultimaVelaNoBaja = afterLowCloses.size < 2 || afterLowCloses.last() >= afterLowCloses[afterLowCloses.size - 2]
 
         val hayRecuperacionSolida = hayMinimosAscendentes && hayReboteSolido && sinRetrocesoExcesivo && ultimaVelaNoBaja
