@@ -28,6 +28,11 @@ object ExhaustionDetector {
      *  considerar que hay una recuperación sólida (no solo una vela suelta cerrando algo mejor). */
     private const val MIN_REBOTE_DESDE_SUELO_PERCENT = 5.0
 
+    /** R² mínimo de la pendiente bajista entre el máximo y el suelo — por debajo de esto se
+     *  considera que los dos extremos son casualidad de un rango lateral, no una tendencia
+     *  bajista real. Mismo umbral que TechnicalAnalysis.detectMacdPriceDivergence. */
+    private const val MIN_DECLINE_R2 = 0.3
+
     /**
      * @param candles histórico ordenado ascendente (recomendado: velas semanales de 1-2 años,
      *                o diarias de varios meses).
@@ -72,6 +77,41 @@ object ExhaustionDetector {
                 )
             }
             return null // no ha caído lo suficiente todavía
+        }
+
+        // NUEVO — pedido expresamente ("algunos valores de los candidatos son muy laterales"):
+        // hasta ahora, la "caída" solo comparaba el máximo Y el mínimo del tramo (dos puntos),
+        // sin comprobar que el camino ENTRE ellos fuera de verdad una tendencia bajista y no
+        // ruido de un rango lateral que por casualidad tocó esos dos extremos (p. ej. un valor
+        // oscilando entre 90 y 105 varias veces, donde cualquier par techo-suelo puede dar un
+        // 15%+ de "caída" sin que haya ninguna tendencia real). Se exige que los CIERRES de las
+        // velas entre el máximo y el suelo tengan una pendiente bajista limpia de verdad (mismo
+        // criterio de regresión lineal + R² que ya usa detectMacdPriceDivergence) — un R² bajo
+        // significa que los precios van "para arriba y para abajo" sin dirección clara, aunque
+        // los dos extremos por sí solos parezcan una caída.
+        val tramoDeclive = afterHigh.subList(0, afterHigh.indexOf(recentLowCandle) + 1)
+        if (tramoDeclive.size >= 4) {
+            val closes = tramoDeclive.map { it.close }
+            val n = closes.size
+            val xs = (0 until n).map { it.toDouble() }
+            val xMean = xs.average()
+            val yMean = closes.average()
+            val num = xs.indices.sumOf { (xs[it] - xMean) * (closes[it] - yMean) }
+            val den = xs.sumOf { (it - xMean) * (it - xMean) }
+            val slope = if (den == 0.0) 0.0 else num / den
+            val predicted = xs.map { yMean + slope * (it - xMean) }
+            val ssRes = closes.indices.sumOf { (closes[it] - predicted[it]) * (closes[it] - predicted[it]) }
+            val ssTot = closes.sumOf { (it - yMean) * (it - yMean) }
+            val r2 = if (ssTot == 0.0) 0.0 else 1 - ssRes / ssTot
+            if (slope >= 0 || r2 < MIN_DECLINE_R2) {
+                if (debugSymbol != null) {
+                    android.util.Log.i(
+                        "ExhaustionDiagnostic",
+                        "$debugSymbol: descartado — caída lateral, sin tendencia bajista limpia (pendiente=${"%.4f".format(slope)}, R²=${"%.2f".format(r2)} < $MIN_DECLINE_R2)"
+                    )
+                }
+                return null
+            }
         }
 
         val reasons = mutableListOf<String>()
