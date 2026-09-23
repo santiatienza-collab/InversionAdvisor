@@ -327,8 +327,12 @@ class ScreenerRepository(
         // bajistas, como criterio añadido a los que ya teníamos" — histograma > 0 = alcista.
         val macdProvisional = TechnicalAnalysis.calculateMacd(candles)
 
+        // QUITADO el volumen SEMANAL de este gate a petición expresa ("por qué mido volumen
+        // semanal y diario, con uno me vale, el más restrictivo") — el volumen DIARIO (≥1,5x,
+        // dentro de la confluencia técnica de PosiblesComprasRepository) es el único filtro de
+        // volumen que queda; medía lo mismo dos veces y el semanal (≥1,0) era el más débil de
+        // los dos, casi no descartaba nada por sí solo.
         val opportunity = if (exhaustion != null && exhaustion.detected && uptrendSignal == null &&
-            (volumeRatio ?: 0.0) >= MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY &&
             exhaustion.declinePercentFromRecentHigh <= -com.inversionadvisor.domain.indicators.Top10Calculator.MIN_DECLINE_PERCENT &&
             exhaustion.confidenceScore >= MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY &&
             (macdProvisional?.histogram ?: 0.0) > 0.0) {

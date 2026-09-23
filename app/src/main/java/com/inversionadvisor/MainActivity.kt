@@ -3,6 +3,12 @@ package com.inversionadvisor
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,7 +42,9 @@ import androidx.lifecycle.lifecycleScope
 import com.inversionadvisor.domain.model.MarketUniverse
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.LaunchedEffect
 import com.inversionadvisor.data.connectivity.NetworkConnectivityObserver
 import com.inversionadvisor.di.ServiceLocator
 import com.inversionadvisor.ui.common.ConnectivityBanner
@@ -192,6 +200,24 @@ class MainActivity : ComponentActivity() {
                                 SeccionAnalisis(MarketUniverse.BONOS.displayName, screenerState.selectedMarket == MarketUniverse.BONOS) { screenerViewModel.selectMarket(MarketUniverse.BONOS) }
                             )
                             var menuAnalisisAbierto by remember { mutableStateOf(false) }
+                            // NUEVO — pedido expresamente: las pestañas del desplegable de
+                            // "Análisis" se despliegan de una en una (no todas a la vez), efecto
+                            // completo en menos de 1 segundo. visibleCount sube de 0 a
+                            // seccionesAnalisis.size con un pequeño delay entre cada una — es solo
+                            // un Int cambiando con delay(), sin ningún trabajo pesado ni bloqueo,
+                            // así que no afecta al rendimiento del resto de la app.
+                            var visibleCount by remember { mutableStateOf(0) }
+                            LaunchedEffect(menuAnalisisAbierto) {
+                                if (menuAnalisisAbierto) {
+                                    visibleCount = 0
+                                    repeat(seccionesAnalisis.size) { i ->
+                                        delay(70)
+                                        visibleCount = i + 1
+                                    }
+                                } else {
+                                    visibleCount = 0
+                                }
+                            }
 
                             TabRow(selectedTabIndex = selectedTab) {
                                 tabTitles.forEachIndexed { index, title ->
@@ -224,7 +250,12 @@ class MainActivity : ComponentActivity() {
                                                 expanded = menuAnalisisAbierto,
                                                 onDismissRequest = { menuAnalisisAbierto = false }
                                             ) {
-                                                seccionesAnalisis.forEach { seccion ->
+                                                seccionesAnalisis.forEachIndexed { index, seccion ->
+                                                    AnimatedVisibility(
+                                                        visible = index < visibleCount,
+                                                        enter = fadeIn(tween(220)) + expandVertically(tween(220)),
+                                                        exit = fadeOut(tween(120)) + shrinkVertically(tween(120))
+                                                    ) {
                                                     DropdownMenuItem(
                                                         text = {
                                                             Text(
@@ -238,6 +269,7 @@ class MainActivity : ComponentActivity() {
                                                             menuAnalisisAbierto = false
                                                         }
                                                     )
+                                                    }
                                                 }
                                             }
                                         }

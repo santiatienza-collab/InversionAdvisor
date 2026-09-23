@@ -99,6 +99,142 @@ object TechnicalAnalysis {
         return MacdResult(macdLine, signalLine, macdLine - signalLine)
     }
 
+    /**
+     * NUEVO — pedido expresamente: histograma MACD completo, alineado vela a vela (a diferencia
+     * de [calculateMacd], que solo da el último valor) — para poder DIBUJARLO como panel propio
+     * debajo del volumen, igual que hace cualquier plataforma de bolsa. Los primeros
+     * (slowPeriod-1) valores son técnicamente EMA "calentando" (no una media de verdad todavía,
+     * les falta historial) — se devuelven igualmente por simplicidad de índice (mismo tamaño que
+     * [candles]), la interfaz simplemente no dibuja gran cosa ahí al no haber datos suficientes
+     * antes.
+     */
+    fun calculateMacdSeries(candles: List<Candle>, fastPeriod: Int = 12, slowPeriod: Int = 26, signalPeriod: Int = 9): List<MacdResult> {
+        if (candles.size < slowPeriod + signalPeriod) return emptyList()
+        val closes = candles.map { it.close }
+
+        fun ema(values: List<Double>, period: Int): List<Double> {
+            val k = 2.0 / (period + 1)
+            val result = mutableListOf(values.first())
+            for (i in 1 until values.size) {
+                result += values[i] * k + result[i - 1] * (1 - k)
+            }
+            return result
+        }
+
+        val fastEma = ema(closes, fastPeriod)
+        val slowEma = ema(closes, slowPeriod)
+        val macdSeries = fastEma.indices.map { fastEma[it] - slowEma[it] }
+        val signalSeries = ema(macdSeries, signalPeriod)
+        return macdSeries.indices.map { i -> MacdResult(macdSeries[i], signalSeries[i], macdSeries[i] - signalSeries[i]) }
+    }
+
+    /** Aviso de divergencia entre el MACD y el precio — ver [detectMacdPriceDivergence]. */
+    enum class MacdPriceDivergence {
+        NONE,
+        /** Precio subiendo, MACD bajando — el rally pierde fuelle (el impulso ya no acompaña al
+         *  precio, aunque este siga subiendo). */
+        BEARISH,
+        /** Precio bajando, MACD subiendo — la presión vendedora se agota (el impulso ya no
+         *  acompaña la caída, aunque el precio siga bajando). */
+        BULLISH
+    }
+
+    /** Resultado completo de [detectMacdPriceDivergence]: la divergencia en sí (definida SOLO
+     *  por MACD y precio, la definición clásica de análisis técnico) más si el volumen la
+     *  refuerza o no — ver comentario de la función para el porqué de separar ambas cosas. */
+    data class MacdDivergenceResult(
+        val divergence: MacdPriceDivergence,
+        /** true si, ADEMÁS de la divergencia MACD/precio, el volumen de ese mismo tramo está
+         *  decreciendo de forma real — participación menguando, una confirmación adicional, NO
+         *  un requisito para que haya divergencia. false (no "sin dato") cuando divergence es
+         *  NONE, ya que ahí la pregunta no aplica. */
+        val volumenConfirma: Boolean
+    )
+
+    /**
+     * NUEVO — pedido expresamente: "detecte cuando haya una divergencia entre MACD y el precio,
+     * observando el volumen de operaciones, y muestre un aviso amarillo cuando se dé el caso".
+     *
+     * CAMBIADO a petición expresa tras una pregunta directa del usuario ("la divergencia debe
+     * tener en cuenta MACD y precio, ¿el volumen hay que considerarlo también?"): la divergencia
+     * MACD/precio es, por definición de análisis técnico, un patrón que se define SOLO con esas
+     * dos series — el volumen NO forma parte de la definición clásica. La primera versión de
+     * esta función exigía el volumen menguante como requisito OBLIGATORIO (gate) — eso podía
+     * tapar divergencias MACD/precio reales y evidentes solo porque el volumen no bajaba lo
+     * suficiente. Ahora el volumen es una CONFIRMACIÓN APARTE, no bloqueante: la divergencia se
+     * detecta con MACD+precio únicamente, y volumenConfirma añade un matiz ("reforzada por el
+     * volumen") cuando también cae, sin que su ausencia impida el aviso.
+     *
+     * Divergencia clásica: precio y MACD moviéndose en direcciones opuestas durante la misma
+     * ventana reciente, con una tendencia limpia de verdad (no ruido) en las dos, y un
+     * movimiento de precio mínimo real — mismo criterio de regresión lineal (pendiente + R²)
+     * que ya usa UptrendDetector.detectMomentumPriceDivergence con el RSI.
+     */
+    // RECALIBRADO a petición expresa ("la divergencia debe ser más evidente o pronunciada para
+    // detectarla"): la primera versión solo exigía que las dos pendientes (precio y MACD)
+    // tuvieran SIGNOS opuestos con una tendencia mínimamente limpia (R²≥0.3) — bastaba un
+    // movimiento pequeño y ruidoso para marcar divergencia. Ahora se exige, además de los signos
+    // opuestos: ventana más larga (14 en vez de 10 velas) y R²≥0.5 en precio y MACD (una
+    // tendencia limpia de verdad, no un zigzag que por casualidad tiene pendiente de un signo),
+    // y que el precio se haya movido un mínimo real (≥3%) en la ventana.
+    private const val MACD_DIVERGENCE_WINDOW = 14
+    private const val MACD_DIVERGENCE_MIN_R2 = 0.5
+    private const val MACD_DIVERGENCE_MIN_PRICE_MOVE_PERCENT = 3.0
+    private const val MACD_DIVERGENCE_MIN_VOLUME_DROP_PERCENT = 20.0
+
+    fun detectMacdPriceDivergence(candles: List<Candle>, window: Int = MACD_DIVERGENCE_WINDOW): MacdDivergenceResult {
+        val macdSeries = calculateMacdSeries(candles)
+        if (macdSeries.size < window || candles.size < window) return MacdDivergenceResult(MacdPriceDivergence.NONE, false)
+
+        val recentCandles = candles.takeLast(window)
+        val recentMacd = macdSeries.takeLast(window).map { it.macdLine }
+
+        fun linreg(values: List<Double>): Pair<Double, Double> {
+            val n = values.size
+            val xs = (0 until n).map { it.toDouble() }
+            val xMean = xs.average()
+            val yMean = values.average()
+            val num = xs.indices.sumOf { (xs[it] - xMean) * (values[it] - yMean) }
+            val den = xs.sumOf { (it - xMean) * (it - xMean) }
+            if (den == 0.0) return 0.0 to 0.0
+            val slope = num / den
+            val predicted = xs.map { yMean + slope * (it - xMean) }
+            val ssRes = values.indices.sumOf { (values[it] - predicted[it]) * (values[it] - predicted[it]) }
+            val ssTot = values.sumOf { (it - yMean) * (it - yMean) }
+            val r2 = if (ssTot == 0.0) 0.0 else 1 - ssRes / ssTot
+            return slope to r2
+        }
+
+        val closes = recentCandles.map { it.close }
+        val (priceSlope, priceR2) = linreg(closes)
+        val (macdSlope, macdR2) = linreg(recentMacd)
+
+        val priceMovePercent = if (closes.first() != 0.0) kotlin.math.abs(closes.last() - closes.first()) / closes.first() * 100 else 0.0
+        val tendenciasClaras = priceR2 >= MACD_DIVERGENCE_MIN_R2 && macdR2 >= MACD_DIVERGENCE_MIN_R2 &&
+            priceMovePercent >= MACD_DIVERGENCE_MIN_PRICE_MOVE_PERCENT
+
+        val divergence = when {
+            !tendenciasClaras -> MacdPriceDivergence.NONE
+            priceSlope > 0 && macdSlope < 0 -> MacdPriceDivergence.BEARISH
+            priceSlope < 0 && macdSlope > 0 -> MacdPriceDivergence.BULLISH
+            else -> MacdPriceDivergence.NONE
+        }
+        if (divergence == MacdPriceDivergence.NONE) return MacdDivergenceResult(MacdPriceDivergence.NONE, false)
+
+        // Volumen — solo se calcula/importa si YA hay divergencia por MACD+precio; aquí es
+        // confirmación aparte, no condición para detectarla (ver comentario de cabecera).
+        val recentVolumes = recentCandles.mapNotNull { it.volume?.toDouble() }
+        val volumenConfirma = if (recentVolumes.size == window) {
+            val mitad = recentVolumes.size / 2
+            val volMediaPrimeraMitad = recentVolumes.take(mitad).average()
+            val volMediaSegundaMitad = recentVolumes.takeLast(recentVolumes.size - mitad).average()
+            val volumenCaidaPercent = if (volMediaPrimeraMitad > 0) (volMediaPrimeraMitad - volMediaSegundaMitad) / volMediaPrimeraMitad * 100 else 0.0
+            volumenCaidaPercent >= MACD_DIVERGENCE_MIN_VOLUME_DROP_PERCENT
+        } else false
+
+        return MacdDivergenceResult(divergence, volumenConfirma)
+    }
+
     /** % de variación entre el cierre de hace [n] velas y el cierre actual — null si no hay suficientes velas. */
     fun returnOverLastNCandles(candles: List<Candle>, n: Int): Double? {
         if (candles.size <= n) return null

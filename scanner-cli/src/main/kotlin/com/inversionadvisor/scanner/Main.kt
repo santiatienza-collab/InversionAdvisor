@@ -659,8 +659,11 @@ fun main(args: Array<String>) = runBlocking {
             // confidenceScore, informativo, no imprescindible por sí solo).
             // NUEVO — pedido expresamente: "solo candidatos con MACD alcista, descarta los MACD
             // bajistas, como criterio añadido a los que ya teníamos" — histograma MACD > 0.
+            // QUITADO el volumen SEMANAL de aquí a petición expresa ("por qué mido volumen
+            // semanal y diario, con uno me vale, el más restrictivo") — mismo motivo que en
+            // ScreenerRepository.scanSymbol (app): el volumen DIARIO (≥1,5x, dentro de la
+            // confluencia de PosiblesComprasRepository) es el único filtro de volumen que queda.
             isBuyOpportunity = exhaustion != null && exhaustion.detected && p.uptrend == null &&
-                (p.volumeRatio ?: 0.0) >= MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY &&
                 exhaustion.declinePercentFromRecentHigh <= -MIN_DECLINE_PERCENT_FOR_BUY_OPPORTUNITY &&
                 exhaustion.confidenceScore >= MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY &&
                 (p.macd?.histogram ?: 0.0) > 0.0,

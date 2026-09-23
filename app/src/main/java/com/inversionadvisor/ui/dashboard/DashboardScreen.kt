@@ -786,7 +786,12 @@ private fun DashboardContent(
     onSelectBitcoin: () -> Unit,
     onSelectEthereum: () -> Unit
 ) {
+    // NUEVO — pedido expresamente: botón flotante transparente "volver arriba" en todas las
+    // pantallas con scroll de la app (ver ScrollToTopButton.kt).
+    val listState = androidx.compose.foundation.lazy.rememberLazyListState()
+    Box(modifier = Modifier.fillMaxSize()) {
     LazyColumn(
+        state = listState,
         modifier = Modifier.fillMaxWidth().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -896,6 +901,11 @@ private fun DashboardContent(
         } else {
             item { TypicalSectorPeRangesCard() }
         }
+    }
+        com.inversionadvisor.ui.common.ScrollToTopButtonForLazyList(
+            state = listState,
+            modifier = Modifier.align(Alignment.BottomEnd)
+        )
     }
 }
 

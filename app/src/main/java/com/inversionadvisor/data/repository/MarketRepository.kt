@@ -1625,6 +1625,37 @@ class MarketRepository(
         }
     }
 
+    // NUEVO — pedido expresamente ("solución alternativa definitiva a Ingresos Netos, Yahoo
+    // falla mucho aquí"): respaldo UNIVERSAL (no solo IBEX 35 vía Investing.com) — stockanalysis.com,
+    // ver StockAnalysisFinancialsParser para el porqué. Mismo patrón exacto que
+    // fetchNetIncomesFromInvesting (cortacircuitos propio, no repetir contra un bloqueo activo).
+    private suspend fun fetchNetIncomesFromStockAnalysis(
+        symbol: String,
+        scraper: com.inversionadvisor.data.webview.HiddenWebViewScraper
+    ): List<Double> {
+        if (isStockAnalysisBlocked()) {
+            android.util.Log.i("CompanyFinancialsFetch", "stockanalysis.com ($symbol): cortacircuitos activo (bloqueo detectado hace poco), no se intenta")
+            return emptyList()
+        }
+        return try {
+            // stockanalysis.com espera el ticker "pelado" (sin sufijo de bolsa, p. ej. ".MC")
+            // — símbolos así (mercados no cubiertos por este sitio) simplemente no encontrarán
+            // la tabla y devolverán lista vacía, sin gastar más que 1 petición.
+            val html = scraper.fetchRenderedHtml("https://stockanalysis.com/stocks/$symbol/financials/", extraWaitMillis = 3_500L)
+            if (com.inversionadvisor.domain.indicators.StockAnalysisFinancialsParser.isBlockedOrErrorPage(html)) {
+                android.util.Log.w("CompanyFinancialsFetch", "stockanalysis.com ($symbol): página de bloqueo detectada — cortacircuitos activado 10 min")
+                markStockAnalysisBlocked()
+                return emptyList()
+            }
+            val result = com.inversionadvisor.domain.indicators.StockAnalysisFinancialsParser.parseRecentAnnualNetIncomes(html, count = 3)
+            android.util.Log.i("CompanyFinancialsFetch", "Ingresos netos 3 años ($symbol, stockanalysis.com): resultado=$result")
+            result
+        } catch (e: Exception) {
+            android.util.Log.w("CompanyFinancialsFetch", "stockanalysis.com ($symbol): ${e.message ?: e::class.simpleName}")
+            emptyList()
+        }
+    }
+
     private suspend fun refreshCompanyFinancialsInternal(symbol: String, scraper: com.inversionadvisor.data.webview.HiddenWebViewScraper) {
         // 2 peticiones en paralelo (cotización + estados financieros) — se quitó la
         // de "trimestral" (con su clic al botón, la más lenta de las 3 que había
@@ -1772,6 +1803,16 @@ class MarketRepository(
                     val fromInvesting = fetchNetIncomesFromInvesting(symbol, scraper)
                     if (fromInvesting.isNotEmpty()) return@async fromInvesting
                 }
+                // NUEVO — pedido expresamente ("Yahoo falla mucho aquí, solución definitiva"):
+                // si TODO lo anterior (SEC EDGAR, Yahoo, e Investing.com si era .MC) se ha
+                // quedado sin nada, se prueba stockanalysis.com como último respaldo universal
+                // — fuente distinta, con su propia infraestructura, así que un bloqueo de sesión
+                // de Yahoo no la afecta. No tiene sentido para .MC (cubre bolsas de EE.UU., ver
+                // StockAnalysisFinancialsParser), así que ahí no se intenta.
+                if (bestFromYahoo.isEmpty() && !symbol.endsWith(".MC")) {
+                    val fromStockAnalysis = fetchNetIncomesFromStockAnalysis(symbol, scraper)
+                    if (fromStockAnalysis.isNotEmpty()) return@async fromStockAnalysis
+                }
                 bestFromYahoo
             }
 
@@ -1915,6 +1956,16 @@ class MarketRepository(
 
         private fun markInvestingBlocked() {
             investingBlockedUntilMillis.set(System.currentTimeMillis() + 10 * 60_000L)
+        }
+
+        // NUEVO — mismo patrón, para stockanalysis.com (ver fetchNetIncomesFromStockAnalysis).
+        private val stockAnalysisBlockedUntilMillis = java.util.concurrent.atomic.AtomicLong(0L)
+
+        private fun isStockAnalysisBlocked(): Boolean =
+            System.currentTimeMillis() < stockAnalysisBlockedUntilMillis.get()
+
+        private fun markStockAnalysisBlocked() {
+            stockAnalysisBlockedUntilMillis.set(System.currentTimeMillis() + 10 * 60_000L)
         }
     }
 }

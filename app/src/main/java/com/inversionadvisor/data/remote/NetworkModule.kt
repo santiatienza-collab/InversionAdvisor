@@ -98,12 +98,23 @@ object NetworkModule {
      * de acercarse a ese máximo.
      */
     val secEdgarApi: SecEdgarApi by lazy {
+        // CORREGIDO — sospecha real de por qué SEC EDGAR fallaba con HTTP 403 en TODOS los
+        // símbolos (Logcat real: "fallo cargando company_tickers.json: HTTP 403"): cuando
+        // SEC_EDGAR_CONTACT_EMAIL no está configurado en local.properties, el valor de
+        // repuesto era una frase descriptiva ("contacto no configurado (ver ... )"), sin
+        // formato de email ni de dominio — la política de "fair access" de la SEC pide un
+        // contacto IDENTIFICABLE en el User-Agent (su propio ejemplo oficial es
+        // "Sample Company Name AdminContact@sample.com"), y es plausible que un User-Agent sin
+        // "@" ni dominio se trate como no conforme y se bloquee, incluso para el archivo
+        // ESTÁTICO company_tickers.json (que no debería necesitar ni siquiera pasar por su
+        // limitador de peticiones). El valor de repuesto ahora tiene el MISMO formato que su
+        // ejemplo oficial, funcione o no haya contacto real configurado.
         val contact = com.inversionadvisor.BuildConfig.SEC_EDGAR_CONTACT_EMAIL
             .takeIf { it.isNotBlank() }
-            ?: "contacto no configurado (ver SEC_EDGAR_CONTACT_EMAIL en local.properties)"
+            ?: "AdminContact@inversionadvisor.app"
         val userAgentInterceptor = okhttp3.Interceptor { chain ->
             val request = chain.request().newBuilder()
-                .header("User-Agent", "InversionAdvisor/1.0 ($contact)")
+                .header("User-Agent", "InversionAdvisor $contact")
                 .header("Accept", "application/json")
                 .build()
             chain.proceed(request)

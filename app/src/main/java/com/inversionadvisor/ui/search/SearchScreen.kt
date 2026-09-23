@@ -75,6 +75,10 @@ fun SearchScreen(viewModel: SearchViewModel, marketRepository: MarketRepository)
         return
     }
 
+    // NUEVO — pedido expresamente: botón flotante transparente "volver arriba" en todas las
+    // pantallas con scroll (ver ScrollToTopButton.kt).
+    val listState = androidx.compose.foundation.lazy.rememberLazyListState()
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         OutlinedTextField(
             value = state.query,
@@ -102,6 +106,7 @@ fun SearchScreen(viewModel: SearchViewModel, marketRepository: MarketRepository)
         }
 
         LazyColumn(
+            state = listState,
             modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -197,6 +202,11 @@ fun SearchScreen(viewModel: SearchViewModel, marketRepository: MarketRepository)
                 }
             }
         }
+    }
+        com.inversionadvisor.ui.common.ScrollToTopButtonForLazyList(
+            state = listState,
+            modifier = Modifier.align(Alignment.BottomEnd)
+        )
     }
 }
 

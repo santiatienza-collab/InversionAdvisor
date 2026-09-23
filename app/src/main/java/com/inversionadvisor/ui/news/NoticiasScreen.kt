@@ -250,14 +250,24 @@ private fun PaginaFuente(nombreFuente: String, titulares: List<Titular>) {
                 )
             }
         } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                items(titularesFiltrados) { titular ->
-                    TarjetaTitular(titular, estiloFuente)
+            // NUEVO — pedido expresamente: botón flotante transparente "volver arriba" en todas
+            // las pantallas con scroll (ver ScrollToTopButton.kt).
+            val listState = androidx.compose.foundation.lazy.rememberLazyListState()
+            Box(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(titularesFiltrados) { titular ->
+                        TarjetaTitular(titular, estiloFuente)
+                    }
                 }
+                com.inversionadvisor.ui.common.ScrollToTopButtonForLazyList(
+                    state = listState,
+                    modifier = Modifier.align(Alignment.BottomEnd)
+                )
             }
         }
     }

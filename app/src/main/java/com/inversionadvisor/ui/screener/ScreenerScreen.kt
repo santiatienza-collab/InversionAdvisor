@@ -258,8 +258,17 @@ fun ScreenerScreen(viewModel: ScreenerViewModel, marketRepository: MarketReposit
         // key aquí, este derivedStateOf se quedaba vigilando el listState VIEJO para siempre
         // tras el primer cambio de pestaña, así que dejaba de reaccionar al scroll real (el
         // botón "se moría" después de cambiar de pestaña una vez, exactamente el fallo reportado).
+        // CORREGIDO — fallo real reportado: en Top20/Posibles Compras/Divisas/Bonos el botón
+        // nunca aparecía. Causa: esas pestañas se pintan con muy pocos item{} en este
+        // LazyColumn (a veces uno solo, con toda la sección dentro) — firstVisibleItemIndex
+        // nunca pasa de 3 aunque haya mucho scroll DENTRO de ese único item, así que la
+        // condición solo funcionaba en pestañas con muchas filas (Índices). Se añade también
+        // firstVisibleItemScrollOffset (en píxeles, se acumula aunque el índice no avance) para
+        // que el botón reaccione igual en todas las pestañas.
         val showScrollToTop by remember(listState) {
-            androidx.compose.runtime.derivedStateOf { listState.firstVisibleItemIndex > 3 }
+            androidx.compose.runtime.derivedStateOf {
+                listState.firstVisibleItemIndex > 3 || listState.firstVisibleItemScrollOffset > 800
+            }
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -1694,7 +1703,7 @@ private fun PosiblesComprasSection(
         // bajista que se agota, con giro al alza", sin explicar qué se comprueba de verdad.
         Text(
             "Caída ≥15% + agotamiento bajista. Imprescindibles: patrón de giro " +
-                "(vela/doble suelo/mínimos ascendentes), volumen diario ≥1,5x su media y " +
+                "(vela/doble suelo/mínimos ascendentes), volumen diario ≥1,3x su media y " +
                 "MACD alcista. Además, al menos una confirmación adicional: divergencia " +
                 "RSI/momentum o soporte relevante cerca.",
             style = MaterialTheme.typography.bodySmall,

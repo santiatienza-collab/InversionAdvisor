@@ -32,14 +32,19 @@ fun BlinkingNeonBadge(text: String, modifier: Modifier = Modifier, positive: Boo
     // AMBIGUOS que no son ni claramente positivos ni claramente negativos — si se pasa, gana
     // sobre el verde/rojo de "positive".
     val neonColor = overrideColor ?: if (positive) Color(0xFF00E676) else Color(0xFFFF1744)
+    // CAMBIADO a petición expresa (tema oscuro): el fondo neón sólido contrastaba demasiado con
+    // el resto de la app — ahora se oscurece igual que los chips de factores de Top10 (ver
+    // FactorGrade.toColor() en ScreenerScreen.kt: fondo = color.copy(alpha=0.18f), texto = el
+    // mismo color a tope) — incluso conservando el mismo tono (naranja sigue naranja, rojo sigue
+    // rojo, verde sigue verde), solo con el contraste ya pensado para fondo oscuro.
     Surface(
         shape = RoundedCornerShape(6.dp),
-        color = neonColor,
+        color = neonColor.copy(alpha = 0.18f),
         modifier = modifier
     ) {
         Text(
             text,
-            color = Color.White,
+            color = neonColor,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)

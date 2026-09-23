@@ -40,10 +40,12 @@ import kotlinx.coroutines.sync.withPermit
  *  1) Se excluye cualquier candidato con tendencia alcista de fondo CONFIRMADA — un parón
  *     dentro de una tendencia alcista no es "una bajista que se agota", pertenece a Valores
  *     Alcistas, no aquí.
- *  2) Volumen (TechnicalAnalysis.volumeRatio: última semana vs media de 20 semanas) ≥1,0 — la
- *     semana actual ya iguala o supera su propia media reciente, un cambio real de
- *     comportamiento (sobre velas SEMANALES, exigir más de 1,0-1,3 deja el pool casi vacío,
- *     comprobado con datos reales).
+ *  2) QUITADO — pedido expresamente ("por qué mido volumen semanal Y diario, con uno me vale, el
+ *     más restrictivo"): había un filtro de volumen SEMANAL aquí (≥1,0x su media de 20 semanas)
+ *     que medía lo mismo que el volumen DIARIO (≥1,5x, dentro de la confluencia técnica de
+ *     contarConfirmaciones() más abajo) — el diario es el más restrictivo y el que de verdad
+ *     corresponde a "volumen alto EN EL GIRO" (cita textual del criterio pedido), así que se
+ *     deja como único filtro de volumen.
  *  3) Caída ≥15% (Top10Calculator.MIN_DECLINE_PERCENT), no el 10% mínimo interno del detector —
  *     "tendencia bajista" de verdad, no un vaivén cualquiera.
  *  4) confidenceScore ≥70 (recoveryScore ≥45 de 75, frente al ≥40 mínimo bruto que ya exige
@@ -125,8 +127,15 @@ class PosiblesComprasRepository(
             // ≥70 (sube el mínimo bruto de 65 sin exigir 3 de 4 indicios a la vez) + caída
             // ≥15%; el progreso de recuperación se queda como lo que ya era antes (parte del
             // confidenceScore, informativo) en vez de filtro aparte obligatorio.
-            val volumeRatio = entity.volumeRatio ?: generic?.volumeRatio
-            if (volumeRatio == null || volumeRatio < ScreenerRepository.MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY) return@mapNotNull null
+            // QUITADO a petición expresa ("por qué mido volumen semanal Y diario, con uno me
+            // vale, el más restrictivo") — el volumen SEMANAL (≥1,0x, aquí) y el DIARIO (≥1,5x,
+            // dentro de contarConfirmaciones()/confluencia técnica más abajo) medían lo mismo
+            // dos veces. El semanal era además el filtro más débil de los 6 (≥1,0 = "ni más ni
+            // menos que la media", casi no descartaba nada por sí solo — de 358 candidatos con
+            // agotamiento detectado en un escaneo real, la inmensa mayoría ya lo cumplía). El
+            // diario es el semánticamente correcto para "volumen alto EN EL GIRO" (la cita
+            // textual del criterio profesional que se pidió aplicar) y el más restrictivo de
+            // los dos, así que se deja como ÚNICO filtro de volumen.
             if (generic?.hasClearUptrend == true) return@mapNotNull null
             // Caída de verdad significativa (15%, Top10Calculator.MIN_DECLINE_PERCENT) — no el
             // 10% mínimo interno por defecto con el que ExhaustionDetector ya considera "candidato".
@@ -350,9 +359,11 @@ class PosiblesComprasRepository(
                         )
                     }
 
+                    // QUITADO el filtro de volumen SEMANAL aquí también (ver comentario en el
+                    // pool rápido, más arriba) — el volumen DIARIO de confirmacionesFrescas es
+                    // el único que queda.
                     val pasaFiltroFresco = analysis != null &&
                         !analysis.hasConfirmedUptrend &&
-                        (analysis.volumeRatio ?: 0.0) >= ScreenerRepository.MIN_VOLUME_RATIO_FOR_BUY_OPPORTUNITY &&
                         exhaustionFresco != null &&
                         exhaustionFresco.declinePercentFromRecentHigh <= -com.inversionadvisor.domain.indicators.Top10Calculator.MIN_DECLINE_PERCENT &&
                         exhaustionFresco.confidenceScore >= ScreenerRepository.MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY &&
@@ -444,7 +455,13 @@ class PosiblesComprasRepository(
 // Gestión del riesgo (stop bajo el mínimo del giro, ratio ≥2:1, tamaño de posición 1-2%, entrada
 // escalonada) queda fuera de este filtro a propósito: es una decisión de EJECUCIÓN de quien
 // invierte, no un criterio de qué candidatos mostrar en la lista.
-private const val MIN_DAILY_VOLUME_RATIO_CONFIRMACION = 1.5
+// RECALIBRADO a petición expresa tras comprobar con datos reales (escaneo completo de SP500,
+// 15 candidatos con agotamiento+recuperación real): con 1,5x, solo 4/15 tenían volumen diario
+// suficiente (el filtro que más recortaba, de lejos, dejando el pool final en solo 2 candidatos:
+// AMT y ACN). Bajado a 1,3x — sigue siendo un pico de volumen real y perceptible (30% por
+// encima de su propia media de 20 sesiones), no el mínimo bruto (1,0, "ni más ni menos que la
+// media") que ya se quitó del filtro base por ser demasiado débil.
+private const val MIN_DAILY_VOLUME_RATIO_CONFIRMACION = 1.3
 private const val MAX_DISTANCIA_SOPORTE_PERCENT = 8.0
 
 /** Las 4 señales de confluencia por separado — ver comentario de arriba sobre cuáles son

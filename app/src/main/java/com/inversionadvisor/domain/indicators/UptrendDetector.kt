@@ -1165,9 +1165,18 @@ object UptrendDetector {
                     // realidad no era el punto más alto del tramo — un falso positivo que además
                     // se encontraba ANTES que el patrón real (se recorre de más reciente a más
                     // antiguo y se para en el primero que encaja), así que la cabeza de verdad
-                    // nunca llegaba a evaluarse. Ahora se exige que no haya ningún pico dentro de
-                    // [h1, h2] más alto que la propia cabeza.
-                    val maxEnTramo = peaks.filter { it.index in h1.index..h2.index }.maxOf { it.price }
+                    // nunca llegaba a evaluarse.
+                    // SEGUNDO FALLO CORREGIDO — pedido expresamente ("los hombros deben estar por
+                    // debajo de la cabeza, veo que esto no siempre se está cumpliendo"): la
+                    // comprobación de arriba solo miraba otros PICOS ya detectados
+                    // (peaks.filter{...}), no las velas reales del tramo. findSwingPoints exige
+                    // que un pico sea el máximo de su propia ventana local (lookback=3 a cada
+                    // lado) para registrarse — una vela con un máximo (high) más alto que la
+                    // cabeza, pero que quedaba cerca del borde de los datos o de otro pico
+                    // todavía más alto cercano, podía no llegar nunca a registrarse como "pico" y
+                    // se colaba sin comprobar. Ahora se exige que NINGUNA vela real del tramo
+                    // (no solo los picos ya detectados) supere el máximo (high) de la cabeza.
+                    val maxEnTramo = candles.subList(h1.index, h2.index + 1).maxOf { it.high }
                     if (cabeza.price < maxEnTramo) continue
 
                     // NUEVO — fallo real encontrado con WMB: la cabeza solo tenía que ser MÁS

@@ -21,6 +21,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -38,6 +41,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -49,11 +53,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.CombinedData
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -262,7 +269,11 @@ fun StockDetailScreen(
                 }
             }
             else -> {
-                Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
+                // NUEVO — pedido expresamente: botón flotante transparente "volver arriba" en
+                // todas las pantallas con scroll (ver ScrollToTopButton.kt).
+                val scrollState = rememberScrollState()
+                Box(modifier = Modifier.fillMaxSize()) {
+                Column(modifier = Modifier.fillMaxWidth().verticalScroll(scrollState)) {
                     PriceAndVolumeChart(
                         candles = state.candles,
                         sma20 = state.sma20,
@@ -319,6 +330,11 @@ fun StockDetailScreen(
                             }
                         }
                     }
+                }
+                    com.inversionadvisor.ui.common.ScrollToTopButtonForScrollState(
+                        state = scrollState,
+                        modifier = Modifier.align(Alignment.BottomEnd)
+                    )
                 }
             }
         }
@@ -381,6 +397,12 @@ internal fun PriceAndVolumeChart(candles: List<Candle>, sma20: List<Double?>, ra
     // tocando la leyenda. En la ficha de un stock se queda con el valor por defecto (true,
     // visible desde el principio, sin cambios de comportamiento ahí).
     var sma50Visible by remember(candles) { mutableStateOf(sma50InitiallyVisible) }
+    // NUEVO — pedido expresamente: mismo mecanismo de chip plegable/desplegable de la leyenda
+    // que ya usan SMA20/SMA50, aplicado a Volumen/MACD/RSI. CAMBIADO a petición expresa: MACD y
+    // RSI empiezan DESACTIVADOS (paneles plegados) — Volumen empieza ACTIVADO, como hasta ahora.
+    var volumeVisible by remember(candles) { mutableStateOf(true) }
+    var macdVisible by remember(candles) { mutableStateOf(false) }
+    var rsiVisible by remember(candles) { mutableStateOf(false) }
 
     // Valor actual (última vela del rango cargado), en verde si ha subido o en rojo si ha
     // bajado FRENTE A LA PRIMERA VELA DE ESE MISMO RANGO (la variación del rango temporal
@@ -479,112 +501,167 @@ internal fun PriceAndVolumeChart(candles: List<Candle>, sma20: List<Double?>, ra
         // Leyenda propia, clicable — sustituye a la leyenda nativa de MPAndroidChart (que no
         // admite clic). Cada entrada muestra su color y, al tocarla, oculta/muestra esa serie
         // en la gráfica. "Precio" no es clicable (siempre visible, es la serie principal).
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 6.dp)) {
-            LegendDot(color = Color(priceColor))
-            Text("Precio", style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(start = 4.dp, end = 12.dp))
-            if (sma20.isNotEmpty()) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable { sma20Visible = !sma20Visible }
-                ) {
-                    LegendDot(color = Color(smaColor), dimmed = !sma20Visible)
-                    Text(
-                        "SMA 20",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = if (sma20Visible) Color.Unspecified else Color(0xFF9E9E9E),
-                        modifier = Modifier.padding(start = 4.dp, end = 12.dp)
-                    )
+        // CAMBIADO a petición expresa: se quitan los chips de Volumen/MACD/RSI de aquí (vuelve a
+        // ser solo Precio/SMA20/SMA50, "como antes") — se controlan ahora desde el icono
+        // "Indicadores" de la derecha (ver más abajo).
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                LegendDot(color = Color(priceColor))
+                Text("Precio", style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(start = 4.dp, end = 12.dp))
+                if (sma20.isNotEmpty()) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable { sma20Visible = !sma20Visible }
+                    ) {
+                        LegendDot(color = Color(smaColor), dimmed = !sma20Visible)
+                        Text(
+                            "SMA 20",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (sma20Visible) Color.Unspecified else Color(0xFF9E9E9E),
+                            modifier = Modifier.padding(start = 4.dp, end = 12.dp)
+                        )
+                    }
+                }
+                if (sma50.isNotEmpty()) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable { sma50Visible = !sma50Visible }
+                    ) {
+                        LegendDot(color = Color(sma50Color), dimmed = !sma50Visible)
+                        Text(
+                            "SMA 50",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (sma50Visible) Color.Unspecified else Color(0xFF9E9E9E),
+                            modifier = Modifier.padding(start = 4.dp)
+                        )
+                    }
                 }
             }
-            if (sma50.isNotEmpty()) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable { sma50Visible = !sma50Visible }
-                ) {
-                    LegendDot(color = Color(sma50Color), dimmed = !sma50Visible)
-                    Text(
-                        "SMA 50",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = if (sma50Visible) Color.Unspecified else Color(0xFF9E9E9E),
-                        modifier = Modifier.padding(start = 4.dp)
-                    )
+
+            // NUEVO — pedido expresamente: icono "Indicadores" arriba a la derecha del panel del
+            // gráfico, con un menú desplegable para activar/desactivar Volumen/MACD/RSI — sustituye
+            // a los 3 chips sueltos de antes. Solo si showVolume (Bonos USA no tienen datos de
+            // volumen reales, así que tampoco tiene sentido ofrecer estos 3 paneles ahí).
+            if (showVolume) {
+                var menuIndicadoresAbierto by remember { mutableStateOf(false) }
+                Box {
+                    androidx.compose.material3.IconButton(
+                        onClick = { menuIndicadoresAbierto = true },
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        androidx.compose.material3.Icon(
+                            Icons.Default.List,
+                            contentDescription = "Indicadores",
+                            tint = Color(priceColor)
+                        )
+                    }
+                    androidx.compose.material3.DropdownMenu(
+                        expanded = menuIndicadoresAbierto,
+                        onDismissRequest = { menuIndicadoresAbierto = false }
+                    ) {
+                        // NUEVO — pedido expresamente: NO se cierra el menú al tocar cada
+                        // indicador (a diferencia del resto de desplegables de la app), para
+                        // poder activar/desactivar varios seguidos sin reabrirlo cada vez.
+                        androidx.compose.material3.DropdownMenuItem(
+                            text = { Text("Volumen", fontWeight = if (volumeVisible) FontWeight.Bold else FontWeight.Normal) },
+                            leadingIcon = {
+                                androidx.compose.material3.Icon(
+                                    if (volumeVisible) Icons.Default.Check else Icons.Default.Close,
+                                    contentDescription = null,
+                                    tint = Color(upColor)
+                                )
+                            },
+                            onClick = { volumeVisible = !volumeVisible }
+                        )
+                        androidx.compose.material3.DropdownMenuItem(
+                            text = { Text("MACD", fontWeight = if (macdVisible) FontWeight.Bold else FontWeight.Normal) },
+                            leadingIcon = {
+                                androidx.compose.material3.Icon(
+                                    if (macdVisible) Icons.Default.Check else Icons.Default.Close,
+                                    contentDescription = null,
+                                    tint = Color(AndroidColor.parseColor("#2196F3"))
+                                )
+                            },
+                            onClick = { macdVisible = !macdVisible }
+                        )
+                        androidx.compose.material3.DropdownMenuItem(
+                            text = { Text("RSI", fontWeight = if (rsiVisible) FontWeight.Bold else FontWeight.Normal) },
+                            leadingIcon = {
+                                androidx.compose.material3.Icon(
+                                    if (rsiVisible) Icons.Default.Check else Icons.Default.Close,
+                                    contentDescription = null,
+                                    tint = Color(AndroidColor.parseColor("#9E9E9E"))
+                                )
+                            },
+                            onClick = { rsiVisible = !rsiVisible }
+                        )
+                    }
                 }
             }
         }
 
+        // NUEVO — pedido expresamente: los charts de Volumen/MACD/RSI se referencian aquí (en
+        // vez de root.findViewWithTag, ya que ahora cada panel vive en su PROPIO AndroidView, no
+        // en un LinearLayout compartido — ver más abajo, "chips justo antes de sus respectivos
+        // paneles") para que el gesto de pan/zoom del precio los pueda sincronizar igual que
+        // antes, esté cada panel visible o no en este momento (si está plegado, su ref es null y
+        // el sincronizador simplemente no hace nada con él).
+        val volumeChartRef = remember(candles) { mutableStateOf<BarChart?>(null) }
+        val macdChartRef = remember(candles) { mutableStateOf<CombinedChart?>(null) }
+        val rsiChartRef = remember(candles) { mutableStateOf<LineChart?>(null) }
+
         AndroidView(
         modifier = Modifier.fillMaxWidth(),
         factory = { ctx ->
-            LinearLayout(ctx).apply {
-                orientation = LinearLayout.VERTICAL
+            LineChart(ctx).apply {
+                tag = "priceChart"
+                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(ctx, priceChartHeightDp))
+                description.isEnabled = false
+                legend.isEnabled = false // leyenda propia de Compose de arriba, esta se desactiva
+                axisRight.isEnabled = false
+                axisLeft.gridColor = gridColor
+                axisLeft.textColor = labelColor
+                xAxis.position = XAxis.XAxisPosition.BOTTOM
+                xAxis.granularity = 1f
+                xAxis.setDrawGridLines(false)
+                xAxis.textColor = labelColor
+                xAxis.labelRotationAngle = -45f
+                setScaleYEnabled(false)
+                setPinchZoom(false)
 
-                val priceChart = LineChart(ctx).apply {
-                    tag = "priceChart"
-                    layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(ctx, priceChartHeightDp))
-                    description.isEnabled = false
-                    legend.isEnabled = false // leyenda propia de Compose de arriba, esta se desactiva
-                    axisRight.isEnabled = false
-                    axisLeft.gridColor = gridColor
-                    axisLeft.textColor = labelColor
-                    xAxis.position = XAxis.XAxisPosition.BOTTOM
-                    xAxis.granularity = 1f
-                    xAxis.setDrawGridLines(false)
-                    xAxis.textColor = labelColor
-                    xAxis.labelRotationAngle = -45f
-                    setScaleYEnabled(false)
-                    setPinchZoom(false)
-                }
-
-                val volumeChart = BarChart(ctx).apply {
-                    tag = "volumeChart"
-                    // showVolume=false (Bonos USA: ^TNX/^TYX/^MOVE no tienen datos de volumen
-                    // reales) — altura 0 en vez de quitar la vista, así el resto del código
-                    // (findViewWithTag, el sincronizador de ejes, el listener de gestos) sigue
-                    // funcionando igual sin tener que comprobar nulos por todas partes.
-                    layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, if (showVolume) dpToPx(ctx, 120) else 0)
-                    description.isEnabled = false
-                    legend.isEnabled = false
-                    axisRight.isEnabled = false
-                    axisLeft.gridColor = gridColor
-                    axisLeft.textColor = labelColor
-                    axisLeft.axisMinimum = 0f
-                    xAxis.position = XAxis.XAxisPosition.BOTTOM
-                    xAxis.granularity = 1f
-                    xAxis.setDrawGridLines(false)
-                    xAxis.textColor = labelColor
-                    xAxis.labelRotationAngle = -45f
-                    setScaleYEnabled(false)
-                    setPinchZoom(false)
-                    // El panel de volumen no se toca directamente: sigue el pan/zoom
-                    // del panel de precio (ver ChartXAxisSync), como en TradingView.
-                    setTouchEnabled(false)
-                }
-
-                priceChart.onChartGestureListener = object : OnChartGestureListener {
+                // NUEVO — pedido expresamente: sincroniza pan/zoom con Volumen/MACD/RSI leyendo
+                // sus refs EN EL MOMENTO del gesto (no al crear este listener), así funciona
+                // aunque esos paneles se plieguen/despleguen después de crear el precio.
+                onChartGestureListener = object : OnChartGestureListener {
+                    private val priceChart = this@apply
                     override fun onChartGestureStart(me: MotionEvent?, lastPerformedGesture: ChartTouchListener.ChartGesture?) {}
                     override fun onChartGestureEnd(me: MotionEvent?, lastPerformedGesture: ChartTouchListener.ChartGesture?) {
-                        ChartXAxisSync.syncXAxis(priceChart, volumeChart)
+                        volumeChartRef.value?.let { ChartXAxisSync.syncXAxis(priceChart, it) }
+                        macdChartRef.value?.let { ChartXAxisSync.syncXAxis(priceChart, it) }
+                        rsiChartRef.value?.let { ChartXAxisSync.syncXAxis(priceChart, it) }
                     }
                     override fun onChartLongPressed(me: MotionEvent?) {}
                     override fun onChartDoubleTapped(me: MotionEvent?) {}
                     override fun onChartSingleTapped(me: MotionEvent?) {}
                     override fun onChartFling(me1: MotionEvent?, me2: MotionEvent?, velocityX: Float, velocityY: Float) {}
                     override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
-                        ChartXAxisSync.syncXAxis(priceChart, volumeChart)
+                        volumeChartRef.value?.let { ChartXAxisSync.syncXAxis(priceChart, it) }
+                        macdChartRef.value?.let { ChartXAxisSync.syncXAxis(priceChart, it) }
+                        rsiChartRef.value?.let { ChartXAxisSync.syncXAxis(priceChart, it) }
                     }
                     override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
-                        ChartXAxisSync.syncXAxis(priceChart, volumeChart)
+                        volumeChartRef.value?.let { ChartXAxisSync.syncXAxis(priceChart, it) }
+                        macdChartRef.value?.let { ChartXAxisSync.syncXAxis(priceChart, it) }
+                        rsiChartRef.value?.let { ChartXAxisSync.syncXAxis(priceChart, it) }
                     }
                 }
-
-                addView(priceChart)
-                addView(volumeChart)
             }
         },
-        update = { root ->
-            val priceChart = root.findViewWithTag<LineChart>("priceChart")
-            val volumeChart = root.findViewWithTag<BarChart>("volumeChart")
-
+        update = { priceChart ->
             val priceEntries = candles.mapIndexed { i, c -> Entry(i.toFloat(), c.close.toFloat()) }
             val priceSet = LineDataSet(priceEntries, "Precio").apply {
                 // CAMBIADO — colors (por segmento) en vez de color (uno solo) para poder pintar
@@ -811,26 +888,227 @@ internal fun PriceAndVolumeChart(candles: List<Candle>, sma20: List<Double?>, ra
                 tripleTopBottomWickSet1, tripleTopBottomWickSet2, tripleTopBottomWickSet3, tripleTopBottomSet
             )
             priceChart.invalidate()
-
-            val volumeEntries = candles.mapIndexed { i, c -> BarEntry(i.toFloat(), (c.volume ?: 0L).toFloat()) }
-            // CAMBIADO — mismo criterio de horario extendido que la línea de precio (ver
-            // isExtendedHours arriba): esas barras se pintan de gris apagado en vez de
-            // verde/rojo, para que quede claro a simple vista que ese volumen es de fuera de la
-            // sesión regular (normalmente mucho menor y menos representativo).
-            val volumeColors = candles.map { if (isExtendedHours(it)) extendedHoursColor else if (it.close >= it.open) upColor else downColor }
-            val volumeSet = BarDataSet(volumeEntries, "Volumen").apply {
-                colors = volumeColors
-                setDrawValues(false)
-            }
-            volumeChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-            volumeChart.data = BarData(volumeSet).apply { barWidth = 0.7f }
-            volumeChart.invalidate()
-
-            // Encaja ambos gráficos al rango completo al (re)cargar datos nuevos (cambio de símbolo o de rango temporal).
+            // Encaja el gráfico al rango completo al (re)cargar datos nuevos (cambio de símbolo o de rango temporal).
             priceChart.fitScreen()
-            ChartXAxisSync.syncXAxis(priceChart, volumeChart)
         }
         )
+
+        // Datos compartidos por Volumen/MACD (las barras de volumen son las mismas en los dos
+        // paneles) — calculados UNA vez aquí, fuera de los AndroidView, para no duplicar trabajo.
+        val volumeEntries = remember(candles) { candles.mapIndexed { i, c -> BarEntry(i.toFloat(), (c.volume ?: 0L).toFloat()) } }
+        // CAMBIADO — mismo criterio de horario extendido que la línea de precio (ver
+        // isExtendedHours arriba): esas barras se pintan de gris apagado en vez de verde/rojo,
+        // para que quede claro a simple vista que ese volumen es de fuera de la sesión regular.
+        val volumeColors = remember(candles) { candles.map { if (isExtendedHours(it)) extendedHoursColor else if (it.close >= it.open) upColor else downColor } }
+
+        // CAMBIADO a petición expresa: sin chip propio aquí — se controla desde el icono
+        // "Indicadores" de arriba (ver más arriba). Se mantiene "showVolume" como condición
+        // (Bonos USA no tienen datos de volumen reales) — visible en los 6 rangos por igual.
+        if (showVolume) {
+            if (volumeVisible) {
+                AndroidView(
+                    modifier = Modifier.fillMaxWidth(),
+                    factory = { ctx ->
+                        BarChart(ctx).apply {
+                            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(ctx, 120))
+                            description.isEnabled = false
+                            legend.isEnabled = false
+                            axisRight.isEnabled = false
+                            axisLeft.gridColor = gridColor
+                            axisLeft.textColor = labelColor
+                            axisLeft.axisMinimum = 0f
+                            xAxis.position = XAxis.XAxisPosition.BOTTOM
+                            xAxis.granularity = 1f
+                            xAxis.setDrawGridLines(false)
+                            xAxis.textColor = labelColor
+                            xAxis.labelRotationAngle = -45f
+                            setScaleYEnabled(false)
+                            setPinchZoom(false)
+                            // El panel de volumen no se toca directamente: sigue el pan/zoom
+                            // del panel de precio (ver ChartXAxisSync), como en TradingView.
+                            setTouchEnabled(false)
+                            volumeChartRef.value = this
+                        }
+                    },
+                    update = { volumeChart ->
+                        volumeChartRef.value = volumeChart
+                        val volumeSet = BarDataSet(volumeEntries, "Volumen").apply {
+                            colors = volumeColors
+                            setDrawValues(false)
+                        }
+                        volumeChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+                        volumeChart.data = BarData(volumeSet).apply { barWidth = 0.7f }
+                        volumeChart.invalidate()
+                        volumeChart.fitScreen()
+                    }
+                )
+            } else {
+                DisposableEffect(Unit) { onDispose { volumeChartRef.value = null } }
+            }
+
+            if (macdVisible) {
+                AndroidView(
+                    modifier = Modifier.fillMaxWidth(),
+                    factory = { ctx ->
+                        // CAMBIADO a petición expresa ("quiero que el histograma de MACD tenga
+                        // tb el volumen en el mismo histograma, para ver volumen alcista y
+                        // bajista"): CombinedChart — combina las barras de volumen (eje
+                        // izquierdo, verde/rojo según sube/baja) con las líneas MACD/señal (eje
+                        // DERECHO, escala propia — el volumen suele ir en millones y el MACD en
+                        // unidades de precio, en el mismo eje una aplastaría a la otra).
+                        CombinedChart(ctx).apply {
+                            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(ctx, 110))
+                            description.isEnabled = false
+                            legend.isEnabled = false
+                            drawOrder = arrayOf(CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE)
+                            axisLeft.gridColor = gridColor
+                            axisLeft.textColor = labelColor
+                            // CAMBIADO a petición expresa ("volumen de operaciones por encima y
+                            // por debajo de 0"): SIN axisMinimum=0f — las barras de volumen bajista
+                            // se dibujan como valores NEGATIVOS (ver macdVolumeEntries más abajo),
+                            // así que el eje tiene que poder bajar de 0 para mostrarlas.
+                            axisRight.isEnabled = true
+                            axisRight.textColor = labelColor
+                            axisRight.setDrawGridLines(false)
+                            xAxis.position = XAxis.XAxisPosition.BOTTOM
+                            xAxis.granularity = 1f
+                            xAxis.setDrawGridLines(false)
+                            xAxis.textColor = labelColor
+                            xAxis.labelRotationAngle = -45f
+                            setScaleYEnabled(false)
+                            setPinchZoom(false)
+                            setTouchEnabled(false)
+                            macdChartRef.value = this
+                        }
+                    },
+                    update = { macdChart ->
+                        macdChartRef.value = macdChart
+                        val macdSeries = com.inversionadvisor.domain.indicators.TechnicalAnalysis.calculateMacdSeries(candles)
+                        val macdLineColor = AndroidColor.parseColor("#2196F3") // azul — línea MACD
+                        val macdSignalColor = AndroidColor.parseColor("#FF6D00") // naranja — línea de señal, mismo tono que la SMA20
+                        // Barras de volumen — MISMOS valores/colores que volumeEntries/volumeColors
+                        // de arriba, pero como instancias de Entry/BarDataSet propias (un mismo
+                        // BarEntry no debe compartirse entre dos BarData distintos).
+                        // CAMBIADO a petición expresa: volumen POSITIVO (por encima de 0) en
+                        // velas alcistas, NEGATIVO (por debajo de 0) en velas bajistas — mismo
+                        // criterio verde/rojo que el color, pero reflejado también en el signo,
+                        // para verlo de un vistazo sin depender solo del color.
+                        val macdVolumeEntries = candles.mapIndexed { i, c ->
+                            val magnitud = (c.volume ?: 0L).toFloat()
+                            BarEntry(i.toFloat(), if (c.close >= c.open) magnitud else -magnitud)
+                        }
+                        val macdVolumeSet = BarDataSet(macdVolumeEntries, "Volumen").apply {
+                            colors = volumeColors
+                            setDrawValues(false)
+                            axisDependency = YAxis.AxisDependency.LEFT
+                        }
+                        macdChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+                        val combinedData = CombinedData()
+                        combinedData.setData(BarData(macdVolumeSet).apply { barWidth = 0.7f })
+                        if (macdSeries.size == candles.size) {
+                            val macdLineEntries = macdSeries.mapIndexed { i, v -> Entry(i.toFloat(), v.macdLine.toFloat()) }
+                            val macdSignalEntries = macdSeries.mapIndexed { i, v -> Entry(i.toFloat(), v.signalLine.toFloat()) }
+                            val macdLineSet = LineDataSet(macdLineEntries, "MACD").apply {
+                                color = macdLineColor
+                                setDrawCircles(false)
+                                setDrawValues(false)
+                                lineWidth = 1.8f
+                                axisDependency = YAxis.AxisDependency.RIGHT
+                            }
+                            val macdSignalSet = LineDataSet(macdSignalEntries, "Señal").apply {
+                                color = macdSignalColor
+                                setDrawCircles(false)
+                                setDrawValues(false)
+                                lineWidth = 1.8f
+                                axisDependency = YAxis.AxisDependency.RIGHT
+                            }
+                            combinedData.setData(LineData(macdLineSet, macdSignalSet))
+                        } // si no hay histórico suficiente (slowPeriod+signalPeriod velas), se quedan solo las barras de volumen
+                        macdChart.data = combinedData
+                        macdChart.invalidate()
+                        macdChart.fitScreen()
+                    }
+                )
+            } else {
+                DisposableEffect(Unit) { onDispose { macdChartRef.value = null } }
+            }
+
+            if (rsiVisible) {
+                AndroidView(
+                    modifier = Modifier.fillMaxWidth(),
+                    factory = { ctx ->
+                        LineChart(ctx).apply {
+                            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(ctx, 90))
+                            description.isEnabled = false
+                            legend.isEnabled = false
+                            axisRight.isEnabled = false
+                            axisLeft.gridColor = gridColor
+                            axisLeft.textColor = labelColor
+                            axisLeft.axisMinimum = 0f
+                            axisLeft.axisMaximum = 100f
+                            xAxis.position = XAxis.XAxisPosition.BOTTOM
+                            xAxis.granularity = 1f
+                            xAxis.setDrawGridLines(false)
+                            xAxis.textColor = labelColor
+                            xAxis.labelRotationAngle = -45f
+                            setScaleYEnabled(false)
+                            setPinchZoom(false)
+                            setTouchEnabled(false)
+                            rsiChartRef.value = this
+                        }
+                    },
+                    update = { rsiChart ->
+                        rsiChartRef.value = rsiChart
+                        // CAMBIADO a petición expresa (antes histograma de barras): panel RSI
+                        // como UNA LÍNEA, coloreada por tramos (mismo truco que la línea de
+                        // precio con horario extendido: colors por punto) — rojo en sobrecompra
+                        // (≥70, riesgo de giro a la baja), verde en sobreventa (≤30, riesgo de
+                        // giro al alza), gris en zona neutra.
+                        val rsiSeries = com.inversionadvisor.domain.indicators.TechnicalAnalysis.calculateRsi(candles)
+                        val rsiEntries = rsiSeries.mapIndexedNotNull { i, v -> v?.let { Entry(i.toFloat(), it.toFloat()) } }
+                        val rsiColors = rsiSeries.mapNotNull { v ->
+                            v?.let { if (it >= 70.0) downColor else if (it <= 30.0) upColor else AndroidColor.parseColor("#9E9E9E") }
+                        }
+                        val rsiSet = LineDataSet(rsiEntries, "RSI").apply {
+                            colors = rsiColors
+                            setDrawCircles(false)
+                            setDrawValues(false)
+                            lineWidth = 1.8f
+                        }
+                        rsiChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+                        rsiChart.data = LineData(rsiSet)
+                        rsiChart.invalidate()
+                        rsiChart.fitScreen()
+                    }
+                )
+            } else {
+                DisposableEffect(Unit) { onDispose { rsiChartRef.value = null } }
+            }
+        }
+
+        // NUEVO — pedido expresamente: aviso AMARILLO cuando hay divergencia entre el MACD y el
+        // precio (definida solo por esas dos series). CAMBIADO a petición expresa: el volumen ya
+        // NO es requisito para avisar — es una confirmación aparte, no bloqueante (ver
+        // TechnicalAnalysis.detectMacdPriceDivergence) — se añade como matiz al mensaje cuando
+        // también cae, sin que su ausencia impida el aviso.
+        val macdDivergenceResult = remember(candles) {
+            com.inversionadvisor.domain.indicators.TechnicalAnalysis.detectMacdPriceDivergence(candles)
+        }
+        if (macdDivergenceResult.divergence != com.inversionadvisor.domain.indicators.TechnicalAnalysis.MacdPriceDivergence.NONE) {
+            val refuerzo = if (macdDivergenceResult.volumenConfirma) " El volumen menguante refuerza la señal." else ""
+            val mensaje = if (macdDivergenceResult.divergence == com.inversionadvisor.domain.indicators.TechnicalAnalysis.MacdPriceDivergence.BEARISH) {
+                "⚠ Divergencia bajista MACD/precio: el precio sube pero el MACD baja — el rally pierde fuelle.$refuerzo"
+            } else {
+                "⚠ Divergencia alcista MACD/precio: el precio baja pero el MACD sube — la presión vendedora se agota.$refuerzo"
+            }
+            Text(
+                mensaje,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFF9A825),
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
     }
 }
 
