@@ -171,6 +171,11 @@ class PosiblesComprasRepository(
             )
             if (!confirmaciones.esCombinacionValida) return@mapNotNull null
 
+            // NUEVO — pedido expresamente: "se descartarán candidatos con menos de 50 puntos
+            // para Posibles Compras" — misma escala 0-100 de Top10Calculator.score() que ya usa
+            // el resto de la app (p. ej. el umbral ≥55 del cajón genérico de Top10).
+            if (generic?.isCompleteFromRemoteScan == true && generic.provisionalScore < MIN_SCORE_FOR_BUY_OPPORTUNITY) return@mapNotNull null
+
             if (generic?.isCompleteFromRemoteScan == true) {
                 return@mapNotNull Candidate(
                     symbol = entity.symbol,
@@ -206,6 +211,7 @@ class PosiblesComprasRepository(
                 hasLongTermUptrend = false,
                 requireSignal = true
             ) ?: return@mapNotNull null
+            if (provisional.combinedScore < MIN_SCORE_FOR_BUY_OPPORTUNITY) return@mapNotNull null
             Candidate(
                 symbol = opportunity.symbol,
                 name = opportunity.name ?: opportunity.symbol,
@@ -362,12 +368,16 @@ class PosiblesComprasRepository(
                     // QUITADO el filtro de volumen SEMANAL aquí también (ver comentario en el
                     // pool rápido, más arriba) — el volumen DIARIO de confirmacionesFrescas es
                     // el único que queda.
+                    // NUEVO — pedido expresamente: "se descartarán candidatos con menos de 50
+                    // puntos" — it.riskRewardRatio es el combinedScore de Top10Calculator (0-100,
+                    // mismo nombre confuso heredado de BuyOpportunityAnalyzer.Analysis).
                     val pasaFiltroFresco = analysis != null &&
                         !analysis.hasConfirmedUptrend &&
                         exhaustionFresco != null &&
                         exhaustionFresco.declinePercentFromRecentHigh <= -com.inversionadvisor.domain.indicators.Top10Calculator.MIN_DECLINE_PERCENT &&
                         exhaustionFresco.confidenceScore >= ScreenerRepository.MIN_CONFIDENCE_SCORE_FOR_BUY_OPPORTUNITY &&
                         (macdFresco?.histogram ?: 0.0) > 0.0 &&
+                        analysis.riskRewardRatio >= MIN_SCORE_FOR_BUY_OPPORTUNITY &&
                         confirmacionesFrescas?.esCombinacionValida == true
 
                     analysis?.takeIf { pasaFiltroFresco }?.let {
@@ -462,6 +472,11 @@ class PosiblesComprasRepository(
 // encima de su propia media de 20 sesiones), no el mínimo bruto (1,0, "ni más ni menos que la
 // media") que ya se quitó del filtro base por ser demasiado débil.
 private const val MIN_DAILY_VOLUME_RATIO_CONFIRMACION = 1.3
+
+/** NUEVO — pedido expresamente: "se descartarán candidatos con menos de 50 puntos para Posibles
+ *  Compras" — misma escala 0-100 de Top10Calculator.score() (combinedScore) que usa el resto de
+ *  la app, p. ej. el umbral ≥55 del cajón genérico de Top10. */
+private const val MIN_SCORE_FOR_BUY_OPPORTUNITY = 50.0
 private const val MAX_DISTANCIA_SOPORTE_PERCENT = 8.0
 
 /** Las 4 señales de confluencia por separado — ver comentario de arriba sobre cuáles son

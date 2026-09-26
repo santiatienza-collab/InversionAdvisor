@@ -38,6 +38,10 @@ object ExhaustionDetector {
      *  bajista real. Mismo umbral que TechnicalAnalysis.detectMacdPriceDivergence. */
     private const val MIN_DECLINE_R2 = 0.3
 
+    /** R² mínimo para la tendencia alcista desde el suelo (ver hayTendenciaAlcistaDesdeSuelo) —
+     *  mismo umbral que MIN_DECLINE_R2, nombre propio para no confundir "caída" con "recuperación". */
+    private const val MIN_RECOVERY_TREND_R2 = 0.3
+
     /**
      * @param candles histórico ordenado ascendente (recomendado: velas semanales de 1-2 años,
      *                o diarias de varios meses).
@@ -275,7 +279,33 @@ object ExhaustionDetector {
         val sinRetrocesoExcesivo = semanasConRetrocesoExcesivo < 2
         val ultimaVelaNoBaja = afterLowCloses.size < 2 || afterLowCloses.last() >= afterLowCloses[afterLowCloses.size - 2]
 
-        val hayRecuperacionSolida = hayMinimosAscendentes && hayReboteSolido && sinRetrocesoExcesivo && ultimaVelaNoBaja
+        // NUEVO — pedido expresamente: "quiero que los candidatos tengan tendencia alcista desde
+        // el último suelo durante al menos dos semanas para que se considere recuperación
+        // sólida" — a diferencia de "mínimos ascendentes" (que solo mira si los MÍNIMOS de cada
+        // vela no bajan, en el 60% de los pasos), esto exige una tendencia alcista de verdad en
+        // los CIERRES desde el suelo (regresión lineal, pendiente >0 y R²≥0.3 — mismo criterio
+        // que el resto de detectores de esta clase), sostenida durante un mínimo de 2 semanas
+        // completas tras el suelo (3 velas contando el propio suelo).
+        val hayTendenciaAlcistaDesdeSuelo: Boolean
+        if (afterLowCloses.size >= 3) {
+            val n = afterLowCloses.size
+            val xs = (0 until n).map { it.toDouble() }
+            val xMean = xs.average()
+            val yMean = afterLowCloses.average()
+            val num = xs.indices.sumOf { (xs[it] - xMean) * (afterLowCloses[it] - yMean) }
+            val den = xs.sumOf { (it - xMean) * (it - xMean) }
+            val slope = if (den == 0.0) 0.0 else num / den
+            val predicted = xs.map { yMean + slope * (it - xMean) }
+            val ssRes = afterLowCloses.indices.sumOf { (afterLowCloses[it] - predicted[it]) * (afterLowCloses[it] - predicted[it]) }
+            val ssTot = afterLowCloses.sumOf { (it - yMean) * (it - yMean) }
+            val r2 = if (ssTot == 0.0) 0.0 else 1 - ssRes / ssTot
+            hayTendenciaAlcistaDesdeSuelo = slope > 0 && r2 >= MIN_RECOVERY_TREND_R2
+        } else {
+            hayTendenciaAlcistaDesdeSuelo = false // menos de 2 semanas desde el suelo — no hay forma de confirmar tendencia sostenida todavía
+        }
+
+        val hayRecuperacionSolida = hayMinimosAscendentes && hayReboteSolido && sinRetrocesoExcesivo &&
+            ultimaVelaNoBaja && hayTendenciaAlcistaDesdeSuelo
 
         if (debugSymbol != null) {
             android.util.Log.i(
@@ -284,7 +314,7 @@ object ExhaustionDetector {
                     "recoveryScore=$recoveryScore/75 (hace falta ≥40) — mínimosAscendentes=$hayMinimosAscendentes — " +
                     "rebote=${"%.1f".format(reboteDesdeElSueloPercent)}%% (hace falta ≥$MIN_REBOTE_DESDE_SUELO_PERCENT%%) — " +
                     "retrocesoDesdePico=${"%.1f".format(retrocesoDesdePicoPercent)}%% (hace falta ≤$MAX_RETROCESO_DESDE_PICO_PERCENT%%) — " +
-                    "últimaVelaNoBaja=$ultimaVelaNoBaja — " +
+                    "últimaVelaNoBaja=$ultimaVelaNoBaja — tendenciaAlcistaDesdeSuelo=$hayTendenciaAlcistaDesdeSuelo — " +
                     "detected=${recoveryScore >= 40 && hayVelaPosteriorAlSuelo && hayRecuperacionSolida} — razones: ${reasons.joinToString(" | ")}"
             )
         }
