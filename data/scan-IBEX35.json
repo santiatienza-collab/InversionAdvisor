@@ -1,5 +1,5 @@
 {
-  "generatedAtEpochMillis": 1792778543218,
+  "generatedAtEpochMillis": 1792795474802,
   "indexName": "IBEX35",
   "totalSymbols": 35,
   "symbolsWithData": 35,
@@ -12,7 +12,7 @@
       "indexName": "IBEX35",
       "rsi14": 63.50000102743485,
       "volumeRatio": 0.713009071811699,
-      "dailyVolumeRatio": 0.9878546636887978,
+      "dailyVolumeRatio": 0.6803960162113238,
       "isUptrend": true,
       "trendQuality": 0.8999204625968028,
       "yearChangePercent": 88.32671265568052,
@@ -48,8 +48,8 @@
       "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en zona neutra (64). Riesgo (volatilidad): volatilidad propia 0.99x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 71% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+74.8 puntos) +10",
-        "Ha caído bastante menos que su propio sector (11.1 puntos de diferencia)",
+        "Supera claramente al S&P 500 en el último año (+74.9 puntos) +10",
+        "Ha caído bastante menos que su propio sector (11.2 puntos de diferencia)",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10"
       ],
       "factors": [
@@ -100,7 +100,7 @@
         "PUNTUACIÓN TOTAL (0-100) = (0.30 + 1) × 50 = 65.0"
       ],
       "riskBreakdown": [
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+74.8 puntos) +10; Ha caído bastante menos que su propio sector (11.1 puntos de diferencia); Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 65.0 pasa a 85.0",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+74.9 puntos) +10; Ha caído bastante menos que su propio sector (11.2 puntos de diferencia); Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 65.0 pasa a 85.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -110,16 +110,16 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 64.65128011480542,
+      "rsi14": 64.6512809652165,
       "volumeRatio": 1.3005535460679767,
-      "dailyVolumeRatio": 0.7755459082995753,
+      "dailyVolumeRatio": 0.8610206226370444,
       "isUptrend": true,
-      "trendQuality": 0.7887030561470769,
+      "trendQuality": 0.7887030625567786,
       "yearChangePercent": 30.448943937313093,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -127,7 +127,7 @@
       "stockVolatilityRatio": 0.7577170567701379,
       "percentFromYearHigh": -1.238734856527326,
       "nearestResistancePercent": 0.9121943294549856,
-      "macdHistogram": -0.02535730866766034,
+      "macdHistogram": -0.025357308829440206,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-22T07:00:00Z",
@@ -142,7 +142,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (65). Riesgo (volatilidad): volatilidad propia 0.76x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 130% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+16.9 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+17.0 puntos) +10",
         "Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10",
         "Patrón de Bandera Alcista a Largo Plazo +10"
@@ -195,7 +195,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 130% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+16.9 puntos) +10; Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10; Patrón de Bandera Alcista a Largo Plazo +10 → 37.5 pasa a 77.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+17.0 puntos) +10; Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10; Patrón de Bandera Alcista a Largo Plazo +10 → 37.5 pasa a 77.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -207,14 +207,14 @@
       "indexName": "IBEX35",
       "rsi14": 66.54948638836466,
       "volumeRatio": 0.6634592642800926,
-      "dailyVolumeRatio": 1.165535332957665,
+      "dailyVolumeRatio": 0.5445940173107767,
       "isUptrend": true,
       "trendQuality": 0.925404431565273,
       "yearChangePercent": 33.89376202018678,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.05,
+      "sectorAveragePe": 34.99,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -237,7 +237,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (67). Riesgo (volatilidad): volatilidad propia 1.47x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 66% de su media, MACD alcista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+20.3 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+20.5 puntos) +10",
         "Cruz dorada (21 oct 2026): SMA20 cruza por encima de la SMA50 +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
       ],
@@ -289,7 +289,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 66% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+20.3 puntos) +10; Cruz dorada (21 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 67.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+20.5 puntos) +10; Cruz dorada (21 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 67.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -299,23 +299,23 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 69.54568336810107,
+      "rsi14": 69.5456843729317,
       "volumeRatio": 0.6972709646945088,
-      "dailyVolumeRatio": 1.4732818031886834,
+      "dailyVolumeRatio": 0.7446940550086181,
       "isUptrend": true,
-      "trendQuality": 0.8158828576280219,
+      "trendQuality": 0.815882878133711,
       "yearChangePercent": 28.38554484685858,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.44273836510092685,
       "percentFromYearHigh": -0.22779563859333432,
-      "macdHistogram": 0.08682526644005234,
+      "macdHistogram": 0.08682525985707007,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -329,7 +329,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en zona neutra (70). Riesgo (volatilidad): volatilidad propia 0.44x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 70% de su media, MACD alcista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+14.8 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+15.0 puntos) +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10"
       ],
       "factors": [
@@ -380,7 +380,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 70% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+14.8 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 45.0 pasa a 65.0",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+15.0 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 45.0 pasa a 65.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -392,14 +392,14 @@
       "indexName": "IBEX35",
       "rsi14": 63.81322840953835,
       "volumeRatio": 0.6939148859936539,
-      "dailyVolumeRatio": 1.2955052634543516,
+      "dailyVolumeRatio": 0.8389568164080822,
       "isUptrend": true,
       "trendQuality": 0.6842708664220856,
       "yearChangePercent": 38.70057260500897,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 23.96,
+      "sectorAveragePe": 23.93,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -421,7 +421,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en zona neutra (64). Riesgo (volatilidad): volatilidad propia 1.06x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 69% de su media, MACD alcista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+25.1 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+25.3 puntos) +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10"
       ],
       "factors": [
@@ -472,7 +472,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 69% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+25.1 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 45.0 pasa a 65.0",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+25.3 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 45.0 pasa a 65.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -482,11 +482,11 @@
       "sectorEtf": "XLB",
       "sectorName": "Materiales",
       "indexName": "IBEX35",
-      "rsi14": 53.039431132077574,
+      "rsi14": 53.039430699603706,
       "volumeRatio": 0.5988335047210401,
-      "dailyVolumeRatio": 1.4538532234385675,
+      "dailyVolumeRatio": 1.0820236231127607,
       "isUptrend": true,
-      "trendQuality": 0.8621696665972827,
+      "trendQuality": 0.8621696609054637,
       "yearChangePercent": 54.17562761544171,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -502,7 +502,7 @@
       "recentLowDate": "2026-10-04T22:00:00Z",
       "recoveryProgressToResistancePercent": 18.103446504024134,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.81,
+      "sectorAveragePe": 18.77,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -510,7 +510,7 @@
       "stockVolatilityRatio": 0.3842870067644872,
       "percentFromYearHigh": -10.441337685811225,
       "nearestResistancePercent": 11.418273088318498,
-      "macdHistogram": -0.27934782228512234,
+      "macdHistogram": -0.2793478140908576,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -524,8 +524,8 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (53). Riesgo (volatilidad): volatilidad propia 0.38x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 60% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+40.6 puntos) +10",
-        "Ha caído bastante menos que su propio sector (17.2 puntos de diferencia)",
+        "Supera claramente al S&P 500 en el último año (+40.8 puntos) +10",
+        "Ha caído bastante menos que su propio sector (17.6 puntos de diferencia)",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
       ],
       "factors": [
@@ -576,7 +576,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 60% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+40.6 puntos) +10; Ha caído bastante menos que su propio sector (17.2 puntos de diferencia); Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 57.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+40.8 puntos) +10; Ha caído bastante menos que su propio sector (17.6 puntos de diferencia); Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 57.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -588,7 +588,7 @@
       "indexName": "IBEX35",
       "rsi14": 55.61453264762167,
       "volumeRatio": 0.713381025086179,
-      "dailyVolumeRatio": 0.840440502964645,
+      "dailyVolumeRatio": 1.0147901767719028,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -605,7 +605,7 @@
       "recentLowDate": "2026-09-06T22:00:00Z",
       "recoveryProgressToResistancePercent": 62.56216388853478,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.05,
+      "sectorAveragePe": 34.99,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -628,7 +628,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza. RSI: RSI en zona neutra (56). Riesgo (volatilidad): volatilidad propia 0.48x lo habitual. Giro: agotamiento bajista detectado (posible giro al alza). Volumen / MACD: volumen 71% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (24.1 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (24.3 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -678,7 +678,7 @@
       ],
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (24.1 puntos de diferencia) → 57.5 pasa a 57.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (24.3 puntos de diferencia) → 57.5 pasa a 57.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -690,7 +690,7 @@
       "indexName": "IBEX35",
       "rsi14": 56.68737537379486,
       "volumeRatio": 0.9263792908647567,
-      "dailyVolumeRatio": 0.7954977199526109,
+      "dailyVolumeRatio": 0.7477522766947617,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -707,7 +707,7 @@
       "recentLowDate": "2026-09-13T22:00:00Z",
       "recoveryProgressToResistancePercent": 90.89602510695427,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 23.96,
+      "sectorAveragePe": 23.93,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -731,7 +731,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza. RSI: RSI en zona neutra (57). Riesgo (volatilidad): volatilidad propia 0.50x lo habitual. Giro: agotamiento bajista detectado (posible giro al alza). Volumen / MACD: volumen 93% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (20.2 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (20.3 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -781,7 +781,7 @@
       ],
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (20.2 puntos de diferencia) → 57.5 pasa a 57.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (20.3 puntos de diferencia) → 57.5 pasa a 57.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -791,16 +791,16 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 69.70181448763499,
+      "rsi14": 69.70181689492266,
       "volumeRatio": 0.38016596569405847,
-      "dailyVolumeRatio": 0.9951376317224396,
+      "dailyVolumeRatio": 0.6708689014049258,
       "isUptrend": true,
-      "trendQuality": 0.8105731227497275,
-      "yearChangePercent": 19.143801190798136,
+      "trendQuality": 0.8105730534476949,
+      "yearChangePercent": 19.143792484920475,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -808,7 +808,7 @@
       "stockVolatilityRatio": 0.4811456702518816,
       "percentFromYearHigh": 0.0,
       "nearestSupportPercent": 24.880073371061176,
-      "macdHistogram": 0.07503803731158709,
+      "macdHistogram": 0.07503802944324289,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -884,7 +884,7 @@
       "indexName": "IBEX35",
       "rsi14": 46.97282602096053,
       "volumeRatio": 0.39895870105440184,
-      "dailyVolumeRatio": 0.69005452095463,
+      "dailyVolumeRatio": 0.40446621852569214,
       "isUptrend": false,
       "isBuyOpportunity": true,
       "exhaustionConfidence": 85,
@@ -901,7 +901,7 @@
       "recentLowDate": "2026-08-02T22:00:00Z",
       "recoveryProgressToResistancePercent": 33.58912930241602,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -924,7 +924,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza. RSI: RSI en zona neutra (47). Riesgo (volatilidad): volatilidad propia 1.03x lo habitual. Giro: agotamiento bajista detectado (posible giro al alza). Volumen / MACD: volumen 40% de su media, MACD alcista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (27.5 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (27.2 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -974,7 +974,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 40% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (27.5 puntos de diferencia) → 52.5 pasa a 52.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (27.2 puntos de diferencia) → 52.5 pasa a 52.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -986,7 +986,7 @@
       "indexName": "IBEX35",
       "rsi14": 41.12880618311302,
       "volumeRatio": 0.39655543978767555,
-      "dailyVolumeRatio": 1.0222582581646098,
+      "dailyVolumeRatio": 0.5719311722230758,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -999,7 +999,7 @@
       "recentLow": 196.0,
       "recentLowDate": "2026-09-13T22:00:00Z",
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.05,
+      "sectorAveragePe": 34.99,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -1021,7 +1021,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (41). Riesgo (volatilidad): volatilidad propia 0.62x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 40% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (41.8 puntos de diferencia)",
+        "Ha caído bastante menos que su propio sector (42.0 puntos de diferencia)",
         "Cruz dorada (12 oct 2026): SMA20 cruza por encima de la SMA50 +10"
       ],
       "factors": [
@@ -1072,7 +1072,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 40% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (41.8 puntos de diferencia); Cruz dorada (12 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 37.5 pasa a 47.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (42.0 puntos de diferencia); Cruz dorada (12 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 37.5 pasa a 47.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -1084,7 +1084,7 @@
       "indexName": "IBEX35",
       "rsi14": 58.235433238730046,
       "volumeRatio": 0.6412235114586062,
-      "dailyVolumeRatio": 1.1388475722305869,
+      "dailyVolumeRatio": 0.7821854056335931,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -1097,7 +1097,7 @@
       "recentLow": 9.232000350952148,
       "recentLowDate": "2026-09-20T22:00:00Z",
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 33.73,
+      "sectorAveragePe": 33.78,
       "isSectorInFavor": true,
       "hchState": "CONFIRMED",
       "doubleTopBottomPattern": "NONE",
@@ -1123,7 +1123,7 @@
         "Patrón de Hombro-Cabeza-Hombro Confirmado (25 feb 2024, 27 jul 2025, 4 ene 2026) -15"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (16.3 puntos de diferencia)",
+        "Ha caído bastante menos que su propio sector (16.2 puntos de diferencia)",
         "Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10"
       ],
       "factors": [
@@ -1174,7 +1174,7 @@
       "riskBreakdown": [
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 64% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (25 feb 2024, 27 jul 2025, 4 ene 2026) -15; Ha caído bastante menos que su propio sector (16.3 puntos de diferencia); Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 52.5 pasa a 47.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (25 feb 2024, 27 jul 2025, 4 ene 2026) -15; Ha caído bastante menos que su propio sector (16.2 puntos de diferencia); Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 52.5 pasa a 47.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -1186,14 +1186,14 @@
       "indexName": "IBEX35",
       "rsi14": 56.325526377406895,
       "volumeRatio": 0.6207350775005619,
-      "dailyVolumeRatio": 1.0930506159456737,
+      "dailyVolumeRatio": 0.8168403922145959,
       "isUptrend": true,
       "trendQuality": 0.5169422353690997,
       "yearChangePercent": 17.060314658584357,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 14.98,
+      "sectorAveragePe": 14.82,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -1278,7 +1278,7 @@
       "indexName": "IBEX35",
       "rsi14": 48.876248115376846,
       "volumeRatio": 0.5669115372445493,
-      "dailyVolumeRatio": 1.353088104351446,
+      "dailyVolumeRatio": 0.6185671533653293,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 60,
@@ -1292,7 +1292,7 @@
       "recentLow": 53.099998474121094,
       "recentLowDate": "2026-07-12T22:00:00Z",
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 33.73,
+      "sectorAveragePe": 33.78,
       "isSectorInFavor": true,
       "hchState": "FORMING",
       "doubleTopBottomPattern": "NONE",
@@ -1316,7 +1316,7 @@
         "Patrón de Hombro-Cabeza-Hombro en Formación -7"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (34.6 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (34.5 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -1366,7 +1366,7 @@
       "riskBreakdown": [
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 57% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Ha caído bastante menos que su propio sector (34.6 puntos de diferencia) → 52.5 pasa a 45.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Ha caído bastante menos que su propio sector (34.5 puntos de diferencia) → 52.5 pasa a 45.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -1378,7 +1378,7 @@
       "indexName": "IBEX35",
       "rsi14": 50.340388488487534,
       "volumeRatio": 0.7004545309067632,
-      "dailyVolumeRatio": 0.9739572595508647,
+      "dailyVolumeRatio": 0.9225211396695929,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -1390,7 +1390,7 @@
       "recentLow": 21.81999969482422,
       "recentLowDate": "2026-10-23T15:35:04Z",
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 14.98,
+      "sectorAveragePe": 14.82,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -1398,7 +1398,7 @@
       "stockVolatilityRatio": 0.834863726485117,
       "percentFromYearHigh": -11.673881603195959,
       "candlestickPattern": "HAMMER",
-      "macdHistogram": -0.3958047664380575,
+      "macdHistogram": -0.39580476752897953,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -1412,7 +1412,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (50). Riesgo (volatilidad): volatilidad propia 0.83x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 70% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (17.4 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (17.6 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -1462,7 +1462,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (17.4 puntos de diferencia) → 42.5 pasa a 42.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (17.6 puntos de diferencia) → 42.5 pasa a 42.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -1474,7 +1474,7 @@
       "indexName": "IBEX35",
       "rsi14": 41.75503935568338,
       "volumeRatio": 0.9005318596323858,
-      "dailyVolumeRatio": 1.4532131814667937,
+      "dailyVolumeRatio": 0.5767966167626982,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -1488,7 +1488,7 @@
       "recentLowDate": "2026-10-23T15:35:04Z",
       "recoveryProgressToResistancePercent": 4.1364809516624215,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 14.98,
+      "sectorAveragePe": 14.82,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -1511,7 +1511,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (42). Riesgo (volatilidad): volatilidad propia 0.95x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 90% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (22.3 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (22.4 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -1561,7 +1561,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (22.3 puntos de diferencia) → 42.5 pasa a 42.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (22.4 puntos de diferencia) → 42.5 pasa a 42.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -1573,14 +1573,14 @@
       "indexName": "IBEX35",
       "rsi14": 72.15452577610262,
       "volumeRatio": 0.5931179622529104,
-      "dailyVolumeRatio": 0.7843556669200379,
+      "dailyVolumeRatio": 0.7877041177696458,
       "isUptrend": true,
       "trendQuality": 0.9335101154953727,
       "yearChangePercent": 44.18550032205354,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -1602,7 +1602,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en sobrecompra (72). Riesgo (volatilidad): volatilidad propia 0.36x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 59% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+30.6 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+30.8 puntos) +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
       ],
       "factors": [
@@ -1653,7 +1653,7 @@
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "RSI (peso 15%): RSI en sobrecompra (72) → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 59% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+30.6 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 22.5 pasa a 42.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+30.8 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 22.5 pasa a 42.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -1665,7 +1665,7 @@
       "indexName": "IBEX35",
       "rsi14": 47.895959661373944,
       "volumeRatio": 0.8162947054952258,
-      "dailyVolumeRatio": 1.0236264733632503,
+      "dailyVolumeRatio": 1.0820671866266791,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -1679,7 +1679,7 @@
       "recentLowDate": "2026-10-23T15:41:21Z",
       "recoveryProgressToResistancePercent": 9.730385737816125,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 14.98,
+      "sectorAveragePe": 14.82,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -1701,7 +1701,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (48). Riesgo (volatilidad): volatilidad propia 0.75x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 82% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (17.7 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (17.8 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -1751,7 +1751,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (17.7 puntos de diferencia) → 42.5 pasa a 42.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (17.8 puntos de diferencia) → 42.5 pasa a 42.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -1761,9 +1761,9 @@
       "sectorEtf": "XLI",
       "sectorName": "Industrial",
       "indexName": "IBEX35",
-      "rsi14": 38.07771070058248,
+      "rsi14": 38.07771046689442,
       "volumeRatio": 0.7504799817281038,
-      "dailyVolumeRatio": 0.9053538602551324,
+      "dailyVolumeRatio": 0.5412828838530084,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 60,
@@ -1777,7 +1777,7 @@
       "recentLow": 3.8320000171661377,
       "recentLowDate": "2026-10-04T22:00:00Z",
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.05,
+      "sectorAveragePe": 34.99,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -1785,7 +1785,7 @@
       "stockVolatilityRatio": 1.4229688700750975,
       "percentFromYearHigh": -20.19386530525425,
       "nearestSupportPercent": 3.569119496906755,
-      "macdHistogram": -0.06733132100748347,
+      "macdHistogram": -0.06733132076487762,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -1799,7 +1799,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (38). Riesgo (volatilidad): volatilidad propia 1.42x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 75% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (34.7 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (34.9 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -1849,7 +1849,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (34.7 puntos de diferencia) → 42.5 pasa a 42.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (34.9 puntos de diferencia) → 42.5 pasa a 42.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -1861,7 +1861,7 @@
       "indexName": "IBEX35",
       "rsi14": 53.80614899811784,
       "volumeRatio": 0.5579730944796577,
-      "dailyVolumeRatio": 0.9761189666472264,
+      "dailyVolumeRatio": 1.1651856140388903,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 70,
@@ -1877,7 +1877,7 @@
       "recentLowDate": "2026-09-06T22:00:00Z",
       "recoveryProgressToResistancePercent": 37.373929441108515,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 29.63,
+      "sectorAveragePe": 29.57,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -1900,7 +1900,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (54). Riesgo (volatilidad): volatilidad propia 0.75x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 56% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (24.3 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (24.5 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -1950,7 +1950,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 56% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (24.3 puntos de diferencia) → 37.5 pasa a 37.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (24.5 puntos de diferencia) → 37.5 pasa a 37.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -1960,9 +1960,9 @@
       "sectorEtf": "XLB",
       "sectorName": "Materiales",
       "indexName": "IBEX35",
-      "rsi14": 43.00565729445,
+      "rsi14": 43.00565749270366,
       "volumeRatio": 0.4723277854556496,
-      "dailyVolumeRatio": 1.0364645760333278,
+      "dailyVolumeRatio": 0.3889391294594348,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -1974,14 +1974,14 @@
       "recentLow": 52.47999954223633,
       "recentLowDate": "2026-10-23T15:35:47Z",
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.81,
+      "sectorAveragePe": 18.77,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.4264475180387387,
       "percentFromYearHigh": -22.212490005347927,
-      "macdHistogram": -1.675823947160866,
+      "macdHistogram": -1.6758239725411923,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -1995,7 +1995,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (43). Riesgo (volatilidad): volatilidad propia 0.43x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 47% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (27.9 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (28.3 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -2045,103 +2045,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 47% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (27.9 puntos de diferencia) → 37.5 pasa a 37.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
-      "symbol": "UNI.MC",
-      "name": "Unicaja Banco",
-      "sectorEtf": "XLF",
-      "sectorName": "Banca / Finanzas",
-      "indexName": "IBEX35",
-      "rsi14": 47.9599128888432,
-      "volumeRatio": 0.6778389479683257,
-      "dailyVolumeRatio": 0.9218867092861396,
-      "isUptrend": false,
-      "isBuyOpportunity": false,
-      "exhaustionConfidence": 25,
-      "exhaustionReasons": [
-        "Caída de 17.0%% desde el máximo reciente (2026-09-20T22:00:00Z)"
-      ],
-      "declinePercentFromRecentHigh": -17.037439024902966,
-      "recentHigh": 3.686000108718872,
-      "recentLow": 3.058000087738037,
-      "recentLowDate": "2026-10-23T15:35:04Z",
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 14.98,
-      "isSectorInFavor": false,
-      "hchState": "NONE",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.6708386827158794,
-      "percentFromYearHigh": -15.952252897034677,
-      "nearestSupportPercent": 18.163492846421523,
-      "macdHistogram": -0.06905389794234104,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 2,
-      "combinedScore": 37.5,
-      "rewardScore": 15.0,
-      "riskScore": 40.0,
-      "ratingOutOf10": 4,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (48). Riesgo (volatilidad): volatilidad propia 0.67x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 68% de su media, MACD bajista.",
-      "penaltyWarnings": [],
-      "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (21.2 puntos de diferencia)"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "RSI (peso 15%): RSI en zona neutra (48) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.67x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 68% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (21.2 puntos de diferencia) → 37.5 pasa a 37.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (28.3 puntos de diferencia) → 37.5 pasa a 37.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -2153,7 +2057,7 @@
       "indexName": "IBEX35",
       "rsi14": 55.84647894736816,
       "volumeRatio": 0.7460904438960005,
-      "dailyVolumeRatio": 0.6726031517737032,
+      "dailyVolumeRatio": 0.5110994875493282,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -2166,7 +2070,7 @@
       "recentLow": 51.13999938964844,
       "recentLowDate": "2026-10-04T22:00:00Z",
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 23.96,
+      "sectorAveragePe": 23.93,
       "isSectorInFavor": false,
       "hchState": "FORMING",
       "doubleTopBottomPattern": "NONE",
@@ -2191,7 +2095,7 @@
         "Patrón de Hombro-Cabeza-Hombro en Formación -7"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (20.0 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (20.2 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -2241,7 +2145,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Ha caído bastante menos que su propio sector (20.0 puntos de diferencia) → 42.5 pasa a 35.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Ha caído bastante menos que su propio sector (20.2 puntos de diferencia) → 42.5 pasa a 35.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -2253,7 +2157,7 @@
       "indexName": "IBEX35",
       "rsi14": 43.88407301538259,
       "volumeRatio": 0.6291748022646424,
-      "dailyVolumeRatio": 1.1604869552248347,
+      "dailyVolumeRatio": 0.9803443756399236,
       "isUptrend": false,
       "isBuyOpportunity": true,
       "exhaustionConfidence": 85,
@@ -2270,7 +2174,7 @@
       "recentLowDate": "2026-10-04T22:00:00Z",
       "recoveryProgressToResistancePercent": 34.49277101006831,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.05,
+      "sectorAveragePe": 34.99,
       "isSectorInFavor": false,
       "hchState": "FORMING",
       "doubleTopBottomPattern": "NONE",
@@ -2297,7 +2201,7 @@
         "Tendencia bajista clara confirmada (largo plazo, 52 semanas) -10"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (29.6 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (29.8 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -2347,7 +2251,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 63% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Tendencia bajista clara confirmada (largo plazo, 52 semanas) -10; Ha caído bastante menos que su propio sector (29.6 puntos de diferencia) → 52.5 pasa a 35.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Tendencia bajista clara confirmada (largo plazo, 52 semanas) -10; Ha caído bastante menos que su propio sector (29.8 puntos de diferencia) → 52.5 pasa a 35.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -2357,9 +2261,9 @@
       "sectorEtf": "XLF",
       "sectorName": "Banca / Finanzas",
       "indexName": "IBEX35",
-      "rsi14": 38.92288878203661,
+      "rsi14": 38.92288793638212,
       "volumeRatio": 1.1993788327367327,
-      "dailyVolumeRatio": 3.0667883167945034,
+      "dailyVolumeRatio": 1.1937907793395168,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -2372,14 +2276,14 @@
       "recentLow": 13.819999694824219,
       "recentLowDate": "2026-10-23T15:35:04Z",
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 14.98,
+      "sectorAveragePe": 14.82,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 1.2376261625408778,
       "percentFromYearHigh": -17.714455124749787,
-      "macdHistogram": -0.35692851070459963,
+      "macdHistogram": -0.3569285012511671,
       "shortTermBullish": false,
       "declineAccelerating": true,
       "momentumPriceDivergence": "NONE",
@@ -2395,7 +2299,7 @@
         "Caída acelerando claramente -10"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (22.9 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (23.1 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -2445,7 +2349,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Caída acelerando claramente -10; Ha caído bastante menos que su propio sector (22.9 puntos de diferencia) → 42.5 pasa a 32.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Caída acelerando claramente -10; Ha caído bastante menos que su propio sector (23.1 puntos de diferencia) → 42.5 pasa a 32.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -2457,7 +2361,7 @@
       "indexName": "IBEX35",
       "rsi14": 44.28591138520706,
       "volumeRatio": 0.6962155867631351,
-      "dailyVolumeRatio": 1.2600089380280903,
+      "dailyVolumeRatio": 0.9635397168875824,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -2471,7 +2375,7 @@
       "recentLowDate": "2026-10-23T15:35:04Z",
       "recoveryProgressToResistancePercent": 1.3227372841769232,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.05,
+      "sectorAveragePe": 34.99,
       "isSectorInFavor": false,
       "hchState": "CONFIRMED",
       "doubleTopBottomPattern": "NONE",
@@ -2496,7 +2400,7 @@
         "Patrón de Hombro-Cabeza-Hombro Confirmado (22 feb 2026, 21 jun 2026, 20 sept 2026) -15"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (29.6 puntos de diferencia)",
+        "Ha caído bastante menos que su propio sector (29.8 puntos de diferencia)",
         "Cruz dorada (13 oct 2026): SMA20 cruza por encima de la SMA50 +10"
       ],
       "factors": [
@@ -2547,7 +2451,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 70% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (22 feb 2026, 21 jun 2026, 20 sept 2026) -15; Ha caído bastante menos que su propio sector (29.6 puntos de diferencia); Cruz dorada (13 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 37.5 pasa a 32.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (22 feb 2026, 21 jun 2026, 20 sept 2026) -15; Ha caído bastante menos que su propio sector (29.8 puntos de diferencia); Cruz dorada (13 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 37.5 pasa a 32.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -2559,11 +2463,11 @@
       "indexName": "IBEX35",
       "rsi14": 47.66951303262985,
       "volumeRatio": 0.6951713613406743,
-      "dailyVolumeRatio": 0.6200745471230799,
+      "dailyVolumeRatio": 0.4689018973840163,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "FORMING",
       "doubleTopBottomPattern": "NONE",
@@ -2648,9 +2552,9 @@
       "sectorEtf": "XLC",
       "sectorName": "Comunicación / Medios",
       "indexName": "IBEX35",
-      "rsi14": 50.042892887227225,
+      "rsi14": 50.0428928863988,
       "volumeRatio": 0.8041731773863728,
-      "dailyVolumeRatio": 1.0838562740543776,
+      "dailyVolumeRatio": 0.8339123167985285,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 60,
@@ -2664,7 +2568,7 @@
       "recentLow": 21.84000015258789,
       "recentLowDate": "2026-09-27T22:00:00Z",
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 16.98,
+      "sectorAveragePe": 16.89,
       "isSectorInFavor": false,
       "hchState": "CONFIRMED",
       "doubleTopBottomPattern": "NONE",
@@ -2673,7 +2577,7 @@
       "percentFromYearHigh": -18.685122233331555,
       "nearestSupportPercent": 7.676949042299102,
       "marketTrap": "BEAR_TRAP",
-      "macdHistogram": 0.054468752453073366,
+      "macdHistogram": 0.05446875102749649,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -2689,7 +2593,7 @@
         "Patrón de Hombro-Cabeza-Hombro Confirmado (4 ene 2026, 22 feb 2026, 2 ago 2026) -15"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (35.5 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (36.1 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -2739,7 +2643,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (4 ene 2026, 22 feb 2026, 2 ago 2026) -15; Ha caído bastante menos que su propio sector (35.5 puntos de diferencia) → 42.5 pasa a 27.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (4 ene 2026, 22 feb 2026, 2 ago 2026) -15; Ha caído bastante menos que su propio sector (36.1 puntos de diferencia) → 42.5 pasa a 27.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -2749,20 +2653,20 @@
       "sectorEtf": "XLF",
       "sectorName": "Banca / Finanzas",
       "indexName": "IBEX35",
-      "rsi14": 54.66557086512044,
+      "rsi14": 54.66557077209801,
       "volumeRatio": 0.6106184527907987,
-      "dailyVolumeRatio": 1.7782514415988349,
+      "dailyVolumeRatio": 0.7099017787231494,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 14.98,
+      "sectorAveragePe": 14.82,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 1.2065838701671554,
       "percentFromYearHigh": -8.488061932672869,
-      "macdHistogram": -0.03728891862838671,
+      "macdHistogram": -0.03728891883848379,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "deathCrossDate": "2026-10-14T07:00:00Z",
@@ -2837,9 +2741,9 @@
       "sectorEtf": "XLC",
       "sectorName": "Comunicación / Medios",
       "indexName": "IBEX35",
-      "rsi14": 41.547188826183074,
+      "rsi14": 41.54718820250428,
       "volumeRatio": 0.6495046683923302,
-      "dailyVolumeRatio": 1.0324875584592852,
+      "dailyVolumeRatio": 0.5797145318659749,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 70,
@@ -2855,15 +2759,15 @@
       "recentLowDate": "2026-10-11T22:00:00Z",
       "recoveryProgressToResistancePercent": 39.28377273801439,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 16.98,
+      "sectorAveragePe": 16.89,
       "isSectorInFavor": false,
       "hchState": "CONFIRMED",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 1.1958360455878412,
-      "percentFromYearHigh": -19.945267255790775,
+      "percentFromYearHigh": -19.94527634437725,
       "nearestResistancePercent": 9.770133867528747,
-      "macdHistogram": -0.021238163160893664,
+      "macdHistogram": -0.021238159869806636,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -2879,7 +2783,7 @@
         "Patrón de Hombro-Cabeza-Hombro Confirmado (22 feb 2026, 14 jun 2026, 13 sept 2026) -15"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (29.3 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (29.9 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -2929,7 +2833,106 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 65% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (22 feb 2026, 14 jun 2026, 13 sept 2026) -15; Ha caído bastante menos que su propio sector (29.3 puntos de diferencia) → 37.5 pasa a 22.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (22 feb 2026, 14 jun 2026, 13 sept 2026) -15; Ha caído bastante menos que su propio sector (29.9 puntos de diferencia) → 37.5 pasa a 22.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
+      "symbol": "UNI.MC",
+      "name": "Unicaja Banco",
+      "sectorEtf": "XLF",
+      "sectorName": "Banca / Finanzas",
+      "indexName": "IBEX35",
+      "rsi14": 47.9599128888432,
+      "volumeRatio": 0.6778389479683257,
+      "dailyVolumeRatio": 0.7474408660076839,
+      "isUptrend": false,
+      "isBuyOpportunity": false,
+      "exhaustionConfidence": 25,
+      "exhaustionReasons": [
+        "Caída de 17.0%% desde el máximo reciente (2026-09-20T22:00:00Z)"
+      ],
+      "declinePercentFromRecentHigh": -17.037439024902966,
+      "recentHigh": 3.686000108718872,
+      "recentLow": 3.058000087738037,
+      "recentLowDate": "2026-10-23T15:35:04Z",
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 14.82,
+      "isSectorInFavor": false,
+      "hchState": "NONE",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.6708386827158794,
+      "percentFromYearHigh": -15.952252897034677,
+      "nearestSupportPercent": 18.163492846421523,
+      "macdHistogram": -0.06905389794234104,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "deathCrossDate": "2026-10-09T07:00:00Z",
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 2,
+      "combinedScore": 22.5,
+      "rewardScore": 15.0,
+      "riskScore": 40.0,
+      "ratingOutOf10": 2,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (48). Riesgo (volatilidad): volatilidad propia 0.67x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 68% de su media, MACD bajista.",
+      "penaltyWarnings": [
+        "SMA20 cruza por debajo de la SMA50 (9 oct 2026) -15"
+      ],
+      "bonusWarnings": [
+        "Ha caído bastante menos que su propio sector (21.3 puntos de diferencia)"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "RSI (peso 15%): RSI en zona neutra (48) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.67x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 68% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): SMA20 cruza por debajo de la SMA50 (9 oct 2026) -15; Ha caído bastante menos que su propio sector (21.3 puntos de diferencia) → 37.5 pasa a 22.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -2941,7 +2944,7 @@
       "indexName": "IBEX35",
       "rsi14": 29.714155234843616,
       "volumeRatio": 0.5414780656067435,
-      "dailyVolumeRatio": 0.8230536910206162,
+      "dailyVolumeRatio": 0.5156613506937779,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -2954,7 +2957,7 @@
       "recentLow": 85.4000015258789,
       "recentLowDate": "2026-10-23T15:38:12Z",
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.05,
+      "sectorAveragePe": 34.99,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -2977,7 +2980,7 @@
         "Tendencia bajista consolidada (5 de los últimos 6 meses en negativo) -15"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (50.7 puntos de diferencia)",
+        "Ha caído bastante menos que su propio sector (50.9 puntos de diferencia)",
         "Patrón de Bandera Alcista a Largo Plazo +10"
       ],
       "factors": [
@@ -3028,7 +3031,7 @@
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "RSI (peso 15%): RSI en sobreventa (30) → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 54% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia bajista consolidada (5 de los últimos 6 meses en negativo) -15; Ha caído bastante menos que su propio sector (50.7 puntos de diferencia); Patrón de Bandera Alcista a Largo Plazo +10 → 22.5 pasa a 17.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia bajista consolidada (5 de los últimos 6 meses en negativo) -15; Ha caído bastante menos que su propio sector (50.9 puntos de diferencia); Patrón de Bandera Alcista a Largo Plazo +10 → 22.5 pasa a 17.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -3040,7 +3043,7 @@
       "indexName": "IBEX35",
       "rsi14": 26.426516576587815,
       "volumeRatio": 0.8418030091514929,
-      "dailyVolumeRatio": 0.9203650982104378,
+      "dailyVolumeRatio": 1.148967328226863,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 60,
@@ -3056,7 +3059,7 @@
       "recentLowDate": "2026-10-11T22:00:00Z",
       "recoveryProgressToResistancePercent": 8.895507246000584,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.05,
+      "sectorAveragePe": 34.99,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "DOUBLE_TOP",
@@ -3080,7 +3083,7 @@
         "Patrón de Doble Techo Detectado (22 feb 2026 y 21 jun 2026) -15"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (43.5 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (43.7 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -3130,7 +3133,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "RSI (peso 15%): RSI en sobreventa (26) → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Doble Techo Detectado (22 feb 2026 y 21 jun 2026) -15; Ha caído bastante menos que su propio sector (43.5 puntos de diferencia) → 27.5 pasa a 12.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Doble Techo Detectado (22 feb 2026 y 21 jun 2026) -15; Ha caído bastante menos que su propio sector (43.7 puntos de diferencia) → 27.5 pasa a 12.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -3142,7 +3145,7 @@
       "indexName": "IBEX35",
       "rsi14": 21.253158655003034,
       "volumeRatio": 0.9187541244587336,
-      "dailyVolumeRatio": 0.9194409488682008,
+      "dailyVolumeRatio": 0.9358530130127464,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -3157,7 +3160,7 @@
       "recentLowDate": "2026-10-23T15:35:05Z",
       "recoveryProgressToResistancePercent": 2.7779230267562465,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 34.84,
+      "sectorAveragePe": 35.02,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -3181,7 +3184,7 @@
         "Tendencia bajista consolidada (5 de los últimos 6 meses en negativo) -15"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (38.1 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (37.7 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -3231,7 +3234,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "RSI (peso 15%): RSI en sobreventa (21) → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia bajista consolidada (5 de los últimos 6 meses en negativo) -15; Ha caído bastante menos que su propio sector (38.1 puntos de diferencia) → 27.5 pasa a 12.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia bajista consolidada (5 de los últimos 6 meses en negativo) -15; Ha caído bastante menos que su propio sector (37.7 puntos de diferencia) → 27.5 pasa a 12.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -3243,7 +3246,7 @@
       "indexName": "IBEX35",
       "rsi14": 30.669118930673392,
       "volumeRatio": 0.9837457547149246,
-      "dailyVolumeRatio": 1.5434081573288458,
+      "dailyVolumeRatio": 0.451826290110532,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -3258,7 +3261,7 @@
       "recentLowDate": "2026-10-18T22:00:00Z",
       "recoveryProgressToResistancePercent": 2.1915334082218263,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "CONFIRMED",
       "doubleTopBottomPattern": "NONE",
@@ -3284,7 +3287,7 @@
         "Patrón de Hombro-Cabeza-Hombro Confirmado (24 dic 2023, 19 abr 2026, 6 sept 2026) -15"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (54.9 puntos de diferencia)",
+        "Ha caído bastante menos que su propio sector (54.6 puntos de diferencia)",
         "Patrón de Bandera Alcista a Largo Plazo +10"
       ],
       "factors": [
@@ -3335,7 +3338,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Caída acelerando claramente -10; Tendencia bajista consolidada (6 de los últimos 6 meses en negativo) -15; Patrón de Hombro-Cabeza-Hombro Confirmado (24 dic 2023, 19 abr 2026, 6 sept 2026) -15; Ha caído bastante menos que su propio sector (54.9 puntos de diferencia); Patrón de Bandera Alcista a Largo Plazo +10 → 42.5 pasa a 12.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Caída acelerando claramente -10; Tendencia bajista consolidada (6 de los últimos 6 meses en negativo) -15; Patrón de Hombro-Cabeza-Hombro Confirmado (24 dic 2023, 19 abr 2026, 6 sept 2026) -15; Ha caído bastante menos que su propio sector (54.6 puntos de diferencia); Patrón de Bandera Alcista a Largo Plazo +10 → 42.5 pasa a 12.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -3347,7 +3350,7 @@
       "indexName": "IBEX35",
       "rsi14": 45.51081571405043,
       "volumeRatio": 0.5507120294447486,
-      "dailyVolumeRatio": 0.7910374270411127,
+      "dailyVolumeRatio": 0.563696550046976,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -3364,7 +3367,7 @@
       "recentLowDate": "2026-10-04T22:00:00Z",
       "recoveryProgressToResistancePercent": 39.21969969410434,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 34.84,
+      "sectorAveragePe": 35.02,
       "isSectorInFavor": false,
       "hchState": "CONFIRMED",
       "doubleTopBottomPattern": "NONE",
@@ -3391,7 +3394,7 @@
         "Patrón de Hombro-Cabeza-Hombro Confirmado (23 feb 2025, 15 jun 2025, 19 oct 2025) -15"
       ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (24.4 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (24.0 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -3441,7 +3444,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 55% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia bajista consolidada (5 de los últimos 6 meses en negativo) -15; Patrón de Hombro-Cabeza-Hombro Confirmado (23 feb 2025, 15 jun 2025, 19 oct 2025) -15; Ha caído bastante menos que su propio sector (24.4 puntos de diferencia) → 37.5 pasa a 7.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Tendencia bajista consolidada (5 de los últimos 6 meses en negativo) -15; Patrón de Hombro-Cabeza-Hombro Confirmado (23 feb 2025, 15 jun 2025, 19 oct 2025) -15; Ha caído bastante menos que su propio sector (24.0 puntos de diferencia) → 37.5 pasa a 7.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     }
@@ -3455,7 +3458,7 @@
       "indexName": "IBEX35",
       "rsi14": 63.50000102743485,
       "volumeRatio": 0.713009071811699,
-      "dailyVolumeRatio": 0.9878546636887978,
+      "dailyVolumeRatio": 0.6803960162113238,
       "isUptrend": true,
       "trendQuality": 0.8999204625968028,
       "yearChangePercent": 88.32671265568052,
@@ -3491,8 +3494,8 @@
       "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en zona neutra (64). Riesgo (volatilidad): volatilidad propia 0.99x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 71% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+74.8 puntos) +10",
-        "Ha caído bastante menos que su propio sector (11.1 puntos de diferencia)",
+        "Supera claramente al S&P 500 en el último año (+74.9 puntos) +10",
+        "Ha caído bastante menos que su propio sector (11.2 puntos de diferencia)",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10"
       ],
       "factors": [
@@ -3543,7 +3546,7 @@
         "PUNTUACIÓN TOTAL (0-100) = (0.30 + 1) × 50 = 65.0"
       ],
       "riskBreakdown": [
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+74.8 puntos) +10; Ha caído bastante menos que su propio sector (11.1 puntos de diferencia); Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 65.0 pasa a 85.0",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+74.9 puntos) +10; Ha caído bastante menos que su propio sector (11.2 puntos de diferencia); Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 65.0 pasa a 85.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -3553,16 +3556,16 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 64.65128011480542,
+      "rsi14": 64.6512809652165,
       "volumeRatio": 1.3005535460679767,
-      "dailyVolumeRatio": 0.7755459082995753,
+      "dailyVolumeRatio": 0.8610206226370444,
       "isUptrend": true,
-      "trendQuality": 0.7887030561470769,
+      "trendQuality": 0.7887030625567786,
       "yearChangePercent": 30.448943937313093,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -3570,7 +3573,7 @@
       "stockVolatilityRatio": 0.7577170567701379,
       "percentFromYearHigh": -1.238734856527326,
       "nearestResistancePercent": 0.9121943294549856,
-      "macdHistogram": -0.02535730866766034,
+      "macdHistogram": -0.025357308829440206,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-22T07:00:00Z",
@@ -3585,7 +3588,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (65). Riesgo (volatilidad): volatilidad propia 0.76x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 130% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+16.9 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+17.0 puntos) +10",
         "Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10",
         "Patrón de Bandera Alcista a Largo Plazo +10"
@@ -3638,7 +3641,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 130% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+16.9 puntos) +10; Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10; Patrón de Bandera Alcista a Largo Plazo +10 → 37.5 pasa a 77.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+17.0 puntos) +10; Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10; Patrón de Bandera Alcista a Largo Plazo +10 → 37.5 pasa a 77.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -3650,14 +3653,14 @@
       "indexName": "IBEX35",
       "rsi14": 66.54948638836466,
       "volumeRatio": 0.6634592642800926,
-      "dailyVolumeRatio": 1.165535332957665,
+      "dailyVolumeRatio": 0.5445940173107767,
       "isUptrend": true,
       "trendQuality": 0.925404431565273,
       "yearChangePercent": 33.89376202018678,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.05,
+      "sectorAveragePe": 34.99,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -3680,7 +3683,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (67). Riesgo (volatilidad): volatilidad propia 1.47x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 66% de su media, MACD alcista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+20.3 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+20.5 puntos) +10",
         "Cruz dorada (21 oct 2026): SMA20 cruza por encima de la SMA50 +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
       ],
@@ -3732,7 +3735,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 66% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+20.3 puntos) +10; Cruz dorada (21 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 67.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+20.5 puntos) +10; Cruz dorada (21 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 67.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -3742,23 +3745,23 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 69.54568336810107,
+      "rsi14": 69.5456843729317,
       "volumeRatio": 0.6972709646945088,
-      "dailyVolumeRatio": 1.4732818031886834,
+      "dailyVolumeRatio": 0.7446940550086181,
       "isUptrend": true,
-      "trendQuality": 0.8158828576280219,
+      "trendQuality": 0.815882878133711,
       "yearChangePercent": 28.38554484685858,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.44273836510092685,
       "percentFromYearHigh": -0.22779563859333432,
-      "macdHistogram": 0.08682526644005234,
+      "macdHistogram": 0.08682525985707007,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -3772,7 +3775,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en zona neutra (70). Riesgo (volatilidad): volatilidad propia 0.44x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 70% de su media, MACD alcista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+14.8 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+15.0 puntos) +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10"
       ],
       "factors": [
@@ -3823,7 +3826,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 70% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+14.8 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 45.0 pasa a 65.0",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+15.0 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 45.0 pasa a 65.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -3835,14 +3838,14 @@
       "indexName": "IBEX35",
       "rsi14": 63.81322840953835,
       "volumeRatio": 0.6939148859936539,
-      "dailyVolumeRatio": 1.2955052634543516,
+      "dailyVolumeRatio": 0.8389568164080822,
       "isUptrend": true,
       "trendQuality": 0.6842708664220856,
       "yearChangePercent": 38.70057260500897,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 23.96,
+      "sectorAveragePe": 23.93,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -3864,7 +3867,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): alcista en los últimos 3 meses, coincide con la tendencia alcista de largo plazo (52 semanas) — puntúa solo ahí, para no contar dos veces. RSI: RSI en zona neutra (64). Riesgo (volatilidad): volatilidad propia 1.06x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 69% de su media, MACD alcista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+25.1 puntos) +10",
+        "Supera claramente al S&P 500 en el último año (+25.3 puntos) +10",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10"
       ],
       "factors": [
@@ -3915,7 +3918,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 69% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+25.1 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 45.0 pasa a 65.0",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+25.3 puntos) +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 45.0 pasa a 65.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -3925,11 +3928,11 @@
       "sectorEtf": "XLB",
       "sectorName": "Materiales",
       "indexName": "IBEX35",
-      "rsi14": 53.039431132077574,
+      "rsi14": 53.039430699603706,
       "volumeRatio": 0.5988335047210401,
-      "dailyVolumeRatio": 1.4538532234385675,
+      "dailyVolumeRatio": 1.0820236231127607,
       "isUptrend": true,
-      "trendQuality": 0.8621696665972827,
+      "trendQuality": 0.8621696609054637,
       "yearChangePercent": 54.17562761544171,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -3945,7 +3948,7 @@
       "recentLowDate": "2026-10-04T22:00:00Z",
       "recoveryProgressToResistancePercent": 18.103446504024134,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.81,
+      "sectorAveragePe": 18.77,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -3953,7 +3956,7 @@
       "stockVolatilityRatio": 0.3842870067644872,
       "percentFromYearHigh": -10.441337685811225,
       "nearestResistancePercent": 11.418273088318498,
-      "macdHistogram": -0.27934782228512234,
+      "macdHistogram": -0.2793478140908576,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -3967,8 +3970,8 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (53). Riesgo (volatilidad): volatilidad propia 0.38x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 60% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+40.6 puntos) +10",
-        "Ha caído bastante menos que su propio sector (17.2 puntos de diferencia)",
+        "Supera claramente al S&P 500 en el último año (+40.8 puntos) +10",
+        "Ha caído bastante menos que su propio sector (17.6 puntos de diferencia)",
         "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
       ],
       "factors": [
@@ -4019,7 +4022,7 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 60% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+40.6 puntos) +10; Ha caído bastante menos que su propio sector (17.2 puntos de diferencia); Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 57.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+40.8 puntos) +10; Ha caído bastante menos que su propio sector (17.6 puntos de diferencia); Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 57.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -4031,7 +4034,7 @@
       "indexName": "IBEX35",
       "rsi14": 55.61453264762167,
       "volumeRatio": 0.713381025086179,
-      "dailyVolumeRatio": 0.840440502964645,
+      "dailyVolumeRatio": 1.0147901767719028,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -4048,7 +4051,7 @@
       "recentLowDate": "2026-09-06T22:00:00Z",
       "recoveryProgressToResistancePercent": 62.56216388853478,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.05,
+      "sectorAveragePe": 34.99,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -4071,7 +4074,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza. RSI: RSI en zona neutra (56). Riesgo (volatilidad): volatilidad propia 0.48x lo habitual. Giro: agotamiento bajista detectado (posible giro al alza). Volumen / MACD: volumen 71% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (24.1 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (24.3 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -4121,7 +4124,7 @@
       ],
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (24.1 puntos de diferencia) → 57.5 pasa a 57.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (24.3 puntos de diferencia) → 57.5 pasa a 57.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -4133,7 +4136,7 @@
       "indexName": "IBEX35",
       "rsi14": 56.68737537379486,
       "volumeRatio": 0.9263792908647567,
-      "dailyVolumeRatio": 0.7954977199526109,
+      "dailyVolumeRatio": 0.7477522766947617,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -4150,7 +4153,7 @@
       "recentLowDate": "2026-09-13T22:00:00Z",
       "recoveryProgressToResistancePercent": 90.89602510695427,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 23.96,
+      "sectorAveragePe": 23.93,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -4174,7 +4177,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza. RSI: RSI en zona neutra (57). Riesgo (volatilidad): volatilidad propia 0.50x lo habitual. Giro: agotamiento bajista detectado (posible giro al alza). Volumen / MACD: volumen 93% de su media, MACD bajista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (20.2 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (20.3 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -4224,7 +4227,7 @@
       ],
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (20.2 puntos de diferencia) → 57.5 pasa a 57.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (20.3 puntos de diferencia) → 57.5 pasa a 57.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -4234,16 +4237,16 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "IBEX35",
-      "rsi14": 69.70181448763499,
+      "rsi14": 69.70181689492266,
       "volumeRatio": 0.38016596569405847,
-      "dailyVolumeRatio": 0.9951376317224396,
+      "dailyVolumeRatio": 0.6708689014049258,
       "isUptrend": true,
-      "trendQuality": 0.8105731227497275,
-      "yearChangePercent": 19.143801190798136,
+      "trendQuality": 0.8105730534476949,
+      "yearChangePercent": 19.143792484920475,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -4251,7 +4254,7 @@
       "stockVolatilityRatio": 0.4811456702518816,
       "percentFromYearHigh": 0.0,
       "nearestSupportPercent": 24.880073371061176,
-      "macdHistogram": 0.07503803731158709,
+      "macdHistogram": 0.07503802944324289,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -4327,7 +4330,7 @@
       "indexName": "IBEX35",
       "rsi14": 46.97282602096053,
       "volumeRatio": 0.39895870105440184,
-      "dailyVolumeRatio": 0.69005452095463,
+      "dailyVolumeRatio": 0.40446621852569214,
       "isUptrend": false,
       "isBuyOpportunity": true,
       "exhaustionConfidence": 85,
@@ -4344,7 +4347,7 @@
       "recentLowDate": "2026-08-02T22:00:00Z",
       "recoveryProgressToResistancePercent": 33.58912930241602,
       "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.39,
+      "sectorAveragePe": 18.44,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
@@ -4367,7 +4370,7 @@
       "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza. RSI: RSI en zona neutra (47). Riesgo (volatilidad): volatilidad propia 1.03x lo habitual. Giro: agotamiento bajista detectado (posible giro al alza). Volumen / MACD: volumen 40% de su media, MACD alcista.",
       "penaltyWarnings": [],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (27.5 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (27.2 puntos de diferencia)"
       ],
       "factors": [
         {
@@ -4417,7 +4420,7 @@
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 40% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (27.5 puntos de diferencia) → 52.5 pasa a 52.5",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (27.2 puntos de diferencia) → 52.5 pasa a 52.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     }
