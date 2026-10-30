@@ -1,5 +1,5 @@
 {
-  "generatedAtEpochMillis": 1793306764043,
+  "generatedAtEpochMillis": 1793323593391,
   "indexName": "NASDAQ100",
   "totalSymbols": 102,
   "symbolsWithData": 101,
@@ -10,11 +10,11 @@
       "sectorEtf": "XLE",
       "sectorName": "Energía",
       "indexName": "NASDAQ100",
-      "rsi14": 57.85005813569842,
+      "rsi14": 57.85005882673078,
       "volumeRatio": 0.33864789643255455,
-      "dailyVolumeRatio": 0.544869331283628,
+      "dailyVolumeRatio": 0.6492903787961302,
       "isUptrend": true,
-      "trendQuality": 0.7005960695955822,
+      "trendQuality": 0.700596090064458,
       "yearChangePercent": 40.72118928714564,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -25,11 +25,11 @@
         "Ya recuperado un 83% del camino hacia la próxima resistencia (211.35)"
       ],
       "declinePercentFromRecentHigh": -16.159515343138448,
-      "nextResistanceTarget": 211.3513948348942,
+      "nextResistanceTarget": 211.3513991713579,
       "recentHigh": 216.89999389648438,
       "recentLow": 181.85000610351562,
       "recentLowDate": "2026-10-05T04:00:00Z",
-      "recoveryProgressToResistancePercent": 83.31806612927889,
+      "recoveryProgressToResistancePercent": 83.31805388220398,
       "hasNegativeTrailingEarnings": false,
       "sectorAveragePe": 14.28,
       "isSectorInFavor": true,
@@ -39,8 +39,8 @@
       "stockVolatilityRatio": 0.07937374905258729,
       "percentFromYearHigh": -4.8271099655724,
       "nearestSupportPercent": 11.4378056643898,
-      "nearestResistancePercent": 2.3840538360346177,
-      "macdHistogram": 0.1589013302817932,
+      "nearestResistancePercent": 2.3840559367292222,
+      "macdHistogram": 0.1589013007849056,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -112,112 +112,16 @@
       ]
     },
     {
-      "symbol": "CCEP",
-      "name": "Coca-Cola Europacific Partners",
-      "sectorEtf": "XLP",
-      "sectorName": "Consumo básico",
-      "indexName": "NASDAQ100",
-      "rsi14": 61.70282418598213,
-      "volumeRatio": 0.40960819795095743,
-      "dailyVolumeRatio": 0.6694865225789073,
-      "isUptrend": true,
-      "trendQuality": 0.6250664808825797,
-      "yearChangePercent": 24.087066522575267,
-      "aboveTrendSma": true,
-      "isBuyOpportunity": false,
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 26.06,
-      "isSectorInFavor": true,
-      "hchState": "NONE",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.22406867886288168,
-      "percentFromYearHigh": -3.151462692428244,
-      "nearestSupportPercent": 19.771170764337654,
-      "candlestickPattern": "BEARISH_ENGULFING",
-      "macdHistogram": 0.30768343048245406,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "goldenCrossDate": "2026-10-22T13:30:00Z",
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "BULLISH",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 4,
-      "combinedScore": 87.5,
-      "rewardScore": 30.0,
-      "riskScore": 25.0,
-      "ratingOutOf10": 9,
-      "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (62). Riesgo (volatilidad): volatilidad propia 0.22x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 41% de su media, MACD alcista.",
-      "penaltyWarnings": [],
-      "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+10.1 puntos) +10",
-        "Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10",
-        "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10",
-        "Patrón de Bandera Alcista a Corto Plazo +5"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "Macrotendencia (peso 15%): sector líder, en rotación favorable → valor 1.0 × 15% = +15.00 pts",
-        "RSI (peso 15%): RSI en zona neutra (62) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.22x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
-      ],
-      "riskBreakdown": [
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 41% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+10.1 puntos) +10; Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10; Patrón de Bandera Alcista a Corto Plazo +5 → 52.5 pasa a 87.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "AAPL",
       "name": "Apple Inc.",
       "sectorEtf": "XLK",
       "sectorName": "Tecnología",
       "indexName": "NASDAQ100",
-      "rsi14": 66.2631723657714,
+      "rsi14": 66.2631747295105,
       "volumeRatio": 0.4938929368572602,
-      "dailyVolumeRatio": 0.9138189065327754,
+      "dailyVolumeRatio": 1.0250530992394984,
       "isUptrend": true,
-      "trendQuality": 0.7450091475632676,
+      "trendQuality": 0.7450092027597875,
       "yearChangePercent": 28.431302726323004,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -231,7 +135,7 @@
       "stockVolatilityRatio": 0.3524571533323224,
       "percentFromYearHigh": -0.8017534006583149,
       "nearestSupportPercent": 30.09201850524362,
-      "macdHistogram": 0.9311460408989021,
+      "macdHistogram": 0.931145945791986,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -309,7 +213,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 57.00176378979625,
       "volumeRatio": 0.40071546412870945,
-      "dailyVolumeRatio": 0.831259974202781,
+      "dailyVolumeRatio": 0.7183518181898013,
       "isUptrend": true,
       "trendQuality": 0.6100033407657208,
       "yearChangePercent": 29.995793187445805,
@@ -405,16 +309,111 @@
       ]
     },
     {
+      "symbol": "CCEP",
+      "name": "Coca-Cola Europacific Partners",
+      "sectorEtf": "XLP",
+      "sectorName": "Consumo básico",
+      "indexName": "NASDAQ100",
+      "rsi14": 61.70282418598213,
+      "volumeRatio": 0.40960819795095743,
+      "dailyVolumeRatio": 0.6809958957198221,
+      "isUptrend": true,
+      "trendQuality": 0.6250664808825797,
+      "yearChangePercent": 24.087066522575267,
+      "aboveTrendSma": true,
+      "isBuyOpportunity": false,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 26.06,
+      "isSectorInFavor": true,
+      "hchState": "NONE",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.22406867886288168,
+      "percentFromYearHigh": -3.151462692428244,
+      "nearestSupportPercent": 19.771170764337654,
+      "candlestickPattern": "BEARISH_ENGULFING",
+      "macdHistogram": 0.30768343048245406,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "goldenCrossDate": "2026-10-22T13:30:00Z",
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 4,
+      "combinedScore": 82.5,
+      "rewardScore": 30.0,
+      "riskScore": 25.0,
+      "ratingOutOf10": 8,
+      "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (62). Riesgo (volatilidad): volatilidad propia 0.22x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 41% de su media, MACD alcista.",
+      "penaltyWarnings": [],
+      "bonusWarnings": [
+        "Supera claramente al S&P 500 en el último año (+10.1 puntos) +10",
+        "Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10",
+        "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "Macrotendencia (peso 15%): sector líder, en rotación favorable → valor 1.0 × 15% = +15.00 pts",
+        "RSI (peso 15%): RSI en zona neutra (62) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.22x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
+      ],
+      "riskBreakdown": [
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 41% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+10.1 puntos) +10; Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 52.5 pasa a 82.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
       "symbol": "KDP",
       "name": "Keurig Dr Pepper",
       "sectorEtf": "XLP",
       "sectorName": "Consumo básico",
       "indexName": "NASDAQ100",
-      "rsi14": 66.2846008194075,
+      "rsi14": 66.2846004858174,
       "volumeRatio": 0.5327512827033395,
-      "dailyVolumeRatio": 0.9702911141781306,
+      "dailyVolumeRatio": 0.7832103946746721,
       "isUptrend": true,
-      "trendQuality": 0.6905143791956866,
+      "trendQuality": 0.6905143951449578,
       "yearChangePercent": 34.259510005643186,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -427,7 +426,7 @@
       "stockVolatilityRatio": 0.09613359848853464,
       "percentFromYearHigh": -0.28249232911827266,
       "candlestickPattern": "DOJI",
-      "macdHistogram": 0.31436734249107556,
+      "macdHistogram": 0.3143673371078606,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -505,11 +504,11 @@
       "sectorEtf": "XLV",
       "sectorName": "Salud",
       "indexName": "NASDAQ100",
-      "rsi14": 67.85367587002091,
+      "rsi14": 67.8536765045378,
       "volumeRatio": 0.49304249897930147,
-      "dailyVolumeRatio": 1.1144551786459589,
+      "dailyVolumeRatio": 0.6389757507817571,
       "isUptrend": true,
-      "trendQuality": 0.6547238839098626,
+      "trendQuality": 0.6547238524798409,
       "yearChangePercent": 40.61613767810333,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -523,7 +522,7 @@
       "stockVolatilityRatio": 0.1250693850893019,
       "percentFromYearHigh": -1.610177505337334,
       "nearestSupportPercent": 31.836562271092824,
-      "macdHistogram": 3.8249139982288582,
+      "macdHistogram": 3.824914157184388,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-19T13:30:00Z",
@@ -595,120 +594,17 @@
       ]
     },
     {
-      "symbol": "CSX",
-      "name": "CSX Corporation",
-      "sectorEtf": "XLI",
-      "sectorName": "Industrial",
-      "indexName": "NASDAQ100",
-      "rsi14": 65.92830581857467,
-      "volumeRatio": 0.5185405695714543,
-      "dailyVolumeRatio": 0.8900697852193425,
-      "isUptrend": true,
-      "trendQuality": 0.870688998519553,
-      "yearChangePercent": 51.60886771746137,
-      "aboveTrendSma": true,
-      "isBuyOpportunity": false,
-      "exhaustionConfidence": 45,
-      "exhaustionReasons": [
-        "Caída de 14.3%% desde el máximo reciente (2026-07-27T04:00:00Z)",
-        "Mínimos ascendentes tras el suelo del 2026-09-21T04:00:00Z (la presión vendedora se agota)"
-      ],
-      "declinePercentFromRecentHigh": -14.337017944463682,
-      "recentHigh": 53.45366203320023,
-      "recentLow": 45.790000915527344,
-      "recentLowDate": "2026-09-21T04:00:00Z",
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 34.82,
-      "isSectorInFavor": false,
-      "hchState": "NONE",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.5798229513564693,
-      "percentFromYearHigh": -2.270490568035594,
-      "macdHistogram": -0.07401013464553552,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "goldenCrossDate": "2026-10-29T13:30:00Z",
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 4,
-      "combinedScore": 67.5,
-      "rewardScore": 15.0,
-      "riskScore": 40.0,
-      "ratingOutOf10": 7,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (66). Riesgo (volatilidad): volatilidad propia 0.58x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 52% de su media, MACD bajista.",
-      "penaltyWarnings": [],
-      "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+37.6 puntos) +10",
-        "Ha caído bastante menos que su propio sector (23.7 puntos de diferencia)",
-        "Cruz dorada (29 oct 2026): SMA20 cruza por encima de la SMA50 +10",
-        "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "RSI (peso 15%): RSI en zona neutra (66) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.58x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 52% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+37.6 puntos) +10; Ha caído bastante menos que su propio sector (23.7 puntos de diferencia); Cruz dorada (29 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 67.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "ROST",
       "name": "Ross Stores",
       "sectorEtf": "XLY",
       "sectorName": "Consumo discrecional",
       "indexName": "NASDAQ100",
-      "rsi14": 53.50698106135727,
+      "rsi14": 53.50698075907512,
       "volumeRatio": 0.4987336840054549,
-      "dailyVolumeRatio": 0.9129220713951248,
+      "dailyVolumeRatio": 1.0571458456818104,
       "isUptrend": true,
-      "trendQuality": 0.7474316927642569,
-      "yearChangePercent": 45.86702465250258,
+      "trendQuality": 0.747431649002498,
+      "yearChangePercent": 45.86703862857506,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -726,10 +622,10 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.509798000131711,
+      "stockVolatilityRatio": 0.5097981022227894,
       "percentFromYearHigh": -9.436195669588955,
       "nearestSupportPercent": 11.12472042155382,
-      "macdHistogram": -1.9397017499472442,
+      "macdHistogram": -1.9397016898465411,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -806,11 +702,11 @@
       "sectorEtf": "XLP",
       "sectorName": "Consumo básico",
       "indexName": "NASDAQ100",
-      "rsi14": 55.011083882803646,
+      "rsi14": 55.01108316197179,
       "volumeRatio": 0.4439872938895906,
-      "dailyVolumeRatio": 0.763257529607709,
+      "dailyVolumeRatio": 0.9307018632323457,
       "isUptrend": true,
-      "trendQuality": 0.6808460840682531,
+      "trendQuality": 0.680846007146079,
       "yearChangePercent": 13.881832584536008,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -832,7 +728,7 @@
       "stockVolatilityRatio": 0.6762493133274586,
       "percentFromYearHigh": -5.351866936194593,
       "nearestSupportPercent": 8.369180652484363,
-      "macdHistogram": 0.007685802674966435,
+      "macdHistogram": 0.007685849200048334,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-28T13:30:00Z",
@@ -911,12 +807,12 @@
       "sectorEtf": "XLY",
       "sectorName": "Consumo discrecional",
       "indexName": "NASDAQ100",
-      "rsi14": 67.75770521188713,
+      "rsi14": 67.7577046892198,
       "volumeRatio": 0.5523473048609223,
-      "dailyVolumeRatio": 0.8369181204122352,
+      "dailyVolumeRatio": 1.4026398958914297,
       "isUptrend": true,
-      "trendQuality": 0.5873594221533938,
-      "yearChangePercent": 41.039428955205494,
+      "trendQuality": 0.5873594252984805,
+      "yearChangePercent": 41.039444144981964,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -939,7 +835,7 @@
       "nearestSupportPercent": 14.410186825167544,
       "candlestickPattern": "DOJI",
       "marketTrap": "BEAR_TRAP",
-      "macdHistogram": 3.6045936743919835,
+      "macdHistogram": 3.6045936557352363,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -1015,9 +911,9 @@
       "sectorEtf": "XLK",
       "sectorName": "Tecnología",
       "indexName": "NASDAQ100",
-      "rsi14": 64.41610576631118,
+      "rsi14": 64.4161050886162,
       "volumeRatio": 0.4443082833495475,
-      "dailyVolumeRatio": 1.424369327207635,
+      "dailyVolumeRatio": 0.9686015174953814,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "stockPe": 27.69,
@@ -1029,7 +925,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.1549745830248005,
       "percentFromYearHigh": -3.8120309960906056,
-      "macdHistogram": 4.735668186236211,
+      "macdHistogram": 4.735668812225889,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -1107,7 +1003,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 55.13316306187187,
       "volumeRatio": 0.5162181857358973,
-      "dailyVolumeRatio": 0.9827115907708435,
+      "dailyVolumeRatio": 0.575144591620676,
       "isUptrend": false,
       "isBuyOpportunity": true,
       "exhaustionConfidence": 85,
@@ -1134,7 +1030,7 @@
       "nearestSupportPercent": 5.117258304579908,
       "nearestResistancePercent": 4.207438670660831,
       "marketTrap": "BEAR_TRAP",
-      "macdHistogram": 0.40130169658733117,
+      "macdHistogram": 0.4013017143090605,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-27T13:30:00Z",
@@ -1212,7 +1108,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 57.80199240483852,
       "volumeRatio": 0.4889058596478765,
-      "dailyVolumeRatio": 0.8063053119105436,
+      "dailyVolumeRatio": 0.739012226897433,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -1299,7 +1195,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 42.40539351699178,
       "volumeRatio": 1.062885685345644,
-      "dailyVolumeRatio": 2.920714899624305,
+      "dailyVolumeRatio": 2.214371447335643,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 50,
@@ -1399,12 +1295,12 @@
       "sectorEtf": "XLK",
       "sectorName": "Tecnología",
       "indexName": "NASDAQ100",
-      "rsi14": 51.48500011066822,
+      "rsi14": 51.485000829302464,
       "volumeRatio": 0.4756929593748286,
-      "dailyVolumeRatio": 0.7665722971530831,
+      "dailyVolumeRatio": 0.9142255495339539,
       "isUptrend": true,
-      "trendQuality": 0.7004214297417067,
-      "yearChangePercent": 41.79533468695229,
+      "trendQuality": 0.7004214268398534,
+      "yearChangePercent": 41.7953205607931,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -1412,8 +1308,8 @@
         "Caída de 19.9%% desde el máximo reciente (2026-06-01T04:00:00Z)",
         "Mínimos ascendentes tras el suelo del 2026-10-19T04:00:00Z (la presión vendedora se agota)"
       ],
-      "declinePercentFromRecentHigh": -19.9428175502053,
-      "recentHigh": 129.3825221690903,
+      "declinePercentFromRecentHigh": -19.942822609802857,
+      "recentHigh": 129.38253034603974,
       "recentLow": 103.58000183105469,
       "recentLowDate": "2026-10-19T04:00:00Z",
       "stockPe": 32.62,
@@ -1423,9 +1319,9 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.5429665041665407,
-      "percentFromYearHigh": -16.070583168896547,
-      "macdHistogram": -1.6277900302265067,
+      "stockVolatilityRatio": 0.542966434358825,
+      "percentFromYearHigh": -16.07058847321852,
+      "macdHistogram": -1.6277901972106754,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-20T13:30:00Z",
@@ -1505,11 +1401,11 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 64.07055691000866,
+      "rsi14": 64.0705563852183,
       "volumeRatio": 0.6107667379609826,
-      "dailyVolumeRatio": 1.17115420257273,
+      "dailyVolumeRatio": 1.2608325046171331,
       "isUptrend": true,
-      "trendQuality": 0.702691472620813,
+      "trendQuality": 0.7026914610633406,
       "yearChangePercent": 86.76786989712107,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -1522,7 +1418,7 @@
       "stockVolatilityRatio": 1.0103622526837086,
       "percentFromYearHigh": -2.5363672291590795,
       "nearestSupportPercent": 19.260223677712,
-      "macdHistogram": 2.301629196246761,
+      "macdHistogram": 2.301629139786103,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -1602,7 +1498,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 62.79363729821198,
       "volumeRatio": 0.4790682202760538,
-      "dailyVolumeRatio": 0.8789834458350163,
+      "dailyVolumeRatio": 0.8508694336460346,
       "isUptrend": true,
       "trendQuality": 0.7731767307768747,
       "yearChangePercent": 94.3261090702979,
@@ -1703,7 +1599,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 55.25532904486814,
       "volumeRatio": 0.37204640443325615,
-      "dailyVolumeRatio": 0.78388994013272,
+      "dailyVolumeRatio": 0.8850319403550458,
       "isUptrend": true,
       "trendQuality": 0.69237028653389,
       "yearChangePercent": 36.41206484797952,
@@ -1797,6 +1693,107 @@
       ]
     },
     {
+      "symbol": "CSX",
+      "name": "CSX Corporation",
+      "sectorEtf": "XLI",
+      "sectorName": "Industrial",
+      "indexName": "NASDAQ100",
+      "rsi14": 65.92830844096643,
+      "volumeRatio": 0.5185405695714543,
+      "dailyVolumeRatio": 0.9684363988863681,
+      "isUptrend": true,
+      "trendQuality": 0.8706890018016619,
+      "yearChangePercent": 51.60886771746137,
+      "aboveTrendSma": true,
+      "isBuyOpportunity": false,
+      "exhaustionConfidence": 45,
+      "exhaustionReasons": [
+        "Caída de 14.3%% desde el máximo reciente (2026-07-27T04:00:00Z)",
+        "Mínimos ascendentes tras el suelo del 2026-09-21T04:00:00Z (la presión vendedora se agota)"
+      ],
+      "declinePercentFromRecentHigh": -14.337017944463682,
+      "recentHigh": 53.45366203320023,
+      "recentLow": 45.790000915527344,
+      "recentLowDate": "2026-09-21T04:00:00Z",
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 34.82,
+      "isSectorInFavor": false,
+      "hchState": "NONE",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.5798229502904861,
+      "percentFromYearHigh": -2.270490568035594,
+      "macdHistogram": -0.07401013748674368,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 4,
+      "combinedScore": 57.5,
+      "rewardScore": 15.0,
+      "riskScore": 40.0,
+      "ratingOutOf10": 6,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (66). Riesgo (volatilidad): volatilidad propia 0.58x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 52% de su media, MACD bajista.",
+      "penaltyWarnings": [],
+      "bonusWarnings": [
+        "Supera claramente al S&P 500 en el último año (+37.6 puntos) +10",
+        "Ha caído bastante menos que su propio sector (23.7 puntos de diferencia)",
+        "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "RSI (peso 15%): RSI en zona neutra (66) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.58x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 52% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+37.6 puntos) +10; Ha caído bastante menos que su propio sector (23.7 puntos de diferencia); Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 57.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
       "symbol": "DDOG",
       "name": "Datadog",
       "sectorEtf": "XLK",
@@ -1804,7 +1801,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 56.54657457813955,
       "volumeRatio": 0.40090040617024086,
-      "dailyVolumeRatio": 0.9323311061618411,
+      "dailyVolumeRatio": 1.0104459436735795,
       "isUptrend": true,
       "trendQuality": 0.6890704110306414,
       "yearChangePercent": 43.689532582558996,
@@ -1893,11 +1890,11 @@
       "sectorEtf": "XLI",
       "sectorName": "Industrial",
       "indexName": "NASDAQ100",
-      "rsi14": 67.20386263773477,
+      "rsi14": 67.20386697232185,
       "volumeRatio": 0.4402908000030302,
-      "dailyVolumeRatio": 0.6648299970076285,
+      "dailyVolumeRatio": 0.6982234578954809,
       "isUptrend": true,
-      "trendQuality": 0.8106864772151654,
+      "trendQuality": 0.8106864481920373,
       "yearChangePercent": 32.718349651360235,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -1907,10 +1904,10 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.41198632932817675,
+      "stockVolatilityRatio": 0.41198659053625836,
       "percentFromYearHigh": -0.2846328723099237,
       "nearestSupportPercent": 10.113119765864734,
-      "macdHistogram": 0.12045104320081901,
+      "macdHistogram": 0.1204510407449002,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -1980,98 +1977,6 @@
       ]
     },
     {
-      "symbol": "TRI",
-      "name": "Thomson Reuters",
-      "sectorEtf": "XLC",
-      "sectorName": "Comunicación / Medios",
-      "indexName": "NASDAQ100",
-      "rsi14": 60.37601936496363,
-      "volumeRatio": 0.4729531169816617,
-      "dailyVolumeRatio": 0.9499032925877089,
-      "isUptrend": false,
-      "isBuyOpportunity": false,
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 15.97,
-      "isSectorInFavor": false,
-      "hchState": "FORMING",
-      "doubleTopBottomPattern": "DOUBLE_BOTTOM",
-      "tripleTopBottomPattern": "TRIPLE_BOTTOM",
-      "stockVolatilityRatio": 1.5362308997132739,
-      "percentFromYearHigh": -24.45721898601745,
-      "nearestSupportPercent": 33.43045761441549,
-      "macdHistogram": 2.700543953777198,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "goldenCrossDate": "2026-10-21T13:30:00Z",
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 4,
-      "combinedScore": 55.5,
-      "rewardScore": 15.0,
-      "riskScore": 40.0,
-      "ratingOutOf10": 6,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (60). Riesgo (volatilidad): volatilidad propia 1.54x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 47% de su media, MACD alcista.",
-      "penaltyWarnings": [
-        "Patrón de Hombro-Cabeza-Hombro en Formación -7"
-      ],
-      "bonusWarnings": [
-        "Patrón de Triple Suelo Detectado (23 feb 2026, 11 may 2026 y 22 jun 2026) +15",
-        "Cruz dorada (21 oct 2026): SMA20 cruza por encima de la SMA50 +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "RSI (peso 15%): RSI en zona neutra (60) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 1.54x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 47% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Patrón de Triple Suelo Detectado (23 feb 2026, 11 may 2026 y 22 jun 2026) +15; Cruz dorada (21 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 37.5 pasa a 55.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "AMZN",
       "name": "Amazon",
       "sectorEtf": "XLY",
@@ -2079,7 +1984,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 46.57387214143435,
       "volumeRatio": 0.48298627057636473,
-      "dailyVolumeRatio": 0.9736609404850973,
+      "dailyVolumeRatio": 0.9624470941343369,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -2176,9 +2081,9 @@
       "sectorEtf": "XLP",
       "sectorName": "Consumo básico",
       "indexName": "NASDAQ100",
-      "rsi14": 58.20030308585016,
+      "rsi14": 58.20030266839113,
       "volumeRatio": 0.5912916756191205,
-      "dailyVolumeRatio": 0.8062385096789058,
+      "dailyVolumeRatio": 1.049607328004046,
       "isUptrend": false,
       "isBuyOpportunity": true,
       "exhaustionConfidence": 70,
@@ -2188,11 +2093,11 @@
         "Ya recuperado un 77% del camino hacia la próxima resistencia (1029.00)"
       ],
       "declinePercentFromRecentHigh": -19.333879171610967,
-      "nextResistanceTarget": 1028.998456573448,
+      "nextResistanceTarget": 1028.9984247187326,
       "recentHigh": 1094.7594436388788,
       "recentLow": 883.0999755859375,
       "recentLowDate": "2026-09-21T04:00:00Z",
-      "recoveryProgressToResistancePercent": 77.43743508445284,
+      "recoveryProgressToResistancePercent": 77.43745199174332,
       "stockPe": 47.98,
       "hasNegativeTrailingEarnings": false,
       "sectorAveragePe": 26.06,
@@ -2202,9 +2107,9 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.6585895985492032,
       "percentFromYearHigh": -9.013799983404006,
-      "nearestResistancePercent": 3.304798702796899,
+      "nearestResistancePercent": 3.3047955047892223,
       "candlestickPattern": "HAMMER",
-      "macdHistogram": 8.254779251447566,
+      "macdHistogram": 8.254779155834898,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-19T13:30:00Z",
@@ -2282,9 +2187,9 @@
       "sectorEtf": "XLC",
       "sectorName": "Comunicación / Medios",
       "indexName": "NASDAQ100",
-      "rsi14": 48.395526744507066,
+      "rsi14": 48.395527069376875,
       "volumeRatio": 1.2545628908997246,
-      "dailyVolumeRatio": 1.688751094521704,
+      "dailyVolumeRatio": 2.645556472038217,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 50,
@@ -2310,7 +2215,7 @@
       "nearestSupportPercent": 16.46026492414846,
       "nearestResistancePercent": 10.154506971812694,
       "marketTrap": "BULL_TRAP",
-      "macdHistogram": -0.10800832191036314,
+      "macdHistogram": -0.10800884233926666,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -2387,9 +2292,9 @@
       "sectorEtf": "XLV",
       "sectorName": "Salud",
       "indexName": "NASDAQ100",
-      "rsi14": 71.01560417930486,
+      "rsi14": 71.01560455637754,
       "volumeRatio": 0.4931435506366499,
-      "dailyVolumeRatio": 0.8672300492273499,
+      "dailyVolumeRatio": 0.8525188961487191,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -2401,7 +2306,7 @@
       "stockVolatilityRatio": 0.5488143753240434,
       "percentFromYearHigh": -0.054312818073699864,
       "nearestSupportPercent": 30.339413124324395,
-      "macdHistogram": 2.077524012761943,
+      "macdHistogram": 2.0775239779841153,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -2474,7 +2379,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 61.14658911460728,
       "volumeRatio": 0.5273996654571268,
-      "dailyVolumeRatio": 1.0139745479113247,
+      "dailyVolumeRatio": 0.8164327405782364,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -2563,6 +2468,94 @@
       ]
     },
     {
+      "symbol": "FTNT",
+      "name": "Fortinet",
+      "sectorEtf": "XLK",
+      "sectorName": "Tecnología",
+      "indexName": "NASDAQ100",
+      "rsi14": 44.98982336451725,
+      "volumeRatio": 0.7485969815352487,
+      "dailyVolumeRatio": 1.008235952874705,
+      "isUptrend": false,
+      "isBuyOpportunity": false,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 29.62,
+      "isSectorInFavor": false,
+      "hchState": "NONE",
+      "doubleTopBottomPattern": "DOUBLE_BOTTOM",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 1.6349849525831515,
+      "percentFromYearHigh": -29.437425730189503,
+      "nearestSupportPercent": 46.851188309683856,
+      "macdHistogram": -3.6487853575442983,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 0,
+      "combinedScore": 52.5,
+      "rewardScore": 15.0,
+      "riskScore": 30.0,
+      "ratingOutOf10": 5,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (45). Riesgo (volatilidad): volatilidad propia 1.63x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 75% de su media, MACD bajista.",
+      "penaltyWarnings": [],
+      "bonusWarnings": [
+        "Patrón de Doble Suelo Detectado (19 ene 2026 y 23 feb 2026) +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "RSI (peso 15%): RSI en zona neutra (45) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 1.63x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "Volumen / MACD (peso 10%): volumen 75% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.15 + 1) × 50 = 42.5"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Doble Suelo Detectado (19 ene 2026 y 23 feb 2026) +10 → 42.5 pasa a 52.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
       "symbol": "LITE",
       "name": "Lumentum Holdings",
       "sectorEtf": "XLK",
@@ -2570,7 +2563,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 54.05155878951117,
       "volumeRatio": 0.7470517876165735,
-      "dailyVolumeRatio": 1.1991110976734343,
+      "dailyVolumeRatio": 1.1204067566713451,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -2660,14 +2653,118 @@
       ]
     },
     {
+      "symbol": "IDXX",
+      "name": "Idexx Laboratories",
+      "sectorEtf": "XLV",
+      "sectorName": "Salud",
+      "indexName": "NASDAQ100",
+      "rsi14": 55.85828796343031,
+      "volumeRatio": 0.4858829855768463,
+      "dailyVolumeRatio": 0.930728309176905,
+      "isUptrend": false,
+      "isBuyOpportunity": false,
+      "exhaustionConfidence": 60,
+      "exhaustionReasons": [
+        "Caída de 19.8%% desde el máximo reciente (2026-08-03T04:00:00Z)",
+        "Mínimos ascendentes tras el suelo del 2026-09-07T04:00:00Z (la presión vendedora se agota)",
+        "En el mínimo del 2026-09-07 el RSI llegó a sobreventa (36) — no es el RSI de ahora, que puede ser distinto"
+      ],
+      "declinePercentFromRecentHigh": -19.793324398004554,
+      "recentHigh": 624.1500244140625,
+      "recentLow": 500.6099853515625,
+      "recentLowDate": "2026-09-07T04:00:00Z",
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 35.01,
+      "isSectorInFavor": true,
+      "hchState": "CONFIRMED",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.320532268949969,
+      "percentFromYearHigh": -25.195460261433844,
+      "nearestSupportPercent": 9.551544497447031,
+      "marketTrap": "BEAR_TRAP",
+      "macdHistogram": 6.932792787672819,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "goldenCrossDate": "2026-10-23T13:30:00Z",
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "BULLISH",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 4,
+      "combinedScore": 52.5,
+      "rewardScore": 30.0,
+      "riskScore": 25.0,
+      "ratingOutOf10": 5,
+      "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (56). Riesgo (volatilidad): volatilidad propia 0.32x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 49% de su media, MACD alcista.",
+      "penaltyWarnings": [
+        "Patrón de Hombro-Cabeza-Hombro Confirmado (27 dic 2021, 24 nov 2025, 23 feb 2026) -15"
+      ],
+      "bonusWarnings": [
+        "Ha caído bastante menos que su propio sector (20.2 puntos de diferencia)",
+        "Cruz dorada (23 oct 2026): SMA20 cruza por encima de la SMA50 +10",
+        "Patrón de Bandera Alcista a Corto Plazo +5"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "Macrotendencia (peso 15%): sector líder, en rotación favorable → valor 1.0 × 15% = +15.00 pts",
+        "RSI (peso 15%): RSI en zona neutra (56) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.32x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
+      ],
+      "riskBreakdown": [
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 49% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (27 dic 2021, 24 nov 2025, 23 feb 2026) -15; Ha caído bastante menos que su propio sector (20.2 puntos de diferencia); Cruz dorada (23 oct 2026): SMA20 cruza por encima de la SMA50 +10; Patrón de Bandera Alcista a Corto Plazo +5 → 52.5 pasa a 52.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
       "symbol": "KHC",
       "name": "Kraft Heinz",
       "sectorEtf": "XLP",
       "sectorName": "Consumo básico",
       "indexName": "NASDAQ100",
-      "rsi14": 50.34178474164878,
+      "rsi14": 50.34178458317818,
       "volumeRatio": 0.40369122552140685,
-      "dailyVolumeRatio": 0.6049766540169442,
+      "dailyVolumeRatio": 0.6816360179266281,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 70,
@@ -2688,12 +2785,12 @@
       "hchState": "CONFIRMED",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.9211205915587309,
+      "stockVolatilityRatio": 0.9211204858997825,
       "percentFromYearHigh": -13.556089927827914,
       "nearestSupportPercent": 9.165820811664764,
       "nearestResistancePercent": 0.03967264818945357,
       "marketTrap": "BULL_TRAP",
-      "macdHistogram": -0.12533671954064005,
+      "macdHistogram": -0.12533672125059703,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -2769,9 +2866,9 @@
       "sectorEtf": "XLV",
       "sectorName": "Salud",
       "indexName": "NASDAQ100",
-      "rsi14": 60.76569941732915,
+      "rsi14": 60.76569896506784,
       "volumeRatio": 0.8708892747758692,
-      "dailyVolumeRatio": 2.77960371047598,
+      "dailyVolumeRatio": 1.506534764410232,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -2784,7 +2881,7 @@
       "percentFromYearHigh": -14.734046176778179,
       "nearestSupportPercent": 21.44146624186052,
       "nearestResistancePercent": 13.188173735679277,
-      "macdHistogram": 1.2500040085797126,
+      "macdHistogram": 1.2500039748861247,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-28T13:30:00Z",
@@ -2861,12 +2958,12 @@
       "sectorEtf": "XLY",
       "sectorName": "Consumo discrecional",
       "indexName": "NASDAQ100",
-      "rsi14": 58.1757236435977,
+      "rsi14": 58.175724019272224,
       "volumeRatio": 0.5294131787181369,
-      "dailyVolumeRatio": 0.8184024271290672,
+      "dailyVolumeRatio": 0.6060421351829098,
       "isUptrend": true,
-      "trendQuality": 0.5073446271688106,
-      "yearChangePercent": 26.711986240119156,
+      "trendQuality": 0.5073446680133075,
+      "yearChangePercent": 26.71199785011005,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 100,
@@ -2892,7 +2989,7 @@
       "stockVolatilityRatio": 0.14618306438743295,
       "percentFromYearHigh": -4.524477335396558,
       "nearestResistancePercent": 2.7695109469925407,
-      "macdHistogram": -0.18928046351774608,
+      "macdHistogram": -0.1892804658769046,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -2966,106 +3063,6 @@
       ]
     },
     {
-      "symbol": "REGN",
-      "name": "Regeneron Pharmaceuticals",
-      "sectorEtf": "XLV",
-      "sectorName": "Salud",
-      "indexName": "NASDAQ100",
-      "rsi14": 60.56213017920782,
-      "volumeRatio": 0.4355799854832502,
-      "dailyVolumeRatio": 0.8104820123771167,
-      "isUptrend": false,
-      "isBuyOpportunity": false,
-      "exhaustionConfidence": 45,
-      "exhaustionReasons": [
-        "Caída de 16.0%% desde el máximo reciente (2026-08-31T04:00:00Z)",
-        "Mínimos ascendentes tras el suelo del 2026-10-05T04:00:00Z (la presión vendedora se agota)"
-      ],
-      "declinePercentFromRecentHigh": -15.979705708193947,
-      "recentHigh": 859.3400268554688,
-      "recentLow": 722.02001953125,
-      "recentLowDate": "2026-10-05T04:00:00Z",
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.01,
-      "isSectorInFavor": true,
-      "hchState": "FORMING",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.09736992042114452,
-      "percentFromYearHigh": -4.7210657081428105,
-      "nearestSupportPercent": 11.917552989868957,
-      "macdHistogram": 4.602614012633232,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "BULLISH",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 3,
-      "combinedScore": 50.5,
-      "rewardScore": 30.0,
-      "riskScore": 25.0,
-      "ratingOutOf10": 5,
-      "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (61). Riesgo (volatilidad): volatilidad propia 0.10x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 44% de su media, MACD alcista.",
-      "penaltyWarnings": [
-        "Patrón de Hombro-Cabeza-Hombro en Formación -7"
-      ],
-      "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (16.4 puntos de diferencia)",
-        "Patrón de Bandera Alcista a Corto Plazo +5"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "Macrotendencia (peso 15%): sector líder, en rotación favorable → valor 1.0 × 15% = +15.00 pts",
-        "RSI (peso 15%): RSI en zona neutra (61) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.10x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
-      ],
-      "riskBreakdown": [
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 44% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Ha caído bastante menos que su propio sector (16.4 puntos de diferencia); Patrón de Bandera Alcista a Corto Plazo +5 → 52.5 pasa a 50.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "DXCM",
       "name": "Dexcom",
       "sectorEtf": "XLV",
@@ -3073,7 +3070,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 51.14375688457292,
       "volumeRatio": 0.7385421719663896,
-      "dailyVolumeRatio": 1.27818448546025,
+      "dailyVolumeRatio": 1.2582368003901963,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -3170,7 +3167,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 57.857469984822714,
       "volumeRatio": 0.4652021592060092,
-      "dailyVolumeRatio": 0.8637799125252712,
+      "dailyVolumeRatio": 0.8975906618505621,
       "isUptrend": true,
       "trendQuality": 0.785626781983545,
       "yearChangePercent": 85.41778675966809,
@@ -3269,12 +3266,12 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 63.92935940529689,
+      "rsi14": 63.92935971817109,
       "volumeRatio": 0.6494458681296261,
-      "dailyVolumeRatio": 1.128627228931747,
+      "dailyVolumeRatio": 1.2830645509965843,
       "isUptrend": true,
-      "trendQuality": 0.7105571541347502,
-      "yearChangePercent": 99.7138214092903,
+      "trendQuality": 0.7105571486545575,
+      "yearChangePercent": 99.71380196127943,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 70,
@@ -3299,7 +3296,7 @@
       "stockVolatilityRatio": 0.6668540528639971,
       "percentFromYearHigh": -5.8341223892959135,
       "nearestResistancePercent": 5.795000481674041,
-      "macdHistogram": 0.8822202349542927,
+      "macdHistogram": 0.8822202591423114,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -3372,14 +3369,215 @@
       ]
     },
     {
+      "symbol": "WMT",
+      "name": "Walmart",
+      "sectorEtf": "XLP",
+      "sectorName": "Consumo básico",
+      "indexName": "NASDAQ100",
+      "rsi14": 59.203458296837546,
+      "volumeRatio": 0.40878140401295676,
+      "dailyVolumeRatio": 0.7405402257193056,
+      "isUptrend": false,
+      "isBuyOpportunity": true,
+      "exhaustionConfidence": 85,
+      "exhaustionReasons": [
+        "Caída de 24.2%% desde el máximo reciente (2026-05-18T04:00:00Z)",
+        "Mínimos ascendentes tras el suelo del 2026-08-17T04:00:00Z (la presión vendedora se agota)",
+        "En el mínimo del 2026-08-17 el RSI llegó a sobreventa (38) — no es el RSI de ahora, que puede ser distinto",
+        "Ya recuperado un 59% del camino hacia la próxima resistencia (134.34)"
+      ],
+      "declinePercentFromRecentHigh": -24.241975321249033,
+      "nextResistanceTarget": 134.3374552874825,
+      "recentHigh": 134.8372030013218,
+      "recentLow": 102.1500015258789,
+      "recentLowDate": "2026-08-17T04:00:00Z",
+      "recoveryProgressToResistancePercent": 59.33988632833541,
+      "stockPe": 43.93,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 26.06,
+      "isSectorInFavor": true,
+      "hchState": "FORMING",
+      "doubleTopBottomPattern": "DOUBLE_TOP",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.3213548994933631,
+      "percentFromYearHigh": -10.076746401502115,
+      "nearestSupportPercent": 15.241236735865012,
+      "nearestResistancePercent": 10.793777556686598,
+      "macdHistogram": 1.7064965261793272,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "goldenCrossDate": "2026-10-15T13:30:00Z",
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 4,
+      "combinedScore": 48.0,
+      "rewardScore": 45.0,
+      "riskScore": 25.0,
+      "ratingOutOf10": 5,
+      "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza. RSI: RSI en zona neutra (59). Valoración PER: PER 43.9x frente a rango típico del sector 18-22x · deuda sin dato, no incluida. Riesgo (volatilidad): volatilidad propia 0.32x lo habitual. Giro: agotamiento bajista detectado (posible giro al alza). Volumen / MACD: volumen 41% de su media, MACD alcista.",
+      "penaltyWarnings": [
+        "Patrón de Doble Techo Detectado (16 feb 2026 y 18 may 2026) -15",
+        "Patrón de Hombro-Cabeza-Hombro en Formación -7"
+      ],
+      "bonusWarnings": [
+        "Ha caído bastante menos que su propio sector (26.3 puntos de diferencia)",
+        "Cruz dorada (15 oct 2026): SMA20 cruza por encima de la SMA50 +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "Macrotendencia (peso 15%): sector líder, en rotación favorable → valor 1.0 × 15% = +15.00 pts",
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
+        "RSI (peso 15%): RSI en zona neutra (59) → valor 1.0 × 15% = +15.00 pts",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.32x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (0.20 + 1) × 50 = 60.0"
+      ],
+      "riskBreakdown": [
+        "Valoración PER (peso 15%): PER 43.9x frente a rango típico del sector 18-22x · deuda sin dato, no incluida → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 41% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Doble Techo Detectado (16 feb 2026 y 18 may 2026) -15; Patrón de Hombro-Cabeza-Hombro en Formación -7; Ha caído bastante menos que su propio sector (26.3 puntos de diferencia); Cruz dorada (15 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 60.0 pasa a 48.0",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
+      "symbol": "TRI",
+      "name": "Thomson Reuters",
+      "sectorEtf": "XLC",
+      "sectorName": "Comunicación / Medios",
+      "indexName": "NASDAQ100",
+      "rsi14": 60.3760201821643,
+      "volumeRatio": 0.4729531169816617,
+      "dailyVolumeRatio": 0.9251102747240301,
+      "isUptrend": false,
+      "isBuyOpportunity": false,
+      "stockPe": 31.2,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 15.97,
+      "isSectorInFavor": false,
+      "hchState": "FORMING",
+      "doubleTopBottomPattern": "DOUBLE_BOTTOM",
+      "tripleTopBottomPattern": "TRIPLE_BOTTOM",
+      "stockVolatilityRatio": 1.5362308997132739,
+      "percentFromYearHigh": -24.45721898601745,
+      "nearestSupportPercent": 33.43045761441549,
+      "macdHistogram": 2.7005439337444606,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "goldenCrossDate": "2026-10-21T13:30:00Z",
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 4,
+      "combinedScore": 48.0,
+      "rewardScore": 15.0,
+      "riskScore": 55.0,
+      "ratingOutOf10": 5,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (60). Valoración PER: PER 31.2x frente a rango típico del sector 18-25x · deuda sin dato, no incluida. Riesgo (volatilidad): volatilidad propia 1.54x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 47% de su media, MACD alcista.",
+      "penaltyWarnings": [
+        "Patrón de Hombro-Cabeza-Hombro en Formación -7"
+      ],
+      "bonusWarnings": [
+        "Patrón de Triple Suelo Detectado (23 feb 2026, 11 may 2026 y 22 jun 2026) +15",
+        "Cruz dorada (21 oct 2026): SMA20 cruza por encima de la SMA50 +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "RSI (peso 15%): RSI en zona neutra (60) → valor 1.0 × 15% = +15.00 pts",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 1.54x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.40 + 1) × 50 = 30.0"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "Valoración PER (peso 15%): PER 31.2x frente a rango típico del sector 18-25x · deuda sin dato, no incluida → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 47% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Patrón de Triple Suelo Detectado (23 feb 2026, 11 may 2026 y 22 jun 2026) +15; Cruz dorada (21 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 30.0 pasa a 48.0",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
       "symbol": "WDC",
       "name": "Western Digital",
       "sectorEtf": "XLK",
       "sectorName": "Tecnología",
       "indexName": "NASDAQ100",
-      "rsi14": 47.16735181453485,
+      "rsi14": 47.16735176838513,
       "volumeRatio": 0.6383994700810528,
-      "dailyVolumeRatio": 0.7318034568129667,
+      "dailyVolumeRatio": 0.9155932621688174,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -3397,9 +3595,9 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.543365416342192,
+      "stockVolatilityRatio": 0.5433654065624832,
       "percentFromYearHigh": -50.54984517925132,
-      "macdHistogram": -19.02034895083176,
+      "macdHistogram": -19.02034889857356,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -3474,9 +3672,9 @@
       "sectorEtf": "XLY",
       "sectorName": "Consumo discrecional",
       "indexName": "NASDAQ100",
-      "rsi14": 36.954171271960206,
+      "rsi14": 36.954170815336646,
       "volumeRatio": 0.6190332916193445,
-      "dailyVolumeRatio": 1.2687618112088233,
+      "dailyVolumeRatio": 1.104330863439455,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -3485,24 +3683,24 @@
         "En el mínimo del 2026-10-26 el RSI llegó a sobreventa (35) — no es el RSI de ahora, que puede ser distinto"
       ],
       "declinePercentFromRecentHigh": -32.52656678521877,
-      "nextResistanceTarget": 218.0089981288059,
+      "nextResistanceTarget": 218.00900593700607,
       "recentHigh": 216.79643647842673,
       "recentLow": 146.27999877929688,
       "recentLowDate": "2026-10-26T04:00:00Z",
-      "recoveryProgressToResistancePercent": 5.7856570342811855,
+      "recoveryProgressToResistancePercent": 5.78565640447227,
       "hasNegativeTrailingEarnings": false,
       "sectorAveragePe": 24.31,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "DOUBLE_BOTTOM",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.6722992340735844,
-      "percentFromYearHigh": -31.379927764721398,
+      "stockVolatilityRatio": 0.6722992901047881,
+      "percentFromYearHigh": -31.37993265291964,
       "nearestSupportPercent": 0.6381967684769019,
-      "nearestResistancePercent": 44.92389067562898,
+      "nearestResistancePercent": 44.92389586621633,
       "candlestickPattern": "DOJI",
       "marketTrap": "BEAR_TRAP",
-      "macdHistogram": -4.100983291972727,
+      "macdHistogram": -4.100983363219812,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -3577,9 +3775,9 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 44.39997529963523,
+      "rsi14": 44.39997599815775,
       "volumeRatio": 0.5762975037911127,
-      "dailyVolumeRatio": 0.8722620142445744,
+      "dailyVolumeRatio": 1.1190543357851064,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -3597,10 +3795,10 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.823947561898684,
+      "stockVolatilityRatio": 0.8239476562197957,
       "percentFromYearHigh": -29.851249814311924,
       "candlestickPattern": "DOJI",
-      "macdHistogram": -23.269604352770095,
+      "macdHistogram": -23.26960470110481,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -3675,9 +3873,9 @@
       "sectorEtf": "XLU",
       "sectorName": "Utilities",
       "indexName": "NASDAQ100",
-      "rsi14": 54.665312333545565,
+      "rsi14": 54.66531172594455,
       "volumeRatio": 0.6538854513105353,
-      "dailyVolumeRatio": 1.9022780785554672,
+      "dailyVolumeRatio": 1.2688198024465551,
       "isUptrend": false,
       "isBuyOpportunity": true,
       "exhaustionConfidence": 70,
@@ -3704,7 +3902,7 @@
       "nearestResistancePercent": 7.431655115122861,
       "candlestickPattern": "DOJI",
       "marketTrap": "BEAR_TRAP",
-      "macdHistogram": 0.48325306469593776,
+      "macdHistogram": 0.4832531279918044,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-22T13:30:00Z",
@@ -3777,309 +3975,14 @@
       ]
     },
     {
-      "symbol": "EXC",
-      "name": "Exelon",
-      "sectorEtf": "XLU",
-      "sectorName": "Utilities",
-      "indexName": "NASDAQ100",
-      "rsi14": 56.648313535381654,
-      "volumeRatio": 0.6282787863877453,
-      "dailyVolumeRatio": 1.630559978091666,
-      "isUptrend": false,
-      "isBuyOpportunity": false,
-      "exhaustionConfidence": 60,
-      "exhaustionReasons": [
-        "Caída de 17.4%% desde el máximo reciente (2026-07-06T04:00:00Z)",
-        "Mínimos ascendentes tras el suelo del 2026-09-21T04:00:00Z (la presión vendedora se agota)",
-        "En el mínimo del 2026-09-21 el RSI llegó a sobreventa (33) — no es el RSI de ahora, que puede ser distinto"
-      ],
-      "declinePercentFromRecentHigh": -17.37063500618531,
-      "recentHigh": 48.0821794348902,
-      "recentLow": 39.72999954223633,
-      "recentLowDate": "2026-09-21T04:00:00Z",
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.55,
-      "isSectorInFavor": false,
-      "hchState": "NONE",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.2945681642988043,
-      "percentFromYearHigh": -7.634742300138236,
-      "nearestSupportPercent": 9.15273545391682,
-      "marketTrap": "BEAR_TRAP",
-      "macdHistogram": 0.24409623943067071,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "goldenCrossDate": "2026-10-29T13:30:00Z",
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 4,
-      "combinedScore": 47.5,
-      "rewardScore": 15.0,
-      "riskScore": 40.0,
-      "ratingOutOf10": 5,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (57). Riesgo (volatilidad): volatilidad propia 0.29x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 63% de su media, MACD alcista.",
-      "penaltyWarnings": [],
-      "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (24.2 puntos de diferencia)",
-        "Cruz dorada (29 oct 2026): SMA20 cruza por encima de la SMA50 +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "RSI (peso 15%): RSI en zona neutra (57) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.29x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 63% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (24.2 puntos de diferencia); Cruz dorada (29 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 37.5 pasa a 47.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
-      "symbol": "IDXX",
-      "name": "Idexx Laboratories",
-      "sectorEtf": "XLV",
-      "sectorName": "Salud",
-      "indexName": "NASDAQ100",
-      "rsi14": 55.85828796343031,
-      "volumeRatio": 0.4858829855768463,
-      "dailyVolumeRatio": 0.6799381522999614,
-      "isUptrend": false,
-      "isBuyOpportunity": false,
-      "exhaustionConfidence": 60,
-      "exhaustionReasons": [
-        "Caída de 19.8%% desde el máximo reciente (2026-08-03T04:00:00Z)",
-        "Mínimos ascendentes tras el suelo del 2026-09-07T04:00:00Z (la presión vendedora se agota)",
-        "En el mínimo del 2026-09-07 el RSI llegó a sobreventa (36) — no es el RSI de ahora, que puede ser distinto"
-      ],
-      "declinePercentFromRecentHigh": -19.793324398004554,
-      "recentHigh": 624.1500244140625,
-      "recentLow": 500.6099853515625,
-      "recentLowDate": "2026-09-07T04:00:00Z",
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 35.01,
-      "isSectorInFavor": true,
-      "hchState": "CONFIRMED",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.320532268949969,
-      "percentFromYearHigh": -25.195460261433844,
-      "nearestSupportPercent": 9.551544497447031,
-      "marketTrap": "BEAR_TRAP",
-      "macdHistogram": 6.932792787672819,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "goldenCrossDate": "2026-10-23T13:30:00Z",
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 4,
-      "combinedScore": 47.5,
-      "rewardScore": 30.0,
-      "riskScore": 25.0,
-      "ratingOutOf10": 5,
-      "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (56). Riesgo (volatilidad): volatilidad propia 0.32x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 49% de su media, MACD alcista.",
-      "penaltyWarnings": [
-        "Patrón de Hombro-Cabeza-Hombro Confirmado (27 dic 2021, 24 nov 2025, 23 feb 2026) -15"
-      ],
-      "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (20.2 puntos de diferencia)",
-        "Cruz dorada (23 oct 2026): SMA20 cruza por encima de la SMA50 +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "Macrotendencia (peso 15%): sector líder, en rotación favorable → valor 1.0 × 15% = +15.00 pts",
-        "RSI (peso 15%): RSI en zona neutra (56) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.32x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
-      ],
-      "riskBreakdown": [
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 49% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (27 dic 2021, 24 nov 2025, 23 feb 2026) -15; Ha caído bastante menos que su propio sector (20.2 puntos de diferencia); Cruz dorada (23 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 52.5 pasa a 47.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
-      "symbol": "ROP",
-      "name": "Roper Technologies",
-      "sectorEtf": "XLK",
-      "sectorName": "Tecnología",
-      "indexName": "NASDAQ100",
-      "rsi14": 67.14155455493886,
-      "volumeRatio": 0.8442174789573185,
-      "dailyVolumeRatio": 1.3686495468454711,
-      "isUptrend": false,
-      "isBuyOpportunity": false,
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 29.62,
-      "isSectorInFavor": false,
-      "hchState": "CONFIRMED",
-      "doubleTopBottomPattern": "DOUBLE_BOTTOM",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 1.5108043898306684,
-      "percentFromYearHigh": -0.3966699467130138,
-      "macdHistogram": 7.527585232549371,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "goldenCrossDate": "2026-10-29T13:30:00Z",
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 2,
-      "combinedScore": 47.5,
-      "rewardScore": 15.0,
-      "riskScore": 30.0,
-      "ratingOutOf10": 5,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (67). Riesgo (volatilidad): volatilidad propia 1.51x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 84% de su media, MACD alcista.",
-      "penaltyWarnings": [
-        "Patrón de Hombro-Cabeza-Hombro Confirmado (22 jul 2024, 3 mar 2025, 7 jul 2025) -15"
-      ],
-      "bonusWarnings": [
-        "Patrón de Doble Suelo Detectado (16 feb 2026 y 11 may 2026) +10",
-        "Cruz dorada (29 oct 2026): SMA20 cruza por encima de la SMA50 +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "RSI (peso 15%): RSI en zona neutra (67) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 1.51x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "Volumen / MACD (peso 10%): volumen 84% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.15 + 1) × 50 = 42.5"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (22 jul 2024, 3 mar 2025, 7 jul 2025) -15; Patrón de Doble Suelo Detectado (16 feb 2026 y 11 may 2026) +10; Cruz dorada (29 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 42.5 pasa a 47.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "CMCSA",
       "name": "Comcast",
       "sectorEtf": "XLC",
       "sectorName": "Comunicación / Medios",
       "indexName": "NASDAQ100",
-      "rsi14": 44.25806827088816,
+      "rsi14": 44.258067609575264,
       "volumeRatio": 0.5713408470953725,
-      "dailyVolumeRatio": 0.9763982069039102,
+      "dailyVolumeRatio": 0.7047759693483641,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -4101,10 +4004,10 @@
       "hchState": "FORMING",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.8754554642374685,
+      "stockVolatilityRatio": 0.8754555918260912,
       "percentFromYearHigh": -29.425209059604242,
       "nearestResistancePercent": 20.378498287775994,
-      "macdHistogram": -0.1290683459249352,
+      "macdHistogram": -0.12906832866619267,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -4175,14 +4078,113 @@
       ]
     },
     {
+      "symbol": "REGN",
+      "name": "Regeneron Pharmaceuticals",
+      "sectorEtf": "XLV",
+      "sectorName": "Salud",
+      "indexName": "NASDAQ100",
+      "rsi14": 60.562130287612284,
+      "volumeRatio": 0.4355799854832502,
+      "dailyVolumeRatio": 1.0908708487639251,
+      "isUptrend": false,
+      "isBuyOpportunity": false,
+      "exhaustionConfidence": 45,
+      "exhaustionReasons": [
+        "Caída de 16.0%% desde el máximo reciente (2026-08-31T04:00:00Z)",
+        "Mínimos ascendentes tras el suelo del 2026-10-05T04:00:00Z (la presión vendedora se agota)"
+      ],
+      "declinePercentFromRecentHigh": -15.979705708193947,
+      "recentHigh": 859.3400268554688,
+      "recentLow": 722.02001953125,
+      "recentLowDate": "2026-10-05T04:00:00Z",
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 35.01,
+      "isSectorInFavor": true,
+      "hchState": "FORMING",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.09736990828298124,
+      "percentFromYearHigh": -4.7210657081428105,
+      "nearestSupportPercent": 11.917552989868957,
+      "macdHistogram": 4.602613705910695,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 3,
+      "combinedScore": 45.5,
+      "rewardScore": 30.0,
+      "riskScore": 25.0,
+      "ratingOutOf10": 5,
+      "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (61). Riesgo (volatilidad): volatilidad propia 0.10x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 44% de su media, MACD alcista.",
+      "penaltyWarnings": [
+        "Patrón de Hombro-Cabeza-Hombro en Formación -7"
+      ],
+      "bonusWarnings": [
+        "Ha caído bastante menos que su propio sector (16.4 puntos de diferencia)"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "Macrotendencia (peso 15%): sector líder, en rotación favorable → valor 1.0 × 15% = +15.00 pts",
+        "RSI (peso 15%): RSI en zona neutra (61) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.10x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
+      ],
+      "riskBreakdown": [
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 44% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Ha caído bastante menos que su propio sector (16.4 puntos de diferencia) → 52.5 pasa a 45.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
       "symbol": "NVDA",
       "name": "Nvidia",
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 50.19240090092359,
+      "rsi14": 50.19240005160338,
       "volumeRatio": 0.44364821138445387,
-      "dailyVolumeRatio": 0.9130078957396884,
+      "dailyVolumeRatio": 0.8254703274977502,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 50,
@@ -4207,7 +4209,7 @@
       "percentFromYearHigh": -12.207746251041412,
       "nearestSupportPercent": 11.217476703414095,
       "nearestResistancePercent": 10.104404706595378,
-      "macdHistogram": -1.6443211821561743,
+      "macdHistogram": -1.6443209383629256,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -4281,9 +4283,9 @@
       "sectorEtf": "XLC",
       "sectorName": "Comunicación / Medios",
       "indexName": "NASDAQ100",
-      "rsi14": 33.82042661819948,
+      "rsi14": 33.8204269546637,
       "volumeRatio": 0.7643459616471763,
-      "dailyVolumeRatio": 2.2178924253891563,
+      "dailyVolumeRatio": 1.1291511369025287,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 55,
@@ -4305,7 +4307,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 1.201158024847278,
       "percentFromYearHigh": -30.112661960123415,
-      "macdHistogram": -6.2827914871771045,
+      "macdHistogram": -6.282791486937488,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "deathCrossDate": "2026-10-26T13:30:00Z",
@@ -4385,7 +4387,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 55.89438718243357,
       "volumeRatio": 0.6943724605688326,
-      "dailyVolumeRatio": 0.9472737885163929,
+      "dailyVolumeRatio": 1.227270666091833,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 60,
@@ -4483,7 +4485,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 59.68475280212124,
       "volumeRatio": 0.3397636105789879,
-      "dailyVolumeRatio": 0.9318173376123247,
+      "dailyVolumeRatio": 0.9013060523371713,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "stockPe": 167.38,
@@ -4562,95 +4564,6 @@
       ]
     },
     {
-      "symbol": "FTNT",
-      "name": "Fortinet",
-      "sectorEtf": "XLK",
-      "sectorName": "Tecnología",
-      "indexName": "NASDAQ100",
-      "rsi14": 44.98982336451725,
-      "volumeRatio": 0.7485969815352487,
-      "dailyVolumeRatio": 3.0757208590869602,
-      "isUptrend": false,
-      "isBuyOpportunity": false,
-      "stockPe": 45.23,
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 29.62,
-      "isSectorInFavor": false,
-      "hchState": "NONE",
-      "doubleTopBottomPattern": "DOUBLE_BOTTOM",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 1.6349849525831515,
-      "percentFromYearHigh": -29.437425730189503,
-      "nearestSupportPercent": 46.851188309683856,
-      "macdHistogram": -3.6487853575442983,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 0,
-      "combinedScore": 45.0,
-      "rewardScore": 15.0,
-      "riskScore": 45.0,
-      "ratingOutOf10": 5,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (45). Valoración PER: PER 45.2x frente a rango típico del sector 28-40x · deuda sin dato, no incluida. Riesgo (volatilidad): volatilidad propia 1.63x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 75% de su media, MACD bajista.",
-      "penaltyWarnings": [],
-      "bonusWarnings": [
-        "Patrón de Doble Suelo Detectado (19 ene 2026 y 23 feb 2026) +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "RSI (peso 15%): RSI en zona neutra (45) → valor 1.0 × 15% = +15.00 pts",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 1.63x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "Volumen / MACD (peso 10%): volumen 75% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.30 + 1) × 50 = 35.0"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Valoración PER (peso 15%): PER 45.2x frente a rango típico del sector 28-40x · deuda sin dato, no incluida → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Doble Suelo Detectado (19 ene 2026 y 23 feb 2026) +10 → 35.0 pasa a 45.0",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "DASH",
       "name": "DoorDash",
       "sectorEtf": "XLY",
@@ -4658,7 +4571,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 44.898995085398575,
       "volumeRatio": 0.9339857949003831,
-      "dailyVolumeRatio": 1.160682456970074,
+      "dailyVolumeRatio": 1.977896088531071,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 50,
@@ -4760,9 +4673,9 @@
       "sectorEtf": "XLI",
       "sectorName": "Industrial",
       "indexName": "NASDAQ100",
-      "rsi14": 50.39517486606366,
+      "rsi14": 50.395174397010294,
       "volumeRatio": 0.5131434799581118,
-      "dailyVolumeRatio": 0.9377019137013498,
+      "dailyVolumeRatio": 1.3460792452147556,
       "isUptrend": false,
       "isBuyOpportunity": true,
       "exhaustionConfidence": 70,
@@ -4789,7 +4702,7 @@
       "nearestResistancePercent": 13.048945865591474,
       "candlestickPattern": "DOJI",
       "marketTrap": "BEAR_TRAP",
-      "macdHistogram": 0.2171667383281286,
+      "macdHistogram": 0.21716683924474678,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-26T13:30:00Z",
@@ -4867,9 +4780,9 @@
       "sectorEtf": "XLI",
       "sectorName": "Industrial",
       "indexName": "NASDAQ100",
-      "rsi14": 32.293247754476525,
+      "rsi14": 32.293249004566945,
       "volumeRatio": 1.1661944640239177,
-      "dailyVolumeRatio": 1.1077882385552602,
+      "dailyVolumeRatio": 2.84804027734619,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -4889,7 +4802,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.6445565213436795,
       "percentFromYearHigh": -26.342398457298284,
-      "macdHistogram": -2.765532453844548,
+      "macdHistogram": -2.7655324073628504,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -4965,7 +4878,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 57.227712221005085,
       "volumeRatio": 0.32251759644700767,
-      "dailyVolumeRatio": 0.94814862645979,
+      "dailyVolumeRatio": 0.9594075393952892,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -5067,7 +4980,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 45.41150471651769,
       "volumeRatio": 1.0070624538889417,
-      "dailyVolumeRatio": 0.8178887664748847,
+      "dailyVolumeRatio": 1.8715246291511969,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -5170,7 +5083,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 60.61322042006241,
       "volumeRatio": 0.6851345645950119,
-      "dailyVolumeRatio": 1.5995252680732415,
+      "dailyVolumeRatio": 1.1100933099411574,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -5181,7 +5094,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 1.2309187034887865,
       "percentFromYearHigh": -7.537171229557586,
-      "macdHistogram": 1.4571728431571582,
+      "macdHistogram": 1.4571728544730806,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-22T13:30:00Z",
@@ -5258,9 +5171,9 @@
       "sectorEtf": "XLF",
       "sectorName": "Banca / Finanzas",
       "indexName": "NASDAQ100",
-      "rsi14": 56.17425711121868,
+      "rsi14": 56.17425659743663,
       "volumeRatio": 0.617296911112809,
-      "dailyVolumeRatio": 1.0178920862047487,
+      "dailyVolumeRatio": 1.8272931521981641,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -5278,10 +5191,10 @@
       "hchState": "FORMING",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.11950228261197031,
+      "stockVolatilityRatio": 0.11950227870348783,
       "percentFromYearHigh": -20.823452791626032,
       "candlestickPattern": "BULLISH_ENGULFING",
-      "macdHistogram": 0.22369653305327009,
+      "macdHistogram": 0.22369651729569773,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-28T13:30:00Z",
@@ -5359,9 +5272,9 @@
       "sectorEtf": "XLB",
       "sectorName": "Materiales",
       "indexName": "NASDAQ100",
-      "rsi14": 55.47581898830839,
+      "rsi14": 55.475818280273614,
       "volumeRatio": 0.532113616840443,
-      "dailyVolumeRatio": 1.0682581309281636,
+      "dailyVolumeRatio": 0.83442077149164,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -5380,11 +5293,11 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.48698872670754095,
+      "stockVolatilityRatio": 0.4869887648128863,
       "percentFromYearHigh": -7.91555410535821,
       "nearestSupportPercent": 7.238314977509649,
       "marketTrap": "BEAR_TRAP",
-      "macdHistogram": 1.4360075129356629,
+      "macdHistogram": 1.436007563087056,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-16T13:30:00Z",
@@ -5455,112 +5368,6 @@
       ]
     },
     {
-      "symbol": "WMT",
-      "name": "Walmart",
-      "sectorEtf": "XLP",
-      "sectorName": "Consumo básico",
-      "indexName": "NASDAQ100",
-      "rsi14": 59.20345753506927,
-      "volumeRatio": 0.40878140401295676,
-      "dailyVolumeRatio": 0.7008805125362072,
-      "isUptrend": false,
-      "isBuyOpportunity": true,
-      "exhaustionConfidence": 85,
-      "exhaustionReasons": [
-        "Caída de 24.2%% desde el máximo reciente (2026-05-18T04:00:00Z)",
-        "Mínimos ascendentes tras el suelo del 2026-08-17T04:00:00Z (la presión vendedora se agota)",
-        "En el mínimo del 2026-08-17 el RSI llegó a sobreventa (38) — no es el RSI de ahora, que puede ser distinto",
-        "Ya recuperado un 59% del camino hacia la próxima resistencia (134.34)"
-      ],
-      "declinePercentFromRecentHigh": -24.241975321249033,
-      "nextResistanceTarget": 134.3374552874825,
-      "recentHigh": 134.8372030013218,
-      "recentLow": 102.1500015258789,
-      "recentLowDate": "2026-08-17T04:00:00Z",
-      "recoveryProgressToResistancePercent": 59.33988632833541,
-      "stockPe": 43.93,
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 26.06,
-      "isSectorInFavor": true,
-      "hchState": "FORMING",
-      "doubleTopBottomPattern": "DOUBLE_TOP",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.3213548994933631,
-      "percentFromYearHigh": -10.076746401502115,
-      "nearestSupportPercent": 15.241236735865012,
-      "nearestResistancePercent": 10.793777556686598,
-      "macdHistogram": 1.706496479097685,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 4,
-      "combinedScore": 38.0,
-      "rewardScore": 45.0,
-      "riskScore": 25.0,
-      "ratingOutOf10": 4,
-      "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza. RSI: RSI en zona neutra (59). Valoración PER: PER 43.9x frente a rango típico del sector 18-22x · deuda sin dato, no incluida. Riesgo (volatilidad): volatilidad propia 0.32x lo habitual. Giro: agotamiento bajista detectado (posible giro al alza). Volumen / MACD: volumen 41% de su media, MACD alcista.",
-      "penaltyWarnings": [
-        "Patrón de Doble Techo Detectado (16 feb 2026 y 18 may 2026) -15",
-        "Patrón de Hombro-Cabeza-Hombro en Formación -7"
-      ],
-      "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (26.3 puntos de diferencia)"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "Macrotendencia (peso 15%): sector líder, en rotación favorable → valor 1.0 × 15% = +15.00 pts",
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
-        "RSI (peso 15%): RSI en zona neutra (59) → valor 1.0 × 15% = +15.00 pts",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.32x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (0.20 + 1) × 50 = 60.0"
-      ],
-      "riskBreakdown": [
-        "Valoración PER (peso 15%): PER 43.9x frente a rango típico del sector 18-22x · deuda sin dato, no incluida → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 41% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Doble Techo Detectado (16 feb 2026 y 18 may 2026) -15; Patrón de Hombro-Cabeza-Hombro en Formación -7; Ha caído bastante menos que su propio sector (26.3 puntos de diferencia) → 60.0 pasa a 38.0",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "SPCX",
       "name": "Space Exploration Technologies (SpaceX)",
       "sectorEtf": "ITA",
@@ -5568,7 +5375,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 44.97614478187769,
       "volumeRatio": 0.6009984710914567,
-      "dailyVolumeRatio": 0.9549198386096488,
+      "dailyVolumeRatio": 0.9343833505075744,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -5641,14 +5448,110 @@
       ]
     },
     {
+      "symbol": "MRVL",
+      "name": "Marvell Technology",
+      "sectorEtf": "SMH",
+      "sectorName": "Semiconductores",
+      "indexName": "NASDAQ100",
+      "rsi14": 50.02076408980607,
+      "volumeRatio": 0.3244610742217477,
+      "dailyVolumeRatio": 0.7592979952760076,
+      "isUptrend": false,
+      "isBuyOpportunity": false,
+      "exhaustionConfidence": 45,
+      "exhaustionReasons": [
+        "Caída de 50.6%% desde el máximo reciente (2026-06-15T04:00:00Z)",
+        "Mínimos ascendentes tras el suelo del 2026-07-27T04:00:00Z (la presión vendedora se agota)"
+      ],
+      "declinePercentFromRecentHigh": -50.606224702996506,
+      "recentHigh": 329.72658943397715,
+      "recentLow": 162.86441067949195,
+      "recentLowDate": "2026-07-27T04:00:00Z",
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 29.62,
+      "isSectorInFavor": false,
+      "hchState": "NONE",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.8957937386760904,
+      "percentFromYearHigh": -33.781501603282145,
+      "macdHistogram": -5.316743137306975,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 2,
+      "combinedScore": 37.5,
+      "rewardScore": 15.0,
+      "riskScore": 40.0,
+      "ratingOutOf10": 4,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (50). Riesgo (volatilidad): volatilidad propia 0.90x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 32% de su media, MACD bajista.",
+      "penaltyWarnings": [],
+      "bonusWarnings": [
+        "Ha caído bastante menos que su propio sector (67.0 puntos de diferencia)"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "RSI (peso 15%): RSI en zona neutra (50) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.90x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 32% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (67.0 puntos de diferencia) → 37.5 pasa a 37.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
       "symbol": "PEP",
       "name": "PepsiCo",
       "sectorEtf": "XLP",
       "sectorName": "Consumo básico",
       "indexName": "NASDAQ100",
-      "rsi14": 45.49620421026243,
+      "rsi14": 45.49620483916705,
       "volumeRatio": 0.49053561092893105,
-      "dailyVolumeRatio": 0.5791346033541238,
+      "dailyVolumeRatio": 0.8227819427427837,
       "isUptrend": false,
       "isBuyOpportunity": true,
       "exhaustionConfidence": 85,
@@ -5670,12 +5573,12 @@
       "hchState": "CONFIRMED",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 1.005303770074472,
-      "percentFromYearHigh": -19.60423074577595,
+      "stockVolatilityRatio": 1.005304477192176,
+      "percentFromYearHigh": -19.604223128051824,
       "nearestSupportPercent": 1.2226115073368093,
       "nearestResistancePercent": 10.364754388408425,
       "marketTrap": "BEAR_TRAP",
-      "macdHistogram": 0.22235036700939892,
+      "macdHistogram": 0.22235022304830654,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -5747,120 +5650,14 @@
       ]
     },
     {
-      "symbol": "CEG",
-      "name": "Constellation Energy",
-      "sectorEtf": "XLU",
-      "sectorName": "Utilities",
-      "indexName": "NASDAQ100",
-      "rsi14": 46.99646171960756,
-      "volumeRatio": 0.5335395788898546,
-      "dailyVolumeRatio": 0.5868552433704941,
-      "isUptrend": false,
-      "isBuyOpportunity": false,
-      "exhaustionConfidence": 85,
-      "exhaustionReasons": [
-        "Caída de 28.0%% desde el máximo reciente (2026-05-11T04:00:00Z)",
-        "Mínimos ascendentes tras el suelo del 2026-06-29T04:00:00Z (la presión vendedora se agota)",
-        "En el mínimo del 2026-06-29 el RSI llegó a sobreventa (36) — no es el RSI de ahora, que puede ser distinto",
-        "Ya recuperado un 46% del camino hacia la próxima resistencia (307.80)"
-      ],
-      "declinePercentFromRecentHigh": -28.044936490030352,
-      "nextResistanceTarget": 307.79998779296875,
-      "recentHigh": 317.25229060764883,
-      "recentLow": 228.2790871935672,
-      "recentLowDate": "2026-06-29T04:00:00Z",
-      "recoveryProgressToResistancePercent": 45.6495073685969,
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 18.55,
-      "isSectorInFavor": false,
-      "hchState": "CONFIRMED",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.6090688691993361,
-      "percentFromYearHigh": -34.475165822265566,
-      "nearestResistancePercent": 16.335325200002725,
-      "macdHistogram": 0.6582631380349575,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "goldenCrossDate": "2026-10-29T13:30:00Z",
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 3,
-      "combinedScore": 37.5,
-      "rewardScore": 30.0,
-      "riskScore": 25.0,
-      "ratingOutOf10": 4,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza. RSI: RSI en zona neutra (47). Riesgo (volatilidad): volatilidad propia 0.61x lo habitual. Giro: agotamiento bajista detectado (posible giro al alza). Volumen / MACD: volumen 53% de su media, MACD alcista.",
-      "penaltyWarnings": [
-        "Patrón de Hombro-Cabeza-Hombro Confirmado (17 feb 2025, 13 oct 2025, 4 may 2026) -15",
-        "Tendencia bajista clara confirmada (largo plazo, 52 semanas) -10"
-      ],
-      "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (34.8 puntos de diferencia)",
-        "Cruz dorada (29 oct 2026): SMA20 cruza por encima de la SMA50 +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
-        "RSI (peso 15%): RSI en zona neutra (47) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.61x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 53% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (17 feb 2025, 13 oct 2025, 4 may 2026) -15; Tendencia bajista clara confirmada (largo plazo, 52 semanas) -10; Ha caído bastante menos que su propio sector (34.8 puntos de diferencia); Cruz dorada (29 oct 2026): SMA20 cruza por encima de la SMA50 +10 → 52.5 pasa a 37.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "CTAS",
       "name": "Cintas",
       "sectorEtf": "XLI",
       "sectorName": "Industrial",
       "indexName": "NASDAQ100",
-      "rsi14": 62.9656397970878,
+      "rsi14": 62.96564136131231,
       "volumeRatio": 0.943367781298775,
-      "dailyVolumeRatio": 1.2713700172022002,
+      "dailyVolumeRatio": 3.0553432618961134,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -5871,7 +5668,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 1.0876492326579894,
       "percentFromYearHigh": -3.802547542614084,
-      "macdHistogram": 1.7302471680608082,
+      "macdHistogram": 1.7302470777089933,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-20T13:30:00Z",
@@ -5948,9 +5745,9 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 42.20934130720288,
+      "rsi14": 42.20934158131002,
       "volumeRatio": 0.7221569792668893,
-      "dailyVolumeRatio": 1.7442810038781542,
+      "dailyVolumeRatio": 1.440640050530305,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -5959,9 +5756,9 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.36724429425027166,
+      "stockVolatilityRatio": 0.3672443064422765,
       "percentFromYearHigh": -39.262610067209806,
-      "macdHistogram": -13.758089878759318,
+      "macdHistogram": -13.758090034891124,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "deathCrossDate": "2026-10-28T13:30:00Z",
@@ -6040,7 +5837,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 49.48767530665139,
       "volumeRatio": 0.48116028681527034,
-      "dailyVolumeRatio": 0.8308713262952316,
+      "dailyVolumeRatio": 1.150627668387179,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -6134,7 +5931,7 @@
       "sectorName": "Defensa / Armamento",
       "indexName": "NASDAQ100",
       "rsi14": 28.09093087471257,
-      "dailyVolumeRatio": 2.093539980798244,
+      "dailyVolumeRatio": 0.985927077743789,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -6219,7 +6016,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 43.403049261415845,
       "volumeRatio": 0.44270344903360875,
-      "dailyVolumeRatio": 0.5889389664451358,
+      "dailyVolumeRatio": 1.017277326690481,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -6322,7 +6119,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 44.513509898446536,
       "volumeRatio": 0.43579106088633096,
-      "dailyVolumeRatio": 0.72868603318551,
+      "dailyVolumeRatio": 0.68888867031897,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 50,
@@ -6415,6 +6212,194 @@
       ]
     },
     {
+      "symbol": "EXC",
+      "name": "Exelon",
+      "sectorEtf": "XLU",
+      "sectorName": "Utilities",
+      "indexName": "NASDAQ100",
+      "rsi14": 56.64831347204919,
+      "volumeRatio": 0.6282787863877453,
+      "dailyVolumeRatio": 0.8368377885957942,
+      "isUptrend": false,
+      "isBuyOpportunity": false,
+      "exhaustionConfidence": 60,
+      "exhaustionReasons": [
+        "Caída de 17.4%% desde el máximo reciente (2026-07-06T04:00:00Z)",
+        "Mínimos ascendentes tras el suelo del 2026-09-21T04:00:00Z (la presión vendedora se agota)",
+        "En el mínimo del 2026-09-21 el RSI llegó a sobreventa (33) — no es el RSI de ahora, que puede ser distinto"
+      ],
+      "declinePercentFromRecentHigh": -17.37063500618531,
+      "recentHigh": 48.0821794348902,
+      "recentLow": 39.72999954223633,
+      "recentLowDate": "2026-09-21T04:00:00Z",
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 18.55,
+      "isSectorInFavor": false,
+      "hchState": "NONE",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.2945681642988043,
+      "percentFromYearHigh": -7.634742300138236,
+      "nearestSupportPercent": 9.152743522807684,
+      "marketTrap": "BEAR_TRAP",
+      "macdHistogram": 0.24409622891575466,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 4,
+      "combinedScore": 37.5,
+      "rewardScore": 15.0,
+      "riskScore": 40.0,
+      "ratingOutOf10": 4,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (57). Riesgo (volatilidad): volatilidad propia 0.29x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 63% de su media, MACD alcista.",
+      "penaltyWarnings": [],
+      "bonusWarnings": [
+        "Ha caído bastante menos que su propio sector (24.2 puntos de diferencia)"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "RSI (peso 15%): RSI en zona neutra (57) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.29x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 63% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (24.2 puntos de diferencia) → 37.5 pasa a 37.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
+      "symbol": "ROP",
+      "name": "Roper Technologies",
+      "sectorEtf": "XLK",
+      "sectorName": "Tecnología",
+      "indexName": "NASDAQ100",
+      "rsi14": 67.1415530182696,
+      "volumeRatio": 0.8442174789573185,
+      "dailyVolumeRatio": 1.4150469726391182,
+      "isUptrend": false,
+      "isBuyOpportunity": false,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 29.62,
+      "isSectorInFavor": false,
+      "hchState": "CONFIRMED",
+      "doubleTopBottomPattern": "DOUBLE_BOTTOM",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 1.5108043898306684,
+      "percentFromYearHigh": -0.3966699467130138,
+      "macdHistogram": 7.527584995956695,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 2,
+      "combinedScore": 37.5,
+      "rewardScore": 15.0,
+      "riskScore": 30.0,
+      "ratingOutOf10": 4,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (67). Riesgo (volatilidad): volatilidad propia 1.51x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 84% de su media, MACD alcista.",
+      "penaltyWarnings": [
+        "Patrón de Hombro-Cabeza-Hombro Confirmado (22 jul 2024, 3 mar 2025, 7 jul 2025) -15"
+      ],
+      "bonusWarnings": [
+        "Patrón de Doble Suelo Detectado (16 feb 2026 y 11 may 2026) +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "RSI (peso 15%): RSI en zona neutra (67) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 1.51x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "Volumen / MACD (peso 10%): volumen 84% de su media, MACD alcista → valor 0.0 × 10% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.15 + 1) × 50 = 42.5"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (22 jul 2024, 3 mar 2025, 7 jul 2025) -15; Patrón de Doble Suelo Detectado (16 feb 2026 y 11 may 2026) +10 → 42.5 pasa a 37.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
       "symbol": "CPRT",
       "name": "Copart",
       "sectorEtf": "XLI",
@@ -6422,7 +6407,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 45.13794685554309,
       "volumeRatio": 0.5260068375282317,
-      "dailyVolumeRatio": 1.0045511721788962,
+      "dailyVolumeRatio": 0.7409119998874769,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -6510,7 +6495,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 52.59613731230073,
       "volumeRatio": 1.0340373079421545,
-      "dailyVolumeRatio": 1.1293655307926986,
+      "dailyVolumeRatio": 2.008141874098825,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 60,
@@ -6608,9 +6593,9 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 57.474060657680866,
+      "rsi14": 57.47406018509697,
       "volumeRatio": 1.016560560062839,
-      "dailyVolumeRatio": 2.660700922387024,
+      "dailyVolumeRatio": 1.5769204904619938,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -6631,7 +6616,7 @@
       "stockVolatilityRatio": 0.3350572419372726,
       "percentFromYearHigh": -21.134485569941855,
       "nearestSupportPercent": 19.098853290602317,
-      "macdHistogram": 1.1513160173321366,
+      "macdHistogram": 1.1513161377872598,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -6709,7 +6694,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 56.34362796925255,
       "volumeRatio": 0.7212349228173239,
-      "dailyVolumeRatio": 0.829041901819911,
+      "dailyVolumeRatio": 0.801836300442879,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -6807,108 +6792,6 @@
       ]
     },
     {
-      "symbol": "STX",
-      "name": "Seagate Technology",
-      "sectorEtf": "XLK",
-      "sectorName": "Tecnología",
-      "indexName": "NASDAQ100",
-      "rsi14": 46.92088373873821,
-      "volumeRatio": 1.0510721855782237,
-      "dailyVolumeRatio": 1.9746992737383344,
-      "isUptrend": false,
-      "isBuyOpportunity": false,
-      "exhaustionConfidence": 45,
-      "exhaustionReasons": [
-        "Caída de 45.7%% desde el máximo reciente (2026-06-15T04:00:00Z)",
-        "Mínimos ascendentes tras el suelo del 2026-10-19T04:00:00Z (la presión vendedora se agota)"
-      ],
-      "declinePercentFromRecentHigh": -45.68201498360032,
-      "recentHigh": 1143.267740532915,
-      "recentLow": 621.0,
-      "recentLowDate": "2026-10-19T04:00:00Z",
-      "stockPe": 36.8,
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 29.62,
-      "isSectorInFavor": false,
-      "hchState": "NONE",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.551334199591771,
-      "percentFromYearHigh": -38.730889898405366,
-      "macdHistogram": -38.44881392451183,
-      "shortTermBullish": false,
-      "declineAccelerating": true,
-      "deathCrossDate": "2026-10-16T13:30:00Z",
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "BULLISH",
-      "consolidatedBearishMonthsCount": 1,
-      "combinedScore": 35.0,
-      "rewardScore": 30.0,
-      "riskScore": 30.0,
-      "ratingOutOf10": 4,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (47). Valoración PER: PER 36.8x frente a rango típico del sector 28-40x · deuda sin dato, no incluida. Riesgo (volatilidad): volatilidad propia 0.55x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 105% de su media, MACD bajista.",
-      "penaltyWarnings": [
-        "Caída acelerando claramente -10",
-        "SMA20 cruza por debajo de la SMA50 (16 oct 2026) -15"
-      ],
-      "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (52.8 puntos de diferencia)",
-        "Patrón de Bandera Alcista a Largo Plazo +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "RSI (peso 15%): RSI en zona neutra (47) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): PER 36.8x frente a rango típico del sector 28-40x · deuda sin dato, no incluida → valor 1.0 × 15% = +15.00 pts",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.55x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "Volumen / MACD (peso 10%): volumen 105% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (0.00 + 1) × 50 = 50.0"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Caída acelerando claramente -10; SMA20 cruza por debajo de la SMA50 (16 oct 2026) -15; Ha caído bastante menos que su propio sector (52.8 puntos de diferencia); Patrón de Bandera Alcista a Largo Plazo +10 → 50.0 pasa a 35.0",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "ADSK",
       "name": "Autodesk",
       "sectorEtf": "XLK",
@@ -6916,7 +6799,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 52.658492609819035,
       "volumeRatio": 0.3383576414157324,
-      "dailyVolumeRatio": 0.694683296322887,
+      "dailyVolumeRatio": 0.7840731896147514,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -7018,7 +6901,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 51.27727507643215,
       "volumeRatio": 0.63121538968685,
-      "dailyVolumeRatio": 1.1007748465211167,
+      "dailyVolumeRatio": 1.3487326190705415,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -7117,7 +7000,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 62.128836718120674,
       "volumeRatio": 0.3682875334100351,
-      "dailyVolumeRatio": 0.726641122054339,
+      "dailyVolumeRatio": 0.6866536264297718,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "hasNegativeTrailingEarnings": false,
@@ -7202,9 +7085,9 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 52.91860908112129,
+      "rsi14": 52.91860911525835,
       "volumeRatio": 0.4576207980785978,
-      "dailyVolumeRatio": 0.9351696691995611,
+      "dailyVolumeRatio": 1.257397221724782,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -7224,7 +7107,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.13221611913027875,
       "percentFromYearHigh": -28.013382811984165,
-      "macdHistogram": 0.3356822726634776,
+      "macdHistogram": 0.33568225271180996,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -7302,7 +7185,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 48.34947480335702,
       "volumeRatio": 0.4083133034098821,
-      "dailyVolumeRatio": 0.8033776622220661,
+      "dailyVolumeRatio": 1.1108345767549939,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -7401,7 +7284,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 36.60297837537924,
       "volumeRatio": 0.47459161886993756,
-      "dailyVolumeRatio": 0.9192858261005687,
+      "dailyVolumeRatio": 0.8475523198560022,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -7505,7 +7388,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 53.250223077363735,
       "volumeRatio": 0.5780518718280883,
-      "dailyVolumeRatio": 0.9601345907923445,
+      "dailyVolumeRatio": 1.249414636484648,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -7531,7 +7414,7 @@
       "percentFromYearHigh": -22.55910427677583,
       "nearestSupportPercent": 14.626480863829514,
       "nearestResistancePercent": 28.30294093624339,
-      "macdHistogram": -0.14098145364183506,
+      "macdHistogram": -0.1409814558236815,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -7608,9 +7491,9 @@
       "sectorEtf": "XLC",
       "sectorName": "Comunicación / Medios",
       "indexName": "NASDAQ100",
-      "rsi14": 34.03018820195891,
+      "rsi14": 34.0301887856035,
       "volumeRatio": 0.8387435591205686,
-      "dailyVolumeRatio": 2.5972304960270303,
+      "dailyVolumeRatio": 1.1970226918472684,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 55,
@@ -7632,7 +7515,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 1.2310649705887167,
       "percentFromYearHigh": -30.4539598248331,
-      "macdHistogram": -6.428635628237544,
+      "macdHistogram": -6.428635681356328,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "deathCrossDate": "2026-10-26T13:30:00Z",
@@ -7711,9 +7594,9 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 53.56319913292602,
+      "rsi14": 53.56319911231629,
       "volumeRatio": 0.42561590569843255,
-      "dailyVolumeRatio": 1.1330034813203451,
+      "dailyVolumeRatio": 0.8612232690572229,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -7733,7 +7616,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.6964554902500925,
       "percentFromYearHigh": -25.53300528006286,
-      "macdHistogram": -27.3871922793237,
+      "macdHistogram": -27.387192227878842,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "deathCrossDate": "2026-10-26T13:30:00Z",
@@ -7812,7 +7695,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 58.08271695355953,
       "volumeRatio": 0.47278758215685895,
-      "dailyVolumeRatio": 0.970315908906051,
+      "dailyVolumeRatio": 1.0717437042555715,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -7910,7 +7793,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 47.83016784549219,
       "volumeRatio": 0.3904816185740226,
-      "dailyVolumeRatio": 1.1453666584423672,
+      "dailyVolumeRatio": 0.8793465199823182,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -8004,49 +7887,53 @@
       ]
     },
     {
-      "symbol": "MRVL",
-      "name": "Marvell Technology",
-      "sectorEtf": "SMH",
-      "sectorName": "Semiconductores",
+      "symbol": "STX",
+      "name": "Seagate Technology",
+      "sectorEtf": "XLK",
+      "sectorName": "Tecnología",
       "indexName": "NASDAQ100",
-      "rsi14": 50.020764067845185,
-      "volumeRatio": 0.3244610742217477,
-      "dailyVolumeRatio": 0.8062656873446683,
+      "rsi14": 46.9208837933882,
+      "volumeRatio": 1.0510721855782237,
+      "dailyVolumeRatio": 1.7437428701084954,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
       "exhaustionReasons": [
-        "Caída de 50.6%% desde el máximo reciente (2026-06-15T04:00:00Z)",
-        "Mínimos ascendentes tras el suelo del 2026-07-27T04:00:00Z (la presión vendedora se agota)"
+        "Caída de 45.7%% desde el máximo reciente (2026-06-15T04:00:00Z)",
+        "Mínimos ascendentes tras el suelo del 2026-10-19T04:00:00Z (la presión vendedora se agota)"
       ],
-      "declinePercentFromRecentHigh": -50.606224702996506,
-      "recentHigh": 329.72658943397715,
-      "recentLow": 162.86441067949195,
-      "recentLowDate": "2026-07-27T04:00:00Z",
-      "stockPe": 71.9,
+      "declinePercentFromRecentHigh": -45.68201498360032,
+      "recentHigh": 1143.267740532915,
+      "recentLow": 621.0,
+      "recentLowDate": "2026-10-19T04:00:00Z",
       "hasNegativeTrailingEarnings": false,
       "sectorAveragePe": 29.62,
       "isSectorInFavor": false,
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.8957937386760904,
-      "percentFromYearHigh": -33.781501603282145,
-      "macdHistogram": -5.316743111287732,
+      "stockVolatilityRatio": 0.5513341876239612,
+      "percentFromYearHigh": -38.730889898405366,
+      "macdHistogram": -38.44881404190741,
       "shortTermBullish": false,
-      "declineAccelerating": false,
+      "declineAccelerating": true,
+      "deathCrossDate": "2026-10-16T13:30:00Z",
       "momentumPriceDivergence": "NONE",
       "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 2,
-      "combinedScore": 30.0,
+      "longTermFlagPattern": "BULLISH",
+      "consolidatedBearishMonthsCount": 1,
+      "combinedScore": 27.5,
       "rewardScore": 15.0,
-      "riskScore": 55.0,
+      "riskScore": 30.0,
       "ratingOutOf10": 3,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (50). Valoración PER: PER 71.9x frente a rango típico del sector 25-35x · deuda sin dato, no incluida. Riesgo (volatilidad): volatilidad propia 0.90x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 32% de su media, MACD bajista.",
-      "penaltyWarnings": [],
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (47). Riesgo (volatilidad): volatilidad propia 0.55x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 105% de su media, MACD bajista.",
+      "penaltyWarnings": [
+        "Caída acelerando claramente -10",
+        "SMA20 cruza por debajo de la SMA50 (16 oct 2026) -15"
+      ],
       "bonusWarnings": [
-        "Ha caído bastante menos que su propio sector (67.0 puntos de diferencia)"
+        "Ha caído bastante menos que su propio sector (52.8 puntos de diferencia)",
+        "Patrón de Bandera Alcista a Largo Plazo +10"
       ],
       "factors": [
         {
@@ -8066,8 +7953,8 @@
         },
         {
           "label": "Valoración PER",
-          "grade": "BAD",
-          "valueText": "-1.0"
+          "grade": "UNKNOWN",
+          "valueText": "—"
         },
         {
           "label": "Riesgo (volatilidad)",
@@ -8081,22 +7968,126 @@
         },
         {
           "label": "Volumen / MACD",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "RSI (peso 15%): RSI en zona neutra (47) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.55x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "Volumen / MACD (peso 10%): volumen 105% de su media, MACD bajista → valor 0.0 × 10% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (-0.15 + 1) × 50 = 42.5"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Caída acelerando claramente -10; SMA20 cruza por debajo de la SMA50 (16 oct 2026) -15; Ha caído bastante menos que su propio sector (52.8 puntos de diferencia); Patrón de Bandera Alcista a Largo Plazo +10 → 42.5 pasa a 27.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
+      "symbol": "CEG",
+      "name": "Constellation Energy",
+      "sectorEtf": "XLU",
+      "sectorName": "Utilities",
+      "indexName": "NASDAQ100",
+      "rsi14": 46.99646223330217,
+      "volumeRatio": 0.5335395788898546,
+      "dailyVolumeRatio": 0.7440132700978903,
+      "isUptrend": false,
+      "isBuyOpportunity": false,
+      "exhaustionConfidence": 85,
+      "exhaustionReasons": [
+        "Caída de 28.0%% desde el máximo reciente (2026-05-11T04:00:00Z)",
+        "Mínimos ascendentes tras el suelo del 2026-06-29T04:00:00Z (la presión vendedora se agota)",
+        "En el mínimo del 2026-06-29 el RSI llegó a sobreventa (36) — no es el RSI de ahora, que puede ser distinto",
+        "Ya recuperado un 46% del camino hacia la próxima resistencia (307.80)"
+      ],
+      "declinePercentFromRecentHigh": -28.044936490030352,
+      "nextResistanceTarget": 307.79998779296875,
+      "recentHigh": 317.25229060764883,
+      "recentLow": 228.2790871935672,
+      "recentLowDate": "2026-06-29T04:00:00Z",
+      "recoveryProgressToResistancePercent": 45.6495073685969,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 18.55,
+      "isSectorInFavor": false,
+      "hchState": "CONFIRMED",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.6090688691993361,
+      "percentFromYearHigh": -34.475160488478814,
+      "nearestResistancePercent": 16.335325200002725,
+      "macdHistogram": 0.6582629183553275,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 3,
+      "combinedScore": 27.5,
+      "rewardScore": 30.0,
+      "riskScore": 25.0,
+      "ratingOutOf10": 3,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza. RSI: RSI en zona neutra (47). Riesgo (volatilidad): volatilidad propia 0.61x lo habitual. Giro: agotamiento bajista detectado (posible giro al alza). Volumen / MACD: volumen 53% de su media, MACD alcista.",
+      "penaltyWarnings": [
+        "Patrón de Hombro-Cabeza-Hombro Confirmado (17 feb 2025, 13 oct 2025, 4 may 2026) -15",
+        "Tendencia bajista clara confirmada (largo plazo, 52 semanas) -10"
+      ],
+      "bonusWarnings": [
+        "Ha caído bastante menos que su propio sector (34.8 puntos de diferencia)"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Volumen / MACD",
           "grade": "BAD",
           "valueText": "-1.0"
         }
       ],
       "rewardBreakdown": [
-        "RSI (peso 15%): RSI en zona neutra (50) → valor 1.0 × 15% = +15.00 pts",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.90x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.40 + 1) × 50 = 30.0"
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, pero con agotamiento/giro al alza detectado — no penaliza → valor 0.0 × 15% = +0.00 pts",
+        "RSI (peso 15%): RSI en zona neutra (47) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.61x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): agotamiento bajista detectado (posible giro al alza) → valor 1.0 × 15% = +15.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
       ],
       "riskBreakdown": [
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Valoración PER (peso 15%): PER 71.9x frente a rango típico del sector 25-35x · deuda sin dato, no incluida → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 32% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Ha caído bastante menos que su propio sector (67.0 puntos de diferencia) → 30.0 pasa a 30.0",
+        "Volumen / MACD (peso 10%): volumen 53% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro Confirmado (17 feb 2025, 13 oct 2025, 4 may 2026) -15; Tendencia bajista clara confirmada (largo plazo, 52 semanas) -10; Ha caído bastante menos que su propio sector (34.8 puntos de diferencia) → 52.5 pasa a 27.5",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     },
@@ -8106,9 +8097,9 @@
       "sectorEtf": "XLI",
       "sectorName": "Industrial",
       "indexName": "NASDAQ100",
-      "rsi14": 38.481319438567716,
+      "rsi14": 38.48131961326128,
       "volumeRatio": 1.0306233783708678,
-      "dailyVolumeRatio": 2.79636219395117,
+      "dailyVolumeRatio": 1.212607829746866,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -8128,7 +8119,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.42470108500575315,
       "percentFromYearHigh": -31.50907121848216,
-      "macdHistogram": -3.6934471674270593,
+      "macdHistogram": -3.693447117435232,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -8206,7 +8197,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 48.31410555981132,
       "volumeRatio": 0.5044376558079924,
-      "dailyVolumeRatio": 0.8474811665635863,
+      "dailyVolumeRatio": 0.9297086493593312,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -8304,9 +8295,9 @@
       "sectorEtf": "XLC",
       "sectorName": "Comunicación / Medios",
       "indexName": "NASDAQ100",
-      "rsi14": 33.24806835373241,
+      "rsi14": 33.24806703990011,
       "volumeRatio": 0.9080888212916074,
-      "dailyVolumeRatio": 1.3147974349396871,
+      "dailyVolumeRatio": 1.225665245939408,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -8324,9 +8315,9 @@
       "hchState": "CONFIRMED",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.906849843640743,
-      "percentFromYearHigh": -33.72909631844501,
-      "macdHistogram": -2.5358628686160447,
+      "stockVolatilityRatio": 0.9068499232330008,
+      "percentFromYearHigh": -33.72909160810201,
+      "macdHistogram": -2.535862843081949,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -8405,7 +8396,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 30.724647999968482,
       "volumeRatio": 0.6227487002902404,
-      "dailyVolumeRatio": 1.4241964671663334,
+      "dailyVolumeRatio": 1.2110295450425956,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 55,
@@ -8506,7 +8497,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 48.0683228539051,
       "volumeRatio": 0.5569541594180737,
-      "dailyVolumeRatio": 1.7694207773712771,
+      "dailyVolumeRatio": 0.7761525599642352,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 70,
@@ -8612,9 +8603,9 @@
       "sectorEtf": "XLK",
       "sectorName": "Tecnología",
       "indexName": "NASDAQ100",
-      "rsi14": 47.75431995726412,
+      "rsi14": 47.75432104540478,
       "volumeRatio": 0.3382759874342937,
-      "dailyVolumeRatio": 0.6042294267616761,
+      "dailyVolumeRatio": 0.6568025455922054,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 60,
@@ -8623,8 +8614,8 @@
         "Mínimos ascendentes tras el suelo del 2026-06-22T04:00:00Z (la presión vendedora se agota)",
         "En el mínimo del 2026-06-22 el RSI llegó a sobreventa (27) — no es el RSI de ahora, que puede ser distinto"
       ],
-      "declinePercentFromRecentHigh": -40.36652176729076,
-      "recentHigh": 420.16037624679916,
+      "declinePercentFromRecentHigh": -40.36651602728651,
+      "recentHigh": 420.1603358043801,
       "recentLow": 250.5562465116042,
       "recentLowDate": "2026-06-22T04:00:00Z",
       "hasNegativeTrailingEarnings": false,
@@ -8633,9 +8624,9 @@
       "hchState": "CONFIRMED",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.6303298742665048,
+      "stockVolatilityRatio": 0.6303297184841237,
       "percentFromYearHigh": -50.773307947691734,
-      "macdHistogram": 9.749773939847124,
+      "macdHistogram": 9.74977340133853,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -8713,7 +8704,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 50.0424402085246,
       "volumeRatio": 0.3529916453827244,
-      "dailyVolumeRatio": 0.6410410582825227,
+      "dailyVolumeRatio": 0.5577692541970355,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 55,
@@ -8813,7 +8804,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 41.06900522264648,
       "volumeRatio": 0.3982815189270688,
-      "dailyVolumeRatio": 1.1841227676225239,
+      "dailyVolumeRatio": 0.5678493806920306,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 65,
@@ -8916,7 +8907,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 45.24886703565793,
       "volumeRatio": 0.7797173431827772,
-      "dailyVolumeRatio": 1.1539842294778384,
+      "dailyVolumeRatio": 0.9652186403175281,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -9016,7 +9007,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 39.180424074184025,
       "volumeRatio": 1.1267335612800988,
-      "dailyVolumeRatio": 1.107763130963627,
+      "dailyVolumeRatio": 0.9866536140746152,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 25,
@@ -9115,7 +9106,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 30.798760164862315,
       "volumeRatio": 0.7369007692277618,
-      "dailyVolumeRatio": 0.9597609360497289,
+      "dailyVolumeRatio": 1.1368751671049824,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -9214,9 +9205,9 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 45.54194183200963,
+      "rsi14": 45.54194140811664,
       "volumeRatio": 0.5720119562387407,
-      "dailyVolumeRatio": 1.039366613237831,
+      "dailyVolumeRatio": 1.187032949227079,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 85,
@@ -9243,7 +9234,7 @@
       "percentFromYearHigh": -30.065605498048463,
       "nearestResistancePercent": 1.6830707062168597,
       "marketTrap": "BULL_TRAP",
-      "macdHistogram": -4.1739119599390335,
+      "macdHistogram": -4.173911609548183,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -9319,9 +9310,9 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 51.40723534852108,
+      "rsi14": 51.40723564279545,
       "volumeRatio": 0.5394428553478643,
-      "dailyVolumeRatio": 0.699104415258884,
+      "dailyVolumeRatio": 0.8815446591959858,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 70,
@@ -9346,7 +9337,7 @@
       "stockVolatilityRatio": 0.78517725881087,
       "percentFromYearHigh": -15.993657256790142,
       "nearestResistancePercent": 12.336782191244607,
-      "macdHistogram": -28.011406196363914,
+      "macdHistogram": -28.011407112764566,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "deathCrossDate": "2026-10-28T13:30:00Z",
@@ -9423,9 +9414,9 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 43.97365682945643,
+      "rsi14": 43.97365727108132,
       "volumeRatio": 0.6220202856837717,
-      "dailyVolumeRatio": 1.0908761666670859,
+      "dailyVolumeRatio": 1.0019837138414065,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 60,
@@ -9445,9 +9436,9 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 1.1323867602733617,
+      "stockVolatilityRatio": 1.132386565502354,
       "percentFromYearHigh": -41.92468619972778,
-      "macdHistogram": -11.66224601160307,
+      "macdHistogram": -11.662246074691385,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "deathCrossDate": "2026-10-22T13:30:00Z",
@@ -9524,9 +9515,9 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 45.80382906473058,
+      "rsi14": 45.8038288841705,
       "volumeRatio": 0.47990127180769226,
-      "dailyVolumeRatio": 1.0253847575911632,
+      "dailyVolumeRatio": 0.916750505727267,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 60,
@@ -9548,7 +9539,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.8611260891584922,
       "percentFromYearHigh": -42.932536037223024,
-      "macdHistogram": -17.225292747431553,
+      "macdHistogram": -17.225292707574077,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "deathCrossDate": "2026-10-26T13:30:00Z",
@@ -9627,7 +9618,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 45.89923480537561,
       "volumeRatio": 0.4052447627231244,
-      "dailyVolumeRatio": 0.8702012492543074,
+      "dailyVolumeRatio": 0.8027989685758,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -9725,9 +9716,9 @@
       "sectorEtf": "SMH",
       "sectorName": "Semiconductores",
       "indexName": "NASDAQ100",
-      "rsi14": 45.83336773632879,
+      "rsi14": 45.83336773632864,
       "volumeRatio": 0.5768707795428138,
-      "dailyVolumeRatio": 1.1077055382403909,
+      "dailyVolumeRatio": 0.997243691679264,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 60,
@@ -9749,7 +9740,7 @@
       "tripleTopBottomPattern": "NONE",
       "stockVolatilityRatio": 0.9791705755700035,
       "percentFromYearHigh": -45.466625455136985,
-      "macdHistogram": -5.880547943927217,
+      "macdHistogram": -5.880547954136821,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "deathCrossDate": "2026-10-26T13:30:00Z",
@@ -9828,7 +9819,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 41.28156261301219,
       "volumeRatio": 1.6308987229392884,
-      "dailyVolumeRatio": 0.9326848547311397,
+      "dailyVolumeRatio": 1.5209152285427208,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 50,
@@ -9932,7 +9923,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 31.87121470441349,
       "volumeRatio": 0.2505842551083148,
-      "dailyVolumeRatio": 0.5283352699775677,
+      "dailyVolumeRatio": 0.5203100140235675,
       "isUptrend": false,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 40,
@@ -10032,11 +10023,11 @@
       "sectorEtf": "XLE",
       "sectorName": "Energía",
       "indexName": "NASDAQ100",
-      "rsi14": 57.85005813569842,
+      "rsi14": 57.85005882673078,
       "volumeRatio": 0.33864789643255455,
-      "dailyVolumeRatio": 0.544869331283628,
+      "dailyVolumeRatio": 0.6492903787961302,
       "isUptrend": true,
-      "trendQuality": 0.7005960695955822,
+      "trendQuality": 0.700596090064458,
       "yearChangePercent": 40.72118928714564,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -10047,11 +10038,11 @@
         "Ya recuperado un 83% del camino hacia la próxima resistencia (211.35)"
       ],
       "declinePercentFromRecentHigh": -16.159515343138448,
-      "nextResistanceTarget": 211.3513948348942,
+      "nextResistanceTarget": 211.3513991713579,
       "recentHigh": 216.89999389648438,
       "recentLow": 181.85000610351562,
       "recentLowDate": "2026-10-05T04:00:00Z",
-      "recoveryProgressToResistancePercent": 83.31806612927889,
+      "recoveryProgressToResistancePercent": 83.31805388220398,
       "hasNegativeTrailingEarnings": false,
       "sectorAveragePe": 14.28,
       "isSectorInFavor": true,
@@ -10061,8 +10052,8 @@
       "stockVolatilityRatio": 0.07937374905258729,
       "percentFromYearHigh": -4.8271099655724,
       "nearestSupportPercent": 11.4378056643898,
-      "nearestResistancePercent": 2.3840538360346177,
-      "macdHistogram": 0.1589013302817932,
+      "nearestResistancePercent": 2.3840559367292222,
+      "macdHistogram": 0.1589013007849056,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -10134,112 +10125,16 @@
       ]
     },
     {
-      "symbol": "CCEP",
-      "name": "Coca-Cola Europacific Partners",
-      "sectorEtf": "XLP",
-      "sectorName": "Consumo básico",
-      "indexName": "NASDAQ100",
-      "rsi14": 61.70282418598213,
-      "volumeRatio": 0.40960819795095743,
-      "dailyVolumeRatio": 0.6694865225789073,
-      "isUptrend": true,
-      "trendQuality": 0.6250664808825797,
-      "yearChangePercent": 24.087066522575267,
-      "aboveTrendSma": true,
-      "isBuyOpportunity": false,
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 26.06,
-      "isSectorInFavor": true,
-      "hchState": "NONE",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.22406867886288168,
-      "percentFromYearHigh": -3.151462692428244,
-      "nearestSupportPercent": 19.771170764337654,
-      "candlestickPattern": "BEARISH_ENGULFING",
-      "macdHistogram": 0.30768343048245406,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "goldenCrossDate": "2026-10-22T13:30:00Z",
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "BULLISH",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 4,
-      "combinedScore": 87.5,
-      "rewardScore": 30.0,
-      "riskScore": 25.0,
-      "ratingOutOf10": 9,
-      "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (62). Riesgo (volatilidad): volatilidad propia 0.22x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 41% de su media, MACD alcista.",
-      "penaltyWarnings": [],
-      "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+10.1 puntos) +10",
-        "Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10",
-        "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10",
-        "Patrón de Bandera Alcista a Corto Plazo +5"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "Macrotendencia (peso 15%): sector líder, en rotación favorable → valor 1.0 × 15% = +15.00 pts",
-        "RSI (peso 15%): RSI en zona neutra (62) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.22x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
-      ],
-      "riskBreakdown": [
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 41% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+10.1 puntos) +10; Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10; Patrón de Bandera Alcista a Corto Plazo +5 → 52.5 pasa a 87.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "AAPL",
       "name": "Apple Inc.",
       "sectorEtf": "XLK",
       "sectorName": "Tecnología",
       "indexName": "NASDAQ100",
-      "rsi14": 66.2631723657714,
+      "rsi14": 66.2631747295105,
       "volumeRatio": 0.4938929368572602,
-      "dailyVolumeRatio": 0.9138189065327754,
+      "dailyVolumeRatio": 1.0250530992394984,
       "isUptrend": true,
-      "trendQuality": 0.7450091475632676,
+      "trendQuality": 0.7450092027597875,
       "yearChangePercent": 28.431302726323004,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -10253,7 +10148,7 @@
       "stockVolatilityRatio": 0.3524571533323224,
       "percentFromYearHigh": -0.8017534006583149,
       "nearestSupportPercent": 30.09201850524362,
-      "macdHistogram": 0.9311460408989021,
+      "macdHistogram": 0.931145945791986,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -10331,7 +10226,7 @@
       "indexName": "NASDAQ100",
       "rsi14": 57.00176378979625,
       "volumeRatio": 0.40071546412870945,
-      "dailyVolumeRatio": 0.831259974202781,
+      "dailyVolumeRatio": 0.7183518181898013,
       "isUptrend": true,
       "trendQuality": 0.6100033407657208,
       "yearChangePercent": 29.995793187445805,
@@ -10427,16 +10322,111 @@
       ]
     },
     {
+      "symbol": "CCEP",
+      "name": "Coca-Cola Europacific Partners",
+      "sectorEtf": "XLP",
+      "sectorName": "Consumo básico",
+      "indexName": "NASDAQ100",
+      "rsi14": 61.70282418598213,
+      "volumeRatio": 0.40960819795095743,
+      "dailyVolumeRatio": 0.6809958957198221,
+      "isUptrend": true,
+      "trendQuality": 0.6250664808825797,
+      "yearChangePercent": 24.087066522575267,
+      "aboveTrendSma": true,
+      "isBuyOpportunity": false,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 26.06,
+      "isSectorInFavor": true,
+      "hchState": "NONE",
+      "doubleTopBottomPattern": "NONE",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.22406867886288168,
+      "percentFromYearHigh": -3.151462692428244,
+      "nearestSupportPercent": 19.771170764337654,
+      "candlestickPattern": "BEARISH_ENGULFING",
+      "macdHistogram": 0.30768343048245406,
+      "shortTermBullish": false,
+      "declineAccelerating": false,
+      "goldenCrossDate": "2026-10-22T13:30:00Z",
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 4,
+      "combinedScore": 82.5,
+      "rewardScore": 30.0,
+      "riskScore": 25.0,
+      "ratingOutOf10": 8,
+      "summary": "Macrotendencia: sector líder, en rotación favorable. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (62). Riesgo (volatilidad): volatilidad propia 0.22x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 41% de su media, MACD alcista.",
+      "penaltyWarnings": [],
+      "bonusWarnings": [
+        "Supera claramente al S&P 500 en el último año (+10.1 puntos) +10",
+        "Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10",
+        "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "UNKNOWN",
+          "valueText": "—"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "Macrotendencia (peso 15%): sector líder, en rotación favorable → valor 1.0 × 15% = +15.00 pts",
+        "RSI (peso 15%): RSI en zona neutra (62) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): sin dato, no puntúa",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.22x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (0.05 + 1) × 50 = 52.5"
+      ],
+      "riskBreakdown": [
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 41% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+10.1 puntos) +10; Cruz dorada (22 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 52.5 pasa a 82.5",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
       "symbol": "KDP",
       "name": "Keurig Dr Pepper",
       "sectorEtf": "XLP",
       "sectorName": "Consumo básico",
       "indexName": "NASDAQ100",
-      "rsi14": 66.2846008194075,
+      "rsi14": 66.2846004858174,
       "volumeRatio": 0.5327512827033395,
-      "dailyVolumeRatio": 0.9702911141781306,
+      "dailyVolumeRatio": 0.7832103946746721,
       "isUptrend": true,
-      "trendQuality": 0.6905143791956866,
+      "trendQuality": 0.6905143951449578,
       "yearChangePercent": 34.259510005643186,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -10449,7 +10439,7 @@
       "stockVolatilityRatio": 0.09613359848853464,
       "percentFromYearHigh": -0.28249232911827266,
       "candlestickPattern": "DOJI",
-      "macdHistogram": 0.31436734249107556,
+      "macdHistogram": 0.3143673371078606,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -10527,11 +10517,11 @@
       "sectorEtf": "XLV",
       "sectorName": "Salud",
       "indexName": "NASDAQ100",
-      "rsi14": 67.85367587002091,
+      "rsi14": 67.8536765045378,
       "volumeRatio": 0.49304249897930147,
-      "dailyVolumeRatio": 1.1144551786459589,
+      "dailyVolumeRatio": 0.6389757507817571,
       "isUptrend": true,
-      "trendQuality": 0.6547238839098626,
+      "trendQuality": 0.6547238524798409,
       "yearChangePercent": 40.61613767810333,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -10545,7 +10535,7 @@
       "stockVolatilityRatio": 0.1250693850893019,
       "percentFromYearHigh": -1.610177505337334,
       "nearestSupportPercent": 31.836562271092824,
-      "macdHistogram": 3.8249139982288582,
+      "macdHistogram": 3.824914157184388,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-19T13:30:00Z",
@@ -10617,120 +10607,17 @@
       ]
     },
     {
-      "symbol": "CSX",
-      "name": "CSX Corporation",
-      "sectorEtf": "XLI",
-      "sectorName": "Industrial",
-      "indexName": "NASDAQ100",
-      "rsi14": 65.92830581857467,
-      "volumeRatio": 0.5185405695714543,
-      "dailyVolumeRatio": 0.8900697852193425,
-      "isUptrend": true,
-      "trendQuality": 0.870688998519553,
-      "yearChangePercent": 51.60886771746137,
-      "aboveTrendSma": true,
-      "isBuyOpportunity": false,
-      "exhaustionConfidence": 45,
-      "exhaustionReasons": [
-        "Caída de 14.3%% desde el máximo reciente (2026-07-27T04:00:00Z)",
-        "Mínimos ascendentes tras el suelo del 2026-09-21T04:00:00Z (la presión vendedora se agota)"
-      ],
-      "declinePercentFromRecentHigh": -14.337017944463682,
-      "recentHigh": 53.45366203320023,
-      "recentLow": 45.790000915527344,
-      "recentLowDate": "2026-09-21T04:00:00Z",
-      "hasNegativeTrailingEarnings": false,
-      "sectorAveragePe": 34.82,
-      "isSectorInFavor": false,
-      "hchState": "NONE",
-      "doubleTopBottomPattern": "NONE",
-      "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.5798229513564693,
-      "percentFromYearHigh": -2.270490568035594,
-      "macdHistogram": -0.07401013464553552,
-      "shortTermBullish": false,
-      "declineAccelerating": false,
-      "goldenCrossDate": "2026-10-29T13:30:00Z",
-      "momentumPriceDivergence": "NONE",
-      "shortTermFlagPattern": "NONE",
-      "longTermFlagPattern": "NONE",
-      "consolidatedBearishMonthsCount": 4,
-      "combinedScore": 67.5,
-      "rewardScore": 15.0,
-      "riskScore": 40.0,
-      "ratingOutOf10": 7,
-      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia bajista en los últimos 3 meses, sin señales de giro. RSI: RSI en zona neutra (66). Riesgo (volatilidad): volatilidad propia 0.58x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 52% de su media, MACD bajista.",
-      "penaltyWarnings": [],
-      "bonusWarnings": [
-        "Supera claramente al S&P 500 en el último año (+37.6 puntos) +10",
-        "Ha caído bastante menos que su propio sector (23.7 puntos de diferencia)",
-        "Cruz dorada (29 oct 2026): SMA20 cruza por encima de la SMA50 +10",
-        "Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10"
-      ],
-      "factors": [
-        {
-          "label": "Macrotendencia",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "Tendencia (corto plazo, 3 meses)",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        },
-        {
-          "label": "RSI",
-          "grade": "GOOD",
-          "valueText": "+1.0"
-        },
-        {
-          "label": "Valoración PER",
-          "grade": "UNKNOWN",
-          "valueText": "—"
-        },
-        {
-          "label": "Riesgo (volatilidad)",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Giro",
-          "grade": "NEUTRAL",
-          "valueText": "0.0"
-        },
-        {
-          "label": "Volumen / MACD",
-          "grade": "BAD",
-          "valueText": "-1.0"
-        }
-      ],
-      "rewardBreakdown": [
-        "RSI (peso 15%): RSI en zona neutra (66) → valor 1.0 × 15% = +15.00 pts",
-        "Valoración PER (peso 15%): sin dato, no puntúa",
-        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.58x lo habitual → valor 0.0 × 15% = +0.00 pts",
-        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
-        "PUNTUACIÓN TOTAL (0-100) = (-0.25 + 1) × 50 = 37.5"
-      ],
-      "riskBreakdown": [
-        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
-        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia bajista en los últimos 3 meses, sin señales de giro → valor -1.0 × 15% = -15.00 pts",
-        "Volumen / MACD (peso 10%): volumen 52% de su media, MACD bajista → valor -1.0 × 10% = -10.00 pts",
-        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+37.6 puntos) +10; Ha caído bastante menos que su propio sector (23.7 puntos de diferencia); Cruz dorada (29 oct 2026): SMA20 cruza por encima de la SMA50 +10; Tendencia alcista clara confirmada (largo plazo, 52 semanas) +10 → 37.5 pasa a 67.5",
-        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
-      ]
-    },
-    {
       "symbol": "ROST",
       "name": "Ross Stores",
       "sectorEtf": "XLY",
       "sectorName": "Consumo discrecional",
       "indexName": "NASDAQ100",
-      "rsi14": 53.50698106135727,
+      "rsi14": 53.50698075907512,
       "volumeRatio": 0.4987336840054549,
-      "dailyVolumeRatio": 0.9129220713951248,
+      "dailyVolumeRatio": 1.0571458456818104,
       "isUptrend": true,
-      "trendQuality": 0.7474316927642569,
-      "yearChangePercent": 45.86702465250258,
+      "trendQuality": 0.747431649002498,
+      "yearChangePercent": 45.86703862857506,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -10748,10 +10635,10 @@
       "hchState": "NONE",
       "doubleTopBottomPattern": "NONE",
       "tripleTopBottomPattern": "NONE",
-      "stockVolatilityRatio": 0.509798000131711,
+      "stockVolatilityRatio": 0.5097981022227894,
       "percentFromYearHigh": -9.436195669588955,
       "nearestSupportPercent": 11.12472042155382,
-      "macdHistogram": -1.9397017499472442,
+      "macdHistogram": -1.9397016898465411,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -10828,11 +10715,11 @@
       "sectorEtf": "XLP",
       "sectorName": "Consumo básico",
       "indexName": "NASDAQ100",
-      "rsi14": 55.011083882803646,
+      "rsi14": 55.01108316197179,
       "volumeRatio": 0.4439872938895906,
-      "dailyVolumeRatio": 0.763257529607709,
+      "dailyVolumeRatio": 0.9307018632323457,
       "isUptrend": true,
-      "trendQuality": 0.6808460840682531,
+      "trendQuality": 0.680846007146079,
       "yearChangePercent": 13.881832584536008,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
@@ -10854,7 +10741,7 @@
       "stockVolatilityRatio": 0.6762493133274586,
       "percentFromYearHigh": -5.351866936194593,
       "nearestSupportPercent": 8.369180652484363,
-      "macdHistogram": 0.007685802674966435,
+      "macdHistogram": 0.007685849200048334,
       "shortTermBullish": false,
       "declineAccelerating": false,
       "goldenCrossDate": "2026-10-28T13:30:00Z",
@@ -10933,12 +10820,12 @@
       "sectorEtf": "XLY",
       "sectorName": "Consumo discrecional",
       "indexName": "NASDAQ100",
-      "rsi14": 67.75770521188713,
+      "rsi14": 67.7577046892198,
       "volumeRatio": 0.5523473048609223,
-      "dailyVolumeRatio": 0.8369181204122352,
+      "dailyVolumeRatio": 1.4026398958914297,
       "isUptrend": true,
-      "trendQuality": 0.5873594221533938,
-      "yearChangePercent": 41.039428955205494,
+      "trendQuality": 0.5873594252984805,
+      "yearChangePercent": 41.039444144981964,
       "aboveTrendSma": true,
       "isBuyOpportunity": false,
       "exhaustionConfidence": 45,
@@ -10961,7 +10848,7 @@
       "nearestSupportPercent": 14.410186825167544,
       "candlestickPattern": "DOJI",
       "marketTrap": "BEAR_TRAP",
-      "macdHistogram": 3.6045936743919835,
+      "macdHistogram": 3.6045936557352363,
       "shortTermBullish": true,
       "declineAccelerating": false,
       "momentumPriceDivergence": "NONE",
@@ -11028,6 +10915,96 @@
         "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
         "Volumen / MACD (peso 10%): volumen 55% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
         "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Supera claramente al S&P 500 en el último año (+27.0 puntos) +10; Ha caído bastante menos que su propio sector (26.3 puntos de diferencia); Tendencia alcista clara confirmada (largo plazo, 52 semanas) — incluye la de corto plazo (3 meses), que coincide +10 → 45.0 pasa a 65.0",
+        "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
+      ]
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft",
+      "sectorEtf": "XLK",
+      "sectorName": "Tecnología",
+      "indexName": "NASDAQ100",
+      "rsi14": 64.4161050886162,
+      "volumeRatio": 0.4443082833495475,
+      "dailyVolumeRatio": 0.9686015174953814,
+      "isUptrend": false,
+      "isBuyOpportunity": false,
+      "stockPe": 27.69,
+      "hasNegativeTrailingEarnings": false,
+      "sectorAveragePe": 29.62,
+      "isSectorInFavor": false,
+      "hchState": "FORMING",
+      "doubleTopBottomPattern": "DOUBLE_BOTTOM",
+      "tripleTopBottomPattern": "NONE",
+      "stockVolatilityRatio": 0.1549745830248005,
+      "percentFromYearHigh": -3.8120309960906056,
+      "macdHistogram": 4.735668812225889,
+      "shortTermBullish": true,
+      "declineAccelerating": false,
+      "momentumPriceDivergence": "NONE",
+      "shortTermFlagPattern": "NONE",
+      "longTermFlagPattern": "NONE",
+      "consolidatedBearishMonthsCount": 2,
+      "combinedScore": 63.0,
+      "rewardScore": 45.0,
+      "riskScore": 25.0,
+      "ratingOutOf10": 6,
+      "summary": "Macrotendencia: sector rezagado frente al mercado. Tendencia (corto plazo, 3 meses): tendencia claramente alcista en los últimos 3 meses. RSI: RSI en zona neutra (64). Valoración PER: PER 27.7x frente a rango típico del sector 28-40x · deuda sin dato, no incluida. Riesgo (volatilidad): volatilidad propia 0.15x lo habitual. Giro: sin señal de giro clara. Volumen / MACD: volumen 44% de su media, MACD alcista.",
+      "penaltyWarnings": [
+        "Patrón de Hombro-Cabeza-Hombro en Formación -7"
+      ],
+      "bonusWarnings": [
+        "Patrón de Doble Suelo Detectado (30 mar 2026 y 22 jun 2026) +10"
+      ],
+      "factors": [
+        {
+          "label": "Macrotendencia",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        },
+        {
+          "label": "Tendencia (corto plazo, 3 meses)",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "RSI",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Valoración PER",
+          "grade": "GOOD",
+          "valueText": "+1.0"
+        },
+        {
+          "label": "Riesgo (volatilidad)",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Giro",
+          "grade": "NEUTRAL",
+          "valueText": "0.0"
+        },
+        {
+          "label": "Volumen / MACD",
+          "grade": "BAD",
+          "valueText": "-1.0"
+        }
+      ],
+      "rewardBreakdown": [
+        "Tendencia (corto plazo, 3 meses) (peso 15%): tendencia claramente alcista en los últimos 3 meses → valor 1.0 × 15% = +15.00 pts",
+        "RSI (peso 15%): RSI en zona neutra (64) → valor 1.0 × 15% = +15.00 pts",
+        "Valoración PER (peso 15%): PER 27.7x frente a rango típico del sector 28-40x · deuda sin dato, no incluida → valor 1.0 × 15% = +15.00 pts",
+        "Riesgo (volatilidad) (peso 15%): volatilidad propia 0.15x lo habitual → valor 0.0 × 15% = +0.00 pts",
+        "Giro (peso 15%): sin señal de giro clara → valor 0.0 × 15% = +0.00 pts",
+        "PUNTUACIÓN TOTAL (0-100) = (0.20 + 1) × 50 = 60.0"
+      ],
+      "riskBreakdown": [
+        "Macrotendencia (peso 15%): sector rezagado frente al mercado → valor -1.0 × 15% = -15.00 pts",
+        "Volumen / MACD (peso 10%): volumen 44% de su media, MACD alcista → valor -1.0 × 10% = -10.00 pts",
+        "PENALIZACIONES/BONOS APARTE (no forman parte de las 7 categorías): Patrón de Hombro-Cabeza-Hombro en Formación -7; Patrón de Doble Suelo Detectado (30 mar 2026 y 22 jun 2026) +10 → 60.0 pasa a 63.0",
         "Nota: el Riesgo aquí es la suma de las categorías con contribución negativa, en valor absoluto — no un cálculo aparte."
       ]
     }
